@@ -1,0 +1,10 @@
+
+
+
+
+
+#Initial Data in an array 
+
+
+
+#Class 1 Tier 1 -> Piping all data with a given attribute are placed here 
