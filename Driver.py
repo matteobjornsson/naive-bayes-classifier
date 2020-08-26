@@ -12,22 +12,25 @@ import pandas as pd
 import os 
  
 
+import Soybean_Data
+import Iris_Data
+import Vote_Data
+import Glass_Data
+import Cancer_Data
+
 
 
 def main(): 
     
     print("Program Starting")
-    #Create a data frame and feed the data from the file path 
-    data = pd.read_csv('C:/Users/nston/Desktop/MachineLearning/Project 1/Glass Data/glass.data')
-    mas = len(data)
-    print(mas)
-    for j in range(mas): 
-        print(data.iloc[j])
-        print('\n')
-    
-    for i in data: 
-        print(i)
-    #print(data.head())
+    Cc = Cancer() 
+    glass = Glass() 
+    Vt = Vote() 
+    iris = Iris() 
+    soy = Soybean() 
+
+
+
 
 
 
