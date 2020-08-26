@@ -46,6 +46,42 @@
 
 6. Number of Attributes: 35 (all have been nominalized)
      -- All attributes here appear with numeric values
+
+    1. date: 0
+    2. plant-stand: 1
+    3. precip: 8
+    4. temp: 11
+    5. hail: 7
+    6. crop-hist: 41
+    7. area-damaged: 1
+    8. severity: 1
+    9. seed-tmt: 41
+   10. germination: 41
+   11. plant-growth: 36
+   12. leaves: 1
+   13. leafspots-halo: 0
+   14. leafspots-marg: 25
+   15. leafspot-size: 25
+   16. leaf-shread: 25
+   17. leaf-malf: 26
+   18. leaf-mild: 25
+   19. stem: 30
+   20. lodging: 1
+   21. stem-cankers: 41
+   22. canker-lesion: 11
+   23. fruiting-bodies: 11
+   24. external decay: 35
+   25. mycelium: 11
+   26. int-discolor: 11
+   27. sclerotia: 11
+   28. fruit-pods: 11
+   29. fruit spots: 25
+   30. seed: 35
+   31. mold-growth: 29
+   32. seed-discolor: 29
+   33. seed-size: 35
+   34. shriveling: 29
+   35. roots: 35
  
 7. Attribute Information: 
      -- derivable from soybean-large.names
@@ -57,4 +93,10 @@
    2. D2: 10
    3. D3: 10
    4. D4: 17
+
+
+   D1 = diaporthe-stem-canker: 10
+   D2 = charcoal-rot: 10
+   D3 = rhizoctonia-root-rot: 10
+   D4 = phytophthora-rot: 
 
