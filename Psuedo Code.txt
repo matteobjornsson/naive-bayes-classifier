@@ -8,3 +8,16 @@
 
 
 #Class 1 Tier 1 -> Piping all data with a given attribute are placed here 
+
+
+
+#Download all 5 Data sets 
+
+
+++PREPROCESSING 
+
+#Find all missing values and replace with either random (leaning towards) or some sort of statistical value 
+
+#Upper and lower bounds or each row 
+
+#Turn all glass data into some integer value 
