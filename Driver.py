@@ -10,13 +10,13 @@
 
 import pandas as pd 
 import os 
+ 
+
 
 
 def main(): 
+    
     print("Program Starting")
-    """
-    Read in the data files 
-    """
     #Create a data frame and feed the data from the file path 
     data = pd.read_csv('C:/Users/nston/Desktop/MachineLearning/Project 1/Glass Data/glass.data')
     mas = len(data)

@@ -21,3 +21,6 @@
 #Upper and lower bounds or each row 
 
 #Turn all glass data into some integer value 
+
+
+
