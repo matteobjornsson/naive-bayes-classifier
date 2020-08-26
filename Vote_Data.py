@@ -7,13 +7,14 @@ import os
 
 class Vote:
 
-    def PreProcess(): 
+    def PreProcess(self): 
+        print("hello Worlds")
         DataFrame = pd.read_csv('Vote_Data/Votes.DATA')
         for i in DataFrame: 
             print(i)
 
-    def __init__(): 
-        PreProcess()
+    def __init__(self): 
+        self.PreProcess()
         print("Hello World!") 
 
 
@@ -22,6 +23,6 @@ class Vote:
 
 
 
-def main(): 
+if __name__ == '__main__': 
     Vt = Vote()
-    vt.PreProcess()
+    #Vt.PreProcess()
