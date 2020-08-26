@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd 
 import os 
 
 
@@ -7,12 +7,12 @@ class Glass:
 
     def PreProcess(self): 
         print("hello Worlds")
-        DataFrame = pd.read_csv('Glass_Data/Glass.DATA')
+        DataFrame = pd.read_csv('Glass_Data/glass.DATA')
         for i in DataFrame: 
             print(i)
 
-    def __init__(): 
-        PreProcess()
+    def __init__(self): 
+        self.PreProcess()
         print("Hello World!") 
 
 

@@ -1,4 +1,4 @@
-import pandas
+import pandas as pd 
 import os 
 
 ##No missing attributes found 
@@ -8,12 +8,12 @@ class Soybean:
 
     def PreProcess(self): 
         print("hello Worlds")
-        DataFrame = pd.read_csv('Soybean_Data/Soybean.DATA')
+        DataFrame = pd.read_csv('Soybean_Data/soybean.DATA')
         for i in DataFrame: 
             print(i)
    
-    def __init__(): 
-        PreProcess()
+    def __init__(self): 
+        self.PreProcess()
         print("Hello World!") 
 
 
