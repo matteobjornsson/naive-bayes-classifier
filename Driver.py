@@ -8,9 +8,6 @@
 #
 ##################################################################### MODULE COMMENTS #####################################################################
 
-import pandas as pd 
-import os 
- 
 
 import Soybean_Data as sd
 import Iris_Data as ird 
@@ -24,9 +21,13 @@ def main():
     
     print("Program Starting")
     Cc = cd.Cancer() 
+    print("\n")
     glass = gd.Glass() 
-    Vt = vd.Vote() 
+    print("\n")
+    Vt = vd.Vote()
+    print("\n") 
     iris = ird.Iris() 
+    print("\n")
     soy = sd.Soybean() 
 
 
