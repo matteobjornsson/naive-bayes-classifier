@@ -22,5 +22,10 @@
 
 #Turn all glass data into some integer value 
 
+Datasets that need to missing attributes filled in/modified:
+    -Cancer
+    -Voting
 
-
+Datasets that need to be discretized:
+    -Iris
+    -Glass
