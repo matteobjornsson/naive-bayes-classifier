@@ -10,8 +10,20 @@ class Iris:
     def PreProcess(self): 
         print("hello Worlds")
         DataFrame = pd.read_csv('Iris_Data/iris.DATA')
+        EOF = len(DataFrame)
+        count = 0 
         for i in DataFrame: 
-            print(i)
+            count +=1 
+        for i in range(EOF): 
+            for j in range(count): 
+                if j == (count -1): 
+                    #print('Miss')
+                    continue 
+                DataFrame.iloc[i][j] = int(DataFrame.iloc[i][j])  * 10 
+                DataFrame['Bins']=pd.cut(DataFrame['sepal_length'],3,labels=['Poor','Below_average','Average'])
+
+                print(DataFrame.head())
+
 
     def __init__(self): 
         self.PreProcess()
