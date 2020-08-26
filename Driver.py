@@ -12,22 +12,22 @@ import pandas as pd
 import os 
  
 
-import Soybean_Data
-import Iris_Data
-import Vote_Data
-import Glass_Data
-import Cancer_Data
+import Soybean_Data as sd
+import Iris_Data as ird 
+import Vote_Data as vd 
+import Glass_Data as gd
+import Cancer_Data as cd 
 
 
 
 def main(): 
     
     print("Program Starting")
-    Cc = Cancer() 
-    glass = Glass() 
-    Vt = Vote() 
-    iris = Iris() 
-    soy = Soybean() 
+    Cc = cd.Cancer() 
+    glass = gd.Glass() 
+    Vt = vd.Vote() 
+    iris = ird.Iris() 
+    soy = sd.Soybean() 
 
 
 
