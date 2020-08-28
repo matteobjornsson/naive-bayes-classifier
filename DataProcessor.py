@@ -1,12 +1,12 @@
 import pandas as pd
+import numpy as np
 import sys
 
 class DataProcessor:
 
-    discrete_threshold = 5
-
     def __init__(self):
-        super().__init__()
+        self.discrete_threshold = 5
+        self.bin_count = 5
 
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
         # check if data has missing attributes
@@ -22,12 +22,16 @@ class DataProcessor:
     def has_continuous_values(self, df: pd.DataFrame) -> bool:
         for col in df:
             # if number of unique values is greater than threshold, consider column continuous-valued
-            if df[col].nunique() > discrete_threshold:
+            # print(col, '\n', df[col].nunique(), '\n')
+            if df[col].nunique() > self.discrete_threshold:
                 return True
         return False
 
     def discretize(self, df: pd.DataFrame) -> pd.DataFrame:
-        # if continuous valued, bin all continous-valued columns with pandas functions
+        for col in df:
+            if df[col].nunique() > self.discrete_threshold:
+                # take the difference between the min value and max value, split all values into @bin_count bins
+                df[col] = pd.cut(df[col], bins=self.bin_count, labels=[*range(0,self.bin_count,1)])
         return df
 
 if __name__ == '__main__':
@@ -35,3 +39,7 @@ if __name__ == '__main__':
     df = pd.read_csv(filename)
     print(df.head())
     dp = DataProcessor()
+    if dp.has_continuous_values(df):
+        df = dp.discretize(df)
+    print(df.head())
+    
