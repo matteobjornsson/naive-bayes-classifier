@@ -8,12 +8,6 @@
 #
 ##################################################################### MODULE COMMENTS #####################################################################
 
-
-import Soybean_Data as sd
-import Iris_Data as ird 
-import Vote_Data as vd 
-import Glass_Data as gd
-import Cancer_Data as cd 
 import pandas as pd 
 
 
