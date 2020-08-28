@@ -17,7 +17,7 @@ class DataProcessor:
         #   find attribute value distribution across discrete options (find min/max?) Use pandas stats for this
         return df
 
-    def all_discrete_valued(self, df: pd.DataFrame) -> bool:
+    def has_continuous_values(self, df: pd.DataFrame) -> bool:
         # return true if all columns have only discrete values
         return True
 
