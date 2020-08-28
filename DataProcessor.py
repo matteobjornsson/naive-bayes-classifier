@@ -1,10 +1,12 @@
 import pandas as pd
-import numpy
+import sys
 
 class DataProcessor:
 
-    def __init__(self, filename: str):
-        self.data = pd.read_csv(filename)
+    discrete_threshold = 5
+
+    def __init__(self):
+        super().__init__()
 
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
         # check if data has missing attributes
@@ -18,10 +20,18 @@ class DataProcessor:
         return df
 
     def has_continuous_values(self, df: pd.DataFrame) -> bool:
-        # return true if all columns have only discrete values
-        return True
+        for col in df:
+            # if number of unique values is greater than threshold, consider column continuous-valued
+            if df[col].nunique() > discrete_threshold:
+                return True
+        return False
 
     def discretize(self, df: pd.DataFrame) -> pd.DataFrame:
         # if continuous valued, bin all continous-valued columns with pandas functions
         return df
 
+if __name__ == '__main__':
+    filename = sys.argv[1]
+    df = pd.read_csv(filename)
+    print(df.head())
+    dp = DataProcessor()
