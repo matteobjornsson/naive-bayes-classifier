@@ -14,13 +14,33 @@
 #Download all 5 Data sets 
 
 
-++PREPROCESSING 
+++PREPROCESSING - i.e. get real familiar with Pandas
 
-#Find all missing values and replace with either random (leaning towards) or some sort of statistical value 
+1. provide program with Dataset (command line arg)
+2. import dataset as pandas dataframe
+3. check dataset for missing attributes ("?", "NaN", etc.)
+    a. if only small percent of examples have missing attributes, remove those examples.
+    b. if only a small fraction of columns (e.g. 2/12) have missing attributes, remove those columns. 
+    c. if many datapoints across many columns have missing attributes, generate at random to match column distribution. 
+        i. find attribute value distribution across discrete options (find min/max?) Use pandas stats for this
+4. check dataset for continuous-valued attribute values
+    a. if continuous valued, bin all continous-valued columns with pandas functions
+5. copy the dataset. In the new set, shuffle the values at random for 10% of the features
 
-#Upper and lower bounds or each row 
+++EXPERIMENT 
 
-#Turn all glass data into some integer value 
+##TRAINING
+
+1. Create datastructure to store calculated values
+2. Divide dataset into training and test sets (5x2cv?)
+3. iterate over dataframe to calculate Naive-Bayes values, store values. 
+
+##TESTING
+
+1. calculate C(x) for each element in the test set. Store class prediction. 
+
+
+
 
 Datasets that need to missing attributes filled in/modified:
     -Cancer
