@@ -91,27 +91,36 @@ class DataProcessor:
         return False
 
 
-    def discretize(self, df: pd.DataFrame) -> pd.DataFrame:
-        #Arbitrarily tune hyperparameter of bins in init -> set to 5 
-        for col in df:
-            #Figure out Ranges/Values to assign bins 
-            Min = min(df[col])
-            Max = max(df[col])
+    def discretize(self, df: pd.DataFrame,col) -> pd.DataFrame:
+ 
+            Min = df.iloc[1][col]
+            Max = df.iloc[1][col]
+            for i in range(self.CountTotalRows(df)): 
+                if self.IsMissingAttribute(df.iloc[i][col]): 
+                    #Do nothing 
+                    continue 
+                else: 
+                    if df.iloc[i][col]  > Max: 
+                        Max = df.iloc[i][col] 
+                        continue 
+                    elif df.iloc[i][col] < Min: 
+                        Min = df.iloc[i][col]
+                        continue 
+                    continue                 
             Delta = Max - Min 
             BinRange = Delta / self.bin_count
-            Bins = list(np.arange(Min, Max,BinRange)
-            for row in self.TotalNumberRows(): 
+            Bins = list(np.arange(Min, Max,BinRange))
+            for row in range(self.CountTotalRows(df)): 
                 Value = df.iloc[row][col]
-                for i in range(len(Bins))
+                for i in range(len(Bins)):
                     if i == len(Bins): 
-                        df.iloc[row][col] = Bins[i]
-                        df = df 
+                        df.at[row,col] = Bins[i]
+                         
                         continue  
                     elif Value < Bins[i]: 
-                        df.iloc[row][col] = Bins[i]
-                        df = df 
+                        df.at[row,col] = Bins[i]
                         continue 
-        return df
+            return df
 
 
     def CountTotalRows(self,df: pd.DataFrame) -> int: 
@@ -216,8 +225,13 @@ if __name__ == '__main__':
     
     print(len(df1.columns))
     print(df1.describe())
-    print(dp.GenerateValue(1.56655,.80,bool))
-    
+    print("============================")
+    print("\n")
+    print(df1["Clump_Thickness"])
+    print("============================")
+    print("\n")
+    df1 = dp.discretize(df1,"Clump_Thickness")
+    print(df1["Clump_Thickness"])
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
