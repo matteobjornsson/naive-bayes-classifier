@@ -63,22 +63,55 @@ class DataProcessor:
         #Return the total number of rows in the data frame 
         return len(df)
 
-    def CountRowsMissingValues(self,df: pd.DataFrame ) -> int: 
+    def CountRowsMissingValues(self,df: pd.DataFrame ) -> int:
+        #Set a Counter Variable for the number of columns in the data frame 
         Count = 0 
+        #Set a counter to track the number of rows that have a missing value 
         MissingValues = 0 
+        #Get the total number of rows in the data set 
         TotalNumRows = self.CountTotalRows(df)
+        #For each of the columns in the data frame 
+        for i in df: 
+            #increment by 1 
+            Count+=1 
+        #For each of the records in the data frame 
+        for i in range(TotalNumRows): 
+            #For each column in each record 
+            for j in range(Count): 
+                #If the specific value in the record is a ? or a missing value 
+                if df.iloc[i][j] == "?":
+                    #Increment Missing Values 
+                    MissingValues+=1
+                    #Go to the next one 
+                    continue 
+                #If the specific Value in the record is a nan value 
+                if df.iloc[i][j] == np.nan: 
+                    #Increment The missing value 
+                    MissingValues+=1 
+                    #Go to the next one 
+                    continue 
+                #Go to the next ones
+                continue  
+        #Return the number of rows missing values in the data set 
+        return MissingValues 
+    def PercentRowsMissingValue(self,df: pd.DataFrame) -> float: 
+        #Get the total number of rows in the dataset
+        TotalNumRows = self.CountTotalRows(df)
+        #Get the total number of rows with missing values 
+        TotalMissingRows = self.CountRowsMissingValues(df)
+        #Return the % of rows missing values  
+        return TotalMissingRows/TotalNumRows
+    
+    def ColumnMissingData(self,df: pd.DataFrame) -> int: 
+        TotalNumberColumns = self.NumberOfColumns(df)
+        for i in 
+
+
+    def NumberOfColumns(self,df: pd.DataFrame) -> int: 
+        Count = 0 
         for i in df: 
             Count+=1 
-        for i in range(TotalNumRows): 
-            for j in range(Count): 
-                if df.iloc[i][j] == "?":
-                    MissingValues+=1
-                    continue 
-                if df.iloc[i][j] == np.nan: 
-                    MissingValues+=1 
-                    continue 
-                continue  
-        return MissingValues 
+        return Count 
 
     
 
@@ -88,9 +121,9 @@ if __name__ == '__main__':
     df = pd.read_csv(filename)
     print(df.head())
     dp = DataProcessor()
-    print(dp.CountTotalRows(df))
-    print(dp.CountRowsMissingValues(df))
-
+    #print(dp.CountTotalRows(df))
+    #print(dp.CountRowsMissingValues(df))
+    print(dp.PercentRowsMissingValue(df))
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
