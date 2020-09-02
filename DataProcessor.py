@@ -39,6 +39,9 @@ class DataProcessor:
         df.drop(df.Index[index])
         return df  
 
+    def IsMissingAttribute(self, attribute) -> bool: 
+        return attribute == "?" or attribute == np.nan
+
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
         PercentRowsMissing = self.PercentRowsMissingValue()
@@ -91,15 +94,9 @@ class DataProcessor:
             #For each column in each record 
             for j in range(Count): 
                 #If the specific value in the record is a ? or a missing value 
-                if df.iloc[i][j] == "?":
+                if self.IsMissingAttribute(df.iloc[i][j]):
                     #Increment Missing Values 
                     MissingValues+=1
-                    #Go to the next one 
-                    continue 
-                #If the specific Value in the record is a nan value 
-                if df.iloc[i][j] == np.nan: 
-                    #Increment The missing value 
-                    MissingValues+=1 
                     #Go to the next one 
                     continue 
                 #Go to the next ones
@@ -126,18 +123,10 @@ class DataProcessor:
             #For each of the records in the data set 
             for i in range(TotalNumberRows): 
                 #If the value at the specific location is ? or a missing value 
-                if df.iloc[i][j] == "?": 
+                if self.IsMissingAttribute(df.iloc[i][j]): 
                     #Increment the counter
                     Count+=1 
-                    Names = df.columns() 
-                    self.MissingColumnNameList.append(Names[j])
-                    #Break out of the loop 
-                    break 
-                #If the value at the specific location is nan or a missing value 
-                if df.iloc[i][j] == np.nan: 
-                    #Incrememnt the counter
-                    Count+=1 
-                    Names = df.columns() 
+                    Names = df.columns
                     self.MissingColumnNameList.append(Names[j])
                     #Break out of the loop 
                     break 
