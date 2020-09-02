@@ -25,6 +25,8 @@ class DataProcessor:
         self.discrete_threshold = 5
         self.bin_count = 5
         self.PercentBeforeDrop = 5.00 
+        self.MissingRowIndexList = list() 
+        self.MissingColumnNameList = list()
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
@@ -33,24 +35,18 @@ class DataProcessor:
         
         
         return True
-    def KillRow(self, df: pd.DataFrame,Index) -> pd.DataFrame: 
-        df.drop(Index)
+    def KillRow(self, df: pd.DataFrame,index) -> pd.DataFrame: 
+        df.drop(df.Index[index])
         return df  
 
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
         PercentRowsMissing = self.PercentRowsMissingValue()
-
-        if(PercentRowsMissing < self.PercentBeforeDrop): 
-
-        
-        
-        
-        PercentColumnsMissing = self.PercentColumnsMissingData(df) 
+       # if(PercentRowsMissing < self.PercentBeforeDrop): 
+      #  PercentColumnsMissing = self.PercentColumnsMissingData(df) 
         #
-        if(PercentColumnsMissing < self.PercentBeforeDrop):
+       # if(PercentColumnsMissing < self.PercentBeforeDrop):
             #Yeet this bitch 
-            print("fuck Me ")
 
 
         # https://thispointer.com/pandas-get-frequency-of-a-value-in-dataframe-column-index-find-its-positions-in-python/
@@ -133,12 +129,16 @@ class DataProcessor:
                 if df.iloc[i][j] == "?": 
                     #Increment the counter
                     Count+=1 
+                    Names = df.columns() 
+                    self.MissingColumnNameList.append(Names[j])
                     #Break out of the loop 
                     break 
                 #If the value at the specific location is nan or a missing value 
                 if df.iloc[i][j] == np.nan: 
                     #Incrememnt the counter
                     Count+=1 
+                    Names = df.columns() 
+                    self.MissingColumnNameList.append(Names[j])
                     #Break out of the loop 
                     break 
                 #Go to the next record 
@@ -166,6 +166,8 @@ class DataProcessor:
         return (TotalMissingColumns/TotalNumberColumns) * 100 
 
 
+
+
 if __name__ == '__main__':
     filename = sys.argv[1]
     df = pd.read_csv(filename)
@@ -177,8 +179,8 @@ if __name__ == '__main__':
     print(dp.NumberOfColumns(df))
     print(dp.ColumnMissingData(df))
     print(dp.PercentColumnsMissingData(df))
-    df.drop(5)
-    print(len(df))
+    df = df.drop(df.index[1])
+
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
      #   df = dp.discretize(df)
