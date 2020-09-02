@@ -24,9 +24,9 @@ class DataProcessor:
     def __init__(self):
         self.discrete_threshold = 5
         self.bin_count = 5
-        self.PercentBeforeDrop = 5.00 
-        self.MissingRowIndexList = list() 
-        self.MissingColumnNameList = list()
+        self.PercentBeforeDrop = 10.00 
+        self.MissingRowIndexList = set() 
+        self.MissingColumnNameList = set()
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
@@ -42,16 +42,32 @@ class DataProcessor:
     def IsMissingAttribute(self, attribute) -> bool: 
         return attribute == "?" or attribute == np.nan
 
+    def KillRows(self,df: pd.DataFrame) -> pd.DataFrame: 
+        for i in self.MissingRowIndexList: 
+            df = df.drop(df.index[i])
+        self.MissingRowIndexList = set() 
+        return df
+    
+    def KillColumns(self,df: pd.DataFrame) -> pd.DataFrame: 
+        for i in self.MissingColumnNameList: 
+            df = df.drop(i,axis=1)
+        self.MissingColumnNameList = set() 
+        return df
+
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
-        PercentRowsMissing = self.PercentRowsMissingValue()
-       # if(PercentRowsMissing < self.PercentBeforeDrop): 
-      #  PercentColumnsMissing = self.PercentColumnsMissingData(df) 
-        #
-       # if(PercentColumnsMissing < self.PercentBeforeDrop):
-            #Yeet this bitch 
+        PercentRowsMissing = self.PercentRowsMissingValue(df)
+        PercentColumnsMissingData = self.PercentColumnsMissingData(df)
+        if(PercentRowsMissing < self.PercentBeforeDrop): 
+            return self.KillRows(df)
+        elif(PercentColumnsMissingData < self.PercentBeforeDrop):
+            return self.KillColumns(df)  
+        else: 
+            print("Working Fine ")
+            #Statistically Weigh then Randomly Roll Attribute Value 
+        
 
-
+        return df
         # https://thispointer.com/pandas-get-frequency-of-a-value-in-dataframe-column-index-find-its-positions-in-python/
         # if only small percent of examples have missing attributes, remove those examples.
             # i.e. check rowwise, calculate percentage
@@ -59,7 +75,7 @@ class DataProcessor:
             # i.e. check columnwise, calculate percentage
         # if many datapoints across many columns have missing attributes, generate at random to match column distribution. 
         #   find attribute value distribution across discrete options (find min/max?) Use pandas stats for this
-        return df
+       
 
     def has_continuous_values(self, df: pd.DataFrame) -> bool:
         for col in df:
@@ -97,6 +113,7 @@ class DataProcessor:
                 if self.IsMissingAttribute(df.iloc[i][j]):
                     #Increment Missing Values 
                     MissingValues+=1
+                    self.MissingRowIndexList.add(i)
                     #Go to the next one 
                     continue 
                 #Go to the next ones
@@ -127,7 +144,7 @@ class DataProcessor:
                     #Increment the counter
                     Count+=1 
                     Names = df.columns
-                    self.MissingColumnNameList.append(Names[j])
+                    self.MissingColumnNameList.add(Names[j])
                     #Break out of the loop 
                     break 
                 #Go to the next record 
@@ -168,7 +185,12 @@ if __name__ == '__main__':
     print(dp.NumberOfColumns(df))
     print(dp.ColumnMissingData(df))
     print(dp.PercentColumnsMissingData(df))
-    df = df.drop(df.index[1])
+    #df = df.drop(df.index[1]
+    #print(len(dp.MissingColumnNameList))
+    #print(len(dp.MissingRowIndexList))
+    df1 = dp.fix_missing_attrs(df)
+    
+    print(len(df1.columns))
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
