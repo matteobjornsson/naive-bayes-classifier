@@ -100,7 +100,7 @@ class DataProcessor:
         #Get the total number of rows with missing values 
         TotalMissingRows = self.CountRowsMissingValues(df)
         #Return the % of rows missing values  
-        return TotalMissingRows/TotalNumRows
+        return (TotalMissingRows/TotalNumRows) * 100 
     
     def ColumnMissingData(self,df: pd.DataFrame) -> int: 
         #Create a counter variable to track the total number of columns missing data 
@@ -141,7 +141,13 @@ class DataProcessor:
         #Return the total number of Columns 
         return Count 
 
-    
+    def PercentColumnsMissingData(self,df: pd.DataFrame) -> float: 
+        #Total Number of Columns in the dataset 
+        TotalNumberColumns = self.NumberOfColumns(df)
+        #Total number of columns missing values in the dataset
+        TotalMissingColumns = self.ColumnMissingData(df)
+        #Return the percent number of columns missing data
+        return (TotalMissingColumns/TotalNumberColumns) * 100 
 
 
 if __name__ == '__main__':
@@ -154,6 +160,7 @@ if __name__ == '__main__':
     print(dp.PercentRowsMissingValue(df))
     print(dp.NumberOfColumns(df))
     print(dp.ColumnMissingData(df))
+    print(dp.PercentColumnsMissingData(df))
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
      #   df = dp.discretize(df)
