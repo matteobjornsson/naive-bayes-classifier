@@ -201,6 +201,7 @@ if __name__ == '__main__':
     print(len(df1.columns))
     print(df1.describe())
     print(dp.GenerateValue(1.56655,.80,bool))
+    
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
