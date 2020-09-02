@@ -103,14 +103,30 @@ class DataProcessor:
         return TotalMissingRows/TotalNumRows
     
     def ColumnMissingData(self,df: pd.DataFrame) -> int: 
+        Count = 0 
         TotalNumberColumns = self.NumberOfColumns(df)
-        for i in 
+        TotalNumberRows = self.CountTotalRows(df) 
+        for j in range(TotalNumberColumns): 
+            for i in range(TotalNumberRows): 
+                if df.iloc[i][j] == "?": 
+                    print("COLUMN NUMBER: " + str(j) )
+                    Count+=1 
+                    break 
+                if df.iloc[i][j] == np.nan: 
+                    Count+=1 
+                    break 
+                continue 
+        return Count
 
 
     def NumberOfColumns(self,df: pd.DataFrame) -> int: 
+        #Create a counter variable 
         Count = 0 
+        #For each of the columns in the dataframe 
         for i in df: 
+            #Increment Count 
             Count+=1 
+        #Return the total number of Columns 
         return Count 
 
     
@@ -124,9 +140,10 @@ if __name__ == '__main__':
     #print(dp.CountTotalRows(df))
     #print(dp.CountRowsMissingValues(df))
     print(dp.PercentRowsMissingValue(df))
-
+    print(dp.NumberOfColumns(df))
+    print(dp.ColumnMissingData(df))
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
      #   df = dp.discretize(df)
-    print(df.head())
+    #print(df.head())
     
