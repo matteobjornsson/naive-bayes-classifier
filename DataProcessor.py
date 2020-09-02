@@ -65,19 +65,20 @@ class DataProcessor:
 
     def CountRowsMissingValues(self,df: pd.DataFrame ) -> int: 
         Count = 0 
+        MissingValues = 0 
         TotalNumRows = self.CountTotalRows(df)
-        for i in Df: 
+        for i in df: 
             Count+=1 
         for i in range(TotalNumRows): 
             for j in range(Count): 
-                if df[i][j] == '?':
-                    Count+=1
+                if df.iloc[i][j] == "?":
+                    MissingValues+=1
                     continue 
-                if df[i][j] == np.nan: 
-                    Count+=1 
+                if df.iloc[i][j] == np.nan: 
+                    MissingValues+=1 
                     continue 
-                continue 
-        return Count 
+                continue  
+        return MissingValues 
 
     
 
@@ -87,8 +88,12 @@ if __name__ == '__main__':
     df = pd.read_csv(filename)
     print(df.head())
     dp = DataProcessor()
-    if dp.has_continuous_values(df):
-        print("Attribute values continuous, discretizing...\n")
-        df = dp.discretize(df)
+    print(dp.CountTotalRows(df))
+    print(dp.CountRowsMissingValues(df))
+
+
+    #if dp.has_continuous_values(df):
+     #   print("Attribute values continuous, discretizing...\n")
+     #   df = dp.discretize(df)
     print(df.head())
     
