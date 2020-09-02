@@ -70,7 +70,7 @@ class DataProcessor:
             Count+=1 
         for i in range(TotalNumRows): 
             for j in range(Count): 
-                if df[i][j] == '?'
+                if df[i][j] == '?':
                     Count+=1
                     continue 
                 if df[i][j] == np.nan: 
