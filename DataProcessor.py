@@ -28,6 +28,7 @@ class DataProcessor:
         self.PercentBeforeDrop = 10.00 
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
+
         
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
@@ -57,7 +58,7 @@ class DataProcessor:
         return df
 
     def GenerateValue(self,Upperbounds,Lowerbounds,types): 
-        return types(random.uniform(Upperbounds,Lowerbounds))
+        return types(random.uniform(Upperbounds,Lowerbounds))    
 
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -91,10 +92,33 @@ class DataProcessor:
 
 
     def discretize(self, df: pd.DataFrame) -> pd.DataFrame:
+        #Arbitrarily tune hyperparameter of bins in init -> set to 5 
         for col in df:
-            if df[col].nunique() > self.discrete_threshold and col != "class":
-                # split all values into @bin_count bins
-                df[col] = pd.cut(df[col], bins=self.bin_count, labels=[*range(0,self.bin_count,1)])
+            #Figure out Ranges/Values to assign bins 
+            Min = min(df[col])
+            Max = max(df[col])
+            Delta = Max - Min 
+            BinRange = Delta / self.bin_count
+            Bins = list(np.arange(Min, Max,BinRange)
+            for row in self.TotalNumberRows(): 
+                Value = df.iloc[row][col]
+                for i in range(len(Bins))
+                    if i == len(Bins): 
+                        df.iloc[row][col] = Bins[i]
+                        df = df 
+                        continue  
+                    elif Value < Bins[i]: 
+                        df.iloc[row][col] = Bins[i]
+                        df = df 
+                        continue 
+                    
+
+            
+
+            
+
+
+
         return df
 
 
