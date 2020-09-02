@@ -111,14 +111,6 @@ class DataProcessor:
                         df.iloc[row][col] = Bins[i]
                         df = df 
                         continue 
-                    
-
-            
-
-            
-
-
-
         return df
 
 
