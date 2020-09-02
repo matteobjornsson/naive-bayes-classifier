@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import sys
+import random 
 
 
 #
@@ -27,6 +28,7 @@ class DataProcessor:
         self.PercentBeforeDrop = 10.00 
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
+        
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
@@ -53,6 +55,9 @@ class DataProcessor:
             df = df.drop(i,axis=1)
         self.MissingColumnNameList = set() 
         return df
+
+    def GenerateValue(self,Upperbounds,Lowerbounds,types): 
+        return types(random.uniform(Upperbounds,Lowerbounds))
 
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -84,12 +89,15 @@ class DataProcessor:
                 return True
         return False
 
+
     def discretize(self, df: pd.DataFrame) -> pd.DataFrame:
         for col in df:
             if df[col].nunique() > self.discrete_threshold and col != "class":
                 # split all values into @bin_count bins
                 df[col] = pd.cut(df[col], bins=self.bin_count, labels=[*range(0,self.bin_count,1)])
         return df
+
+
     def CountTotalRows(self,df: pd.DataFrame) -> int: 
         #Return the total number of rows in the data frame 
         return len(df)
@@ -191,6 +199,8 @@ if __name__ == '__main__':
     df1 = dp.fix_missing_attrs(df)
     
     print(len(df1.columns))
+    print(df1.describe())
+    print(dp.GenerateValue(1.56655,.80,bool))
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
