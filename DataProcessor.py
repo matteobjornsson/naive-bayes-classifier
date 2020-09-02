@@ -103,19 +103,31 @@ class DataProcessor:
         return TotalMissingRows/TotalNumRows
     
     def ColumnMissingData(self,df: pd.DataFrame) -> int: 
+        #Create a counter variable to track the total number of columns missing data 
         Count = 0 
+        #Store the total number of columns in the data set 
         TotalNumberColumns = self.NumberOfColumns(df)
+        #Store the total number of rows in the data set 
         TotalNumberRows = self.CountTotalRows(df) 
+        #For each of the columns in the dataset 
         for j in range(TotalNumberColumns): 
+            #For each of the records in the data set 
             for i in range(TotalNumberRows): 
+                #If the value at the specific location is ? or a missing value 
                 if df.iloc[i][j] == "?": 
-                    print("COLUMN NUMBER: " + str(j) )
+                    #Increment the counter
                     Count+=1 
+                    #Break out of the loop 
                     break 
+                #If the value at the specific location is nan or a missing value 
                 if df.iloc[i][j] == np.nan: 
+                    #Incrememnt the counter
                     Count+=1 
+                    #Break out of the loop 
                     break 
+                #Go to the next record 
                 continue 
+        #Return the count variable 
         return Count
 
 
