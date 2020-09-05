@@ -14,12 +14,21 @@ class DataProcessor:
         self.MissingColumnNameList = set()
 
 
-def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
-    if type(df.iloc[1][1])  != str or type(df.iloc[1][1]) != int: 
-        df = self.discretize(df)
-    if self.has_Missing_attrs(df): 
-        df = self.fix_missing_attrs(df)
-    return df 
+    def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
+        count = 0 
+        for i in range(len(df.columns)): 
+            print(i)
+            if count == len(df.columns)-1: 
+                break
+            
+            if type(df.iloc[i][1])  == float: 
+                #Find which column needs to be discretized
+                df = self.discretize(df,i)
+                    
+            if self.has_missing_attrs(df): 
+                df = self.fix_missing_attrs(df)
+            count+=1
+        return df 
 
 ##       
     def RandomRollInts(self, df: pd.DataFrame) -> pd.DataFrame: 
@@ -44,8 +53,8 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
                     df.loc[row,col] = roll   
         return df 
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
-         for col in range(self.TotalNumberColumns(df)):
-            for row in range(self.TotalNumberRows(df)): 
+         for col in range(self.NumberOfColumns(df)):
+            for row in range(self.CountTotalRows(df)): 
                 if self.IsMissingAttribute(df.iloc[col][row]): 
                     roll = random.randint(0,99) + 1
                     if roll >50: 
@@ -107,8 +116,8 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
-        for col in range(self.TotalNumberColumns(df)):
-            for row in range(self.TotalNumberRows(df)): 
+        for col in range(self.NumberOfColumns(df)):
+            for row in range(self.CountTotalRows(df)): 
                 if self.IsMissingAttribute(df.iloc[col][row]): 
                     return True
                 continue  
@@ -145,7 +154,7 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
             return self.KillColumns(df)  
         else: 
             #If the Data frame has no missing attributes than the Data frame is ready to be processed 
-            if self.has_Missing_attrs(df) == False:
+            if self.has_missing_attrs(df) == False:
                 return df  
             #Find the Type of the first entry of data
             types = type(df.iloc[1][1])
@@ -175,8 +184,8 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
 
     def discretize(self, df: pd.DataFrame,col) -> pd.DataFrame:
  
-            Min = df.iloc[1][col]
-            Max = df.iloc[1][col]
+            Min = df.iloc[col][1]
+            Max = df.iloc[col][1]
             for i in range(self.CountTotalRows(df)): 
                 if self.IsMissingAttribute(df.iloc[i][col]): 
                     #Do nothing 
