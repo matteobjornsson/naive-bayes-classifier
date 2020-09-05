@@ -38,9 +38,6 @@ class Training_Algorithm:
             BinsInList.append(df1)
         return BinsInList
 
-
-
-
     # take in dataset and calculate occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
         n = {"class1": 0, "class2": 0}
@@ -58,7 +55,8 @@ class Training_Algorithm:
         # return the dictionary
         return q
 
-    def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
+    # take in n and dataframe and return a dataframe representing the learned values
+    def calculateF(self, n: dict, df: pd.DataFrame) -> pd.DataFrame:
         f = {"class1": {"A1": 0, "A2": 0}, "class2": {"A1": 0, "A2": 0}}
 
         # init nested dict where first layer keys are classes and second layer keys are each possible attribute value
