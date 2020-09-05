@@ -93,7 +93,38 @@ class Training_Algorithm:
         return QValue
 
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
-        f = {"class1": {"A1": 0, "A2": 0}, "class2": {"A1": 0, "A2": 0}}
+        FMatrix = {}
+        count = 0 
+        for col in df.columns: 
+            if count == len(df.columns): 
+                break
+            count+=1 
+            for row in range(len(df)): 
+                AttributeValue = df.iloc[col][row]
+                ClassValue = df.iloc[len(df.columns)][row]
+                if ClassValue in Fmatrix.keys(): 
+                    if col in ClassValue.keys():
+                        if AttributeValue in col.keys(): 
+                            Fmatrix[ClassValue][col][AttributeValue] +=1 
+                        else: 
+                            Fmatrix[ClassValue][col][AttributeValue] = 1 
+                    else: 
+                        Fmatrix[ClassValue][col] = {AttributeValue:1}
+                else: 
+                    Fmatrix[ClassValue] = {col:{AttributeValue:1}}
+        for k in Fmatrix.keys(): 
+            for ClassI in ClassValue.keys(): 
+                for AttributeValueI in AttributeValue.keys(): 
+                    Value = Fmatrix[k][ClassI][AttributeValueI] 
+                    Value +=1 
+                    Fmatrix[k][ClassI][AttributeValueI]  = (Value/(n[ClassI] + len(df.columns-1)))
+        return Fmatrix
+               
+                
+                
+    #List = { 0,1,2,3,4,5,6,7,8,9,}
+        
+        #f = {"class1": {"A1": 0, "A2": 0}, "class2": {"A1": 0, "A2": 0}}
 
         # init nested dict where first layer keys are classes and second layer keys are each possible attribute value
         # iterate over every column that is an attribute
