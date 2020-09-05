@@ -7,6 +7,35 @@ class Training_Algorithm:
     def __init__(self):
         self.attr = []
 
+
+    #ASSUMING THE ID COLUMN IS YEETED 
+    def ShuffleData(self, df: pd.DataFrame) ->(): 
+        TotalNumColumns = 0 
+        InOrder = list() 
+        for i in df: 
+            TotalNumColumns += 1 
+            InOrder.append(i)
+        Num_Columns_To_Shuffle = TotalNumColumns * .1 
+        temp = list() 
+        for i in range(Num_Columns_To_Shuffle): 
+            Col = Random.randint(0,len(InOrder))
+            temp.append(InOrder[Col])
+            InOrder.remove(InOrder[Col])
+        for i in InOrder: 
+            temp.append(i)
+        string = '' 
+        count = 0 
+        for i in temp:
+            if count == len(temp): 
+                string += i
+                break
+            string += i 
+            string += ','
+            count+=1 
+            continue  
+        return df1 = df[[string]
+        
+
     def CrossValidation(self,df: pd.DataFrame) -> list():
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
