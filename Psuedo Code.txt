@@ -50,3 +50,21 @@ Datasets that need to missing attributes filled in/modified:
 Datasets that need to be discretized:
     -Iris
     -Glass
+
+
+overall driver:
+
+df = data from file - preprocessed
+ta = Training_algorithm.new()
+n = ta.calculateN(df)
+q = ta.calculateQ(n, length of df)
+
+f = ta.calculateF(df, n)
+
+td = testData (this is a dataframe)
+td.addColumn
+cl = Classifier.new(f)
+
+results = cl.classify(td) (returns a dataframe)
+
+print(results)
