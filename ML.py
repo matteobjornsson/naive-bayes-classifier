@@ -6,6 +6,12 @@ class Training_Algorithm:
     def __init__(self):
         self.attr = []
 
+    def CrossValidation(self,df: pd.DataFrame) -> pd.DataFrame:
+        TrainingSize = len(df) * .9
+        TestSize = len(df) * .1 
+        
+
+
     # take in dataset and calculate occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
         n = {"class1": 0, "class2": 0}
