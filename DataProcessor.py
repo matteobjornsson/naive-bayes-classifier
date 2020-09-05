@@ -4,22 +4,6 @@ import sys
 import random 
 
 
-#
-#
-#
-"""
-# OF = len(DataFrame)
-        count = 0 
-        for i in DataFrame: 
-            count +=1 
-
-        for i in range(EOF): 
-            for j in range(count): 
-                if DataFrame.iloc[i][j] == 'y':
-                    DataFrame.iloc[i][j] = '1'
-#
-"""
-
 class DataProcessor:
 
     def __init__(self):
@@ -60,9 +44,6 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
                     roll = random.randint(Min,Max)
                     df.loc[row,col] = roll   
         return df 
-
-
-
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
          for col in range(self.TotalNumberColumns(df)):
             for row in range(self.TotalNumberRows(df)): 
@@ -74,12 +55,6 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
                         roll = 'n' 
                     df.loc[row,col] = roll   
         return df 
-
-
-    def StatsFillInVotes(self, df:pd.DataFrame):
-        #All Every possible value into the list and count the nunmber of time it appears 
-        AllValues = list() 
-
     def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
         count = 0  
         for i in range(len(df)): 
