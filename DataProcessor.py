@@ -28,10 +28,18 @@ class DataProcessor:
         self.PercentBeforeDrop = 10.00 
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
-    
+        self.StartProcess()
+
+
+def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
+    if type(df.iloc[1][1])  != str or type(df.iloc[1][1]) != int: 
+        df = self.discretize(df)
+    if self.has_Missing_attrs(df): 
+        df = self.fix_missing_attrs(df)
+    return df 
 
 ##       
-    def RandomRollInts(self, df: pd,DataFrame) -> pd.DataFrame: 
+    def RandomRollInts(self, df: pd.DataFrame) -> pd.DataFrame: 
         Min = df.iloc[1][col]
         Max = df.iloc[1][col]
         for i in range(self.CountTotalRows(df)): 
@@ -65,6 +73,60 @@ class DataProcessor:
                     else: 
                         roll = 'n' 
                     df.loc[row,col] = roll   
+        return df 
+
+
+    def StatsFillInVotes(self, df:pd.DataFrame):
+        #All Every possible value into the list and count the nunmber of time it appears 
+        AllValues = list() 
+
+    def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
+        count = 0  
+        for i in range(len(df)): 
+            if df.iloc[Column][i] == Value 
+                count += 1 
+            continue
+        return count 
+
+    def StatsFillInInts(self,df:pd.DataFrame): 
+        #Set a weighted vote string
+        WeightedVote = ''
+        #Set a unweighted vote string 
+        UnweightedVote = '' 
+        #For each column in the data frame
+        for col in range(self.TotalNumberColumns(df)):
+            #Go through each row 
+            for row in range(self.TotalNumberRows(df)): 
+                #If the given cell value is missing 
+                if self.IsMissingAttribute(df.iloc[col][row]): 
+                    #Get the total number os yes votes in the column 
+                    yay = self.Occurence(col,df,'y')
+                    #Get the total number of no votes in the column 
+                    nay = self.occurence(col,df,'n')
+                    #Get the total number of percent Yays
+                    PercentYay = (yay/ len(df))
+                    #Get the total percent of Nays 
+                    PercentNay = (nay/len(df))
+                    #If we have more yes's than nos 
+                    if PercentYay > PercentNay: 
+                        #Set a max value to the percent yes's
+                        Max = PercentYay
+                        #SEt nay to be the remaining count 
+                        PercentNay = 1 - PercentYay
+                        #Set the weighted vote value 
+                        WeightedVote = 'y'
+                        #SEt the unweighted vote value 
+                        UnweightedVote ='n'
+                    else: 
+                        Max = PercentNay
+                        PercentYay = 1 - PercentNay
+                        WeightedVote = 'n'
+                        UnweightedVote ='y'
+                    Stats = Random.randint(0,Max)
+                    if Stats > Max: 
+                        df.iloc[col][row] = WeightedVote
+                    else: 
+                        df.iloc[col][row] = UnweightedVote
         return df 
 
 ##
