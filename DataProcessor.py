@@ -53,15 +53,15 @@ class DataProcessor:
                     df.loc[row,col] = roll   
         return df 
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
-         for col in range(self.NumberOfColumns(df)):
-            for row in range(self.CountTotalRows(df)): 
-                if self.IsMissingAttribute(df.iloc[col][row]): 
+         for i in range(len(df.columns)):
+            for j in range(len(df)): 
+                if self.IsMissingAttribute(df.at[j,i]): 
                     roll = random.randint(0,99) + 1
                     if roll >50: 
                         roll = 'y'
                     else: 
                         roll = 'n' 
-                    df.loc[row,col] = roll   
+                    df.at[row,col] = roll   
          return df 
     def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
         count = 0  
