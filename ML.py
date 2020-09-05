@@ -7,7 +7,7 @@ class Training_Algorithm:
     def __init__(self):
         self.attr = []
 
-    def CrossValidation(self,df: pd.DataFrame) -> pd.DataFrame:
+    def CrossValidation(self,df: pd.DataFrame) -> list():
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
         #Count until we hit the number of records we want to sample 
@@ -21,7 +21,23 @@ class Training_Algorithm:
         Temporary.append(df,df1)
         return temporary 
 
-            
+    def BinTestData(self, df: pd.DataFrame) -> list(): 
+        #10 bins
+        Binsize = 10          
+        BinsInList = list()     
+        #Calculate the number of records to be sampled for testing 
+        TestSize = len(df) * .1 
+        for i in range(Binsize):
+            df1 = pd.DataFrame 
+            #Count until we hit the number of records we want to sample 
+            for i in range(TestSize):
+                #Set a value to be a random number from the dataset 
+                TestValue = random.randint(0,len(df))
+                #Append this row to a new dataframe
+                df1.append(df.drop(df.Index[TestValue]))
+            BinsInList.append(df1)
+        return BinsInList
+
 
 
 
