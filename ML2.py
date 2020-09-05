@@ -9,7 +9,7 @@ class Training_Algorithm:
 
 
     #ASSUMING THE ID COLUMN IS YEETED 
-    def ShuffleData(self, df: pd.DataFrame) ->(): 
+    def ShuffleData(self, df: pd.DataFrame) ->pd.DataFrame: 
         TotalNumColumns = 0 
         InOrder = list() 
         for i in df: 
@@ -86,13 +86,11 @@ class Training_Algorithm:
 
 
     # take in n and create a new dict q that is each value / total rows
-    def calculateQ(self, n: dict) -> dict:
-        q = {"class1": 0, "class2": 0}
-        # iterate over every row
-            # increment a counter (key = class, value = count) associated with the class of that row
-        # divide all counters by the total number of rows
-        # return the dictionary
-        return q
+    def calculateQ(self, n: dict, TotalRows) -> dict:
+        QValue = {} 
+        for k in n.keys(): 
+            QValue[k] = n[k] / TotalRows
+        return QValue
 
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
         f = {"class1": {"A1": 0, "A2": 0}, "class2": {"A1": 0, "A2": 0}}
