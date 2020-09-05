@@ -23,7 +23,7 @@ class Training_Algorithm:
             InOrder.remove(InOrder[Col])
         for i in InOrder: 
             temp.append(i)
-        string = '' 
+        string = ""
         count = 0 
         for i in temp:
             if count == len(temp): 
@@ -72,7 +72,14 @@ class Training_Algorithm:
 
     # take in dataset and calculate occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
-        n = {"class1": 0, "class2": 0}
+        n = {}
+        Class = len(df.columns)
+        for i in range(len(df)):
+            ClassValue = df.iloc[Class][i] 
+            if ClassValue in n: 
+               n[ClassValue] += 1 
+               continue
+            n[ClassValue] = 1        
         # init dict with keys = class names
         # iterate over all rows and increment the class associated with that row
         return n
