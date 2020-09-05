@@ -1,5 +1,5 @@
 import numpy as np
-import pandas as import pd
+import pandas as pd
 
 class Classifier:
 
@@ -7,6 +7,5 @@ class Classifier:
         self.q = q
         self.f = f
     
-    def classify(x)
-
-    
+    def classify(x: pd.Series):
+        return True
