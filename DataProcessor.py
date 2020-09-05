@@ -12,7 +12,6 @@ class DataProcessor:
         self.PercentBeforeDrop = 10.00 
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
-        self.StartProcess()
 
 
 def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
@@ -54,11 +53,11 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
                     else: 
                         roll = 'n' 
                     df.loc[row,col] = roll   
-        return df 
+         return df 
     def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
         count = 0  
         for i in range(len(df)): 
-            if df.iloc[Column][i] == Value 
+            if df.iloc[Column][i] == Value:
                 count += 1 
             continue
         return count 
@@ -293,28 +292,31 @@ def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
 if __name__ == '__main__':
     filename = sys.argv[1]
     df = pd.read_csv(filename)
-    print(df.head())
+    #print(df.head())
     dp = DataProcessor()
+    print(df)
+    df = dp.StartProcess(df)
+    print(df)
     #print(dp.CountTotalRows(df))
     #print(dp.CountRowsMissingValues(df))
-    print(dp.PercentRowsMissingValue(df))
-    print(dp.NumberOfColumns(df))
-    print(dp.ColumnMissingData(df))
-    print(dp.PercentColumnsMissingData(df))
+    #print(dp.PercentRowsMissingValue(df))
+    ##print(dp.NumberOfColumns(df))
+    #print(dp.ColumnMissingData(df))
+    #print(dp.PercentColumnsMissingData(df))
     #df = df.drop(df.index[1]
     #print(len(dp.MissingColumnNameList))
     #print(len(dp.MissingRowIndexList))
-    df1 = dp.fix_missing_attrs(df)
+    #df1 = dp.fix_missing_attrs(df)
     
-    print(len(df1.columns))
-    print(df1.describe())
-    print("============================")
-    print("\n")
-    print(df1["Clump_Thickness"])
-    print("============================")
-    print("\n")
-    df1 = dp.discretize(df1,"Clump_Thickness")
-    print(df1["Clump_Thickness"])
+    #print(len(df1.columns))
+    #print(df1.describe())
+    #print("============================")
+    #print("\n")
+    #print(df1["Clump_Thickness"])
+    #print("============================")
+    #print("\n")
+    #df1 = dp.discretize(df1,"Clump_Thickness")
+    #print(df1["Clump_Thickness"])
 
     #if dp.has_continuous_values(df):
      #   print("Attribute values continuous, discretizing...\n")
