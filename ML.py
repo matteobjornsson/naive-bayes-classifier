@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import random 
 
 class Training_Algorithm:
 
@@ -7,9 +8,21 @@ class Training_Algorithm:
         self.attr = []
 
     def CrossValidation(self,df: pd.DataFrame) -> pd.DataFrame:
-        TrainingSize = len(df) * .9
+        #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
-        
+        #Count until we hit the number of records we want to sample 
+        for i in range(TestSize): 
+            #Set a value to be a random number from the dataset 
+            TestValue = random.randint(0,len(df))
+            #Append this row to a new dataframe
+            df1.append(df.drop(df.Index[TestValue]))
+        Temporary = list() 
+        #Return the training and test set data 
+        Temporary.append(df,df1)
+        return temporary 
+
+            
+
 
 
     # take in dataset and calculate occurence of each class
