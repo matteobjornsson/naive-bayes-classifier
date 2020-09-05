@@ -28,19 +28,41 @@ class DataProcessor:
         self.PercentBeforeDrop = 10.00 
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
+    
 
-        
+##       
+    def RandomRollInts(self, df: pd,DataFrame) -> pd.DataFrame: 
+        for col in range(self.TotalNumberColumns(df)):
+            for row in range(self.TotalNumberRows(df)): 
+                if self.IsMissingAttribute(df.iloc[col][row]): 
+
+
+
+    def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
+         for col in range(self.TotalNumberColumns(df)):
+            for row in range(self.TotalNumberRows(df)): 
+                if self.IsMissingAttribute(df.iloc[col][row]): 
+                    roll = random.randint(1,100)
+                    if roll >50: 
+                        roll = 'y'
+                    else: 
+                        roll = 'n' 
+                        
+                    df = df.iloc[col][row]
+
+##
 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
-        
-        # check if data has missing attributes
-        
-        
-        return True
+        for col in range(self.TotalNumberColumns(df)):
+            for row in range(self.TotalNumberRows(df)): 
+                if self.IsMissingAttribute(df.iloc[col][row]): 
+                    return True
+                continue  
+        return False
     def KillRow(self, df: pd.DataFrame,index) -> pd.DataFrame: 
-        df.drop(df.Index[index])
-        return df  
+        return df.drop(df.Index[index])
+          
 
     def IsMissingAttribute(self, attribute) -> bool: 
         return attribute == "?" or attribute == np.nan
@@ -69,10 +91,17 @@ class DataProcessor:
         elif(PercentColumnsMissingData < self.PercentBeforeDrop):
             return self.KillColumns(df)  
         else: 
-            print("Working Fine ")
-            #Statistically Weigh then Randomly Roll Attribute Value 
-        
-
+            #If the Data frame has no missing attributes than the Data frame is ready to be processed 
+            if self.has_Missing_attrs(df) == False:
+                return df  
+            #Find the Type of the first entry of data
+            types = type(df.iloc[1][1])
+            #If it is a string then we know it is a yes or no value 
+            if types == str: 
+                df = self.RandomRollVotes(df) 
+            #Else this is an integer value 
+            else:
+                df =self.RandomRollInts(df) 
         return df
         # https://thispointer.com/pandas-get-frequency-of-a-value-in-dataframe-column-index-find-its-positions-in-python/
         # if only small percent of examples have missing attributes, remove those examples.
