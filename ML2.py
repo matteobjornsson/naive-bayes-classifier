@@ -43,15 +43,12 @@ class Training_Algorithm:
         for i in df.columns: 
             columnss.append(i)
         df1 = pd.DataFrame(columns = columnss)
-        print(df1.columns)
-        print(df.columns)
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
         #Count until we hit the number of records we want to sample 
         for i in range(int(TestSize)): 
             #Set a value to be a random number from the dataset 
             TestValue = random.randint(0,len(df)) - 1
-            print(TestValue)
             #Append this row to a new dataframe
             df1.loc[i] = df.index[TestValue]
             df =  df.drop(df.index[TestValue])
@@ -70,14 +67,22 @@ class Training_Algorithm:
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
         for i in range(Binsize):
-            df1 = pd.DataFrame 
+            if i == Binsize-1: 
+                BinsInList.append(df)
+                break
+            columnss = list() 
+            for i in df.columns: 
+                columnss.append(i)
+            df1 = pd.DataFrame(columns = columnss)
             #Count until we hit the number of records we want to sample 
-            for i in range(TestSize):
+            for i in range(int(TestSize)):
                 #Set a value to be a random number from the dataset 
-                TestValue = random.randint(0,len(df))
+                TestValue = random.randint(0,len(df)) - 1
                 #Append this row to a new dataframe
-                df1.append(df.drop(df.Index[TestValue]))
+                df1.loc[i] = df.index[TestValue]
+                df =  df.drop(df.index[TestValue])
             BinsInList.append(df1)
+
         return BinsInList
 
 
@@ -157,6 +162,11 @@ if __name__ == '__main__':
     for i in range(len(te)): 
         print("LENGTHS: ")
         print(len(te[i]))
+    test = ta.BinTestData(df)
+    print("=================")
+    for i in range(len(test)): 
+        print("LENGTHS")
+        print(len(test[i]))
 
 
     print("Program Finish")
