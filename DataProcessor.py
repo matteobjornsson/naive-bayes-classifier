@@ -32,9 +32,26 @@ class DataProcessor:
 
 ##       
     def RandomRollInts(self, df: pd,DataFrame) -> pd.DataFrame: 
+        Min = df.iloc[1][col]
+        Max = df.iloc[1][col]
+        for i in range(self.CountTotalRows(df)): 
+            if self.IsMissingAttribute(df.iloc[i][col]): 
+                #Do nothing 
+                continue 
+            else: 
+                if df.iloc[i][col]  > Max: 
+                    Max = df.iloc[i][col] 
+                    continue 
+                elif df.iloc[i][col] < Min: 
+                    Min = df.iloc[i][col]
+                    continue 
+                continue                 
         for col in range(self.TotalNumberColumns(df)):
             for row in range(self.TotalNumberRows(df)): 
                 if self.IsMissingAttribute(df.iloc[col][row]): 
+                    roll = random.randint(Min,Max)
+                    df.loc[row,col] = roll   
+        return df 
 
 
 
@@ -42,13 +59,13 @@ class DataProcessor:
          for col in range(self.TotalNumberColumns(df)):
             for row in range(self.TotalNumberRows(df)): 
                 if self.IsMissingAttribute(df.iloc[col][row]): 
-                    roll = random.randint(1,100)
+                    roll = random.randint(0,99) + 1
                     if roll >50: 
                         roll = 'y'
                     else: 
                         roll = 'n' 
-                        
-                    df = df.iloc[col][row]
+                    df.loc[row,col] = roll   
+        return df 
 
 ##
 
