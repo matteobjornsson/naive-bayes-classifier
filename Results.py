@@ -88,31 +88,37 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         return StatsMatrix
 
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
-        UniqueClasses = list() 
-        Classes = len(df.columns)-2
-        GroundTruth = Classes + 1
-        ClassifierGuess = GroundTruth +1 
+        print("input dataframe: \n", df.head)
+        print(list(df.columns.values))
+        print("column count: ", len(list(df.columns.values)))
+        print(df.iloc[2][36],df.iloc[2][35])
 
+        ClassesIndex = len(df.columns)-3
+        GroundTruthIndex = ClassesIndex + 1
+        ClassifierGuessIndex = GroundTruthIndex + 1 
+
+
+        UniqueClasses = list() 
         for i in range(len(df)): 
-            if df.iloc[i][Classes] in UniqueClasses: 
+            if df.iloc[i][GroundTruthIndex] in UniqueClasses: 
                 continue 
-            UniqueClasses.append(df.iloc[i][Classes])
+            UniqueClasses.append(df.iloc[i][GroundTruthIndex])
             continue 
-        zeroArray = np.zeros(shape=(Classes, Classes))
+        ClassCount = len(UniqueClasses)
+
+        zeroArray = np.zeros(shape=(ClassCount, ClassCount))
         matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
+        print(matrix.head)
         for i in range(len(df)):
-            truth = df.iloc[i][GroundTruth]
-            guess = df.iloc[i][ClassifierGuess]
+            print(i)
+            truth = df.iloc[i][GroundTruthIndex]
+            print("truth ", truth)
+            guess = df.iloc[i][ClassifierGuessIndex]
+            print("Guess: ", guess)
             matrix.at[truth, guess] += 1
             continue
         return matrix
-
-
-
-
         
-
-
 if __name__ == '__main__':
     print("Program Start")
 

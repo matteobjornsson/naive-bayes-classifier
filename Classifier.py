@@ -91,3 +91,7 @@ if __name__ == '__main__':
     Classified = cl.classify(df)
     print(Classified.head)
 
+    r = Results.Results()
+    cM = r.ConfusionMatrix(Classified)
+    print(cM)
+
