@@ -10,27 +10,56 @@
 
 import pandas as pd 
 
+#Take in the Result data, The data frame of data, and the trial number and print to a file 
+def WriteToAFile(Results,DataFrame,Trial):
+    FileName = "Naive Bayes Results " + str(Trial) + ".csv"
+    f = open(FileName, "w")
+    for i in results: 
+        f.write(i + "\n")
+    df.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
+    f.close()
+
+
 
 
 def main(): 
-    
+    #What trial number we are on 
+    Trial = 0 
+    #Which set of the data is being used to test 
+    TestData = 0 
     print("Program Starting")
-    Cc = cd.Cancer() 
-    print("\n")
-    glass = gd.Glass() 
-    print("\n")
-    Vt = vd.Vote()
-    print("STARTING VOTING")
-    df = Vt.PreProcess()
-    print(df.head())
+    VoteData = 'MachineLearning\Project 1\Vote_Data\Votes.data'
+    IrisData = 'MachineLearning\Project 1\Iris_Data\iris.data'
+    GlassData = 'MachineLearning\Project 1\Glass_Data\glass.data'
+    CancerData = 'MachineLearning\Project 1\Breast_Cancer_Data\cancer.data'
+    SoybeanData = 'MachineLearning\Project 1\Soybean_Data\soybean.data'
     
-    print("===============================")
-  
+    ####################################################### MACHINE LEARNING PROCESS #####################################################
+    dp = DataProcessor()
+    df = pd.read_csv(VoteData) 
+    #Return a clean dataframe with missing attributes taken care of 
+    df = dp.StartProcess(df)
+    ML = Training_Algorithm()
+    #Dataframe without noise Its a list of 10 mostly equal dataframes
+    NoNoiseDf = ML.BinTestData(df)
+    #DataFrame with Noise 
+    NoiseDf =  ML.ShuffleData(df)
+    #Return a list of 10 mostly equal sized dataframes
+    NoiseDf = ML.BinTestData(NoiseDf)
+    #Make One dataframe to hold all of the other Training dataframes 
+    TrainingDataFrame = pd.DataFrame()
+    #Make One dataframe that is our test Dataframe 
+    TestingDataFrame = NoNoiseDf[TestData] 
+    for i in range(len(NoNoiseDf)): 
+        
+        if i == TestData: 
+            continue 
+        else: 
 
-    print("\n") 
-    iris = ird.Iris() 
-    print("\n")
-    soy = sd.Soybean() 
+    Trial+=1 
+    TestData +=1
+
+
 
 
 

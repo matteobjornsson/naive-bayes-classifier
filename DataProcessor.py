@@ -308,6 +308,8 @@ if __name__ == '__main__':
     print(df)
     df = dp.StartProcess(df)
     dp.PrintAllData(df)
+
+    
     #print(dp.CountTotalRows(df))
     #print(dp.CountRowsMissingValues(df))
     #print(dp.PercentRowsMissingValue(df))
