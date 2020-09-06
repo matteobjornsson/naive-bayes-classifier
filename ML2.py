@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import random 
 import sys 
+import copy 
 
 class Training_Algorithm:
 
@@ -10,7 +11,8 @@ class Training_Algorithm:
 
 
     #ASSUMING THE ID COLUMN IS YEETED 
-    def ShuffleData(self, df: pd.DataFrame) ->pd.DataFrame: 
+    def ShuffleData(self, df: pd.DataFrame) ->list(): 
+        df1 = copy.deepcopy(df)
         #Calculate the number of records to be sampled for testing 
         TestSize = int((len(df.columns)-1) * .1)
         Shuffled = list() 
@@ -27,9 +29,10 @@ class Training_Algorithm:
                 temp.append(df.iloc[j][Column_Shuffle])
             for j in range(len(df)): 
                 value = random.randint(0,len(temp)) 
-                df.iloc[j][Column_Shuffle] = temp[value-1]
+                
+                df1.at[j,df.columns[Column_Shuffle]] = temp[value-1]
                 temp.remove(temp[value-1])
-        return df     
+        return df1
 
  
 
@@ -163,15 +166,18 @@ if __name__ == '__main__':
         print("LENGTHS")
         print(len(test[i]))
     df1 = ta.ShuffleData(df)
+
+    #df2 = pd.DataFrame(df1)
+    count = 0 
     for i in range(len(df)): 
         for j in range(len(df.columns)):
-            print(df.iloc[i][j]) 
-            print(df1.iloc[i][j])
-            if df.iloc[i][j] = df1.iloc[i][j]:
+           
+            #print(df2.iloc[i][j])
+            if df.iloc[i][j] != df1.iloc[i][j]:
                 print("CHANGE")
-
-    print(df.head())
-    print(df1.head())
-
+                count+=1 
+    print(count)
+    print(len(df1))
+    
 
     print("Program Finish")
