@@ -85,7 +85,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
                     StatsMatrix.at[GuessValue, "FP"] += value
                     for row in range(classCount):
                         StatsMatrix.at[ClassList[row], "TN"] += value
-        pass
+        return StatsMatrix
 
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
         UniqueClasses = list() 
