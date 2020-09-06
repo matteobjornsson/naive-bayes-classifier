@@ -26,19 +26,14 @@ class Results:
        self.FalsePositive = list() 
        self.FalseNegative  = list() 
 
-
-
-
-    def AssignClassificationValue(self,df: pd.DataFrame): 
+    def LossFunctionStats(self, df: pd.DataFrame)->list(): 
         ClassificationHypothesis = len(df.columns)
         TrueClassification = len(df.columns -1)
         for i in range(len(df)): 
             if df.iloc[i][ClassificationHypothesis] == df.iloc[i][TrueClassification]: 
                 self.ClassificationCorrect.append(df.iloc[i][ClassificationHypothesis])
             else: 
-                self.ClassificationWrong.append(df.iloc[i][ClassificationHypothesis])
-
-    def LossFunctionStats(self)->list(): 
+                self.ClassificationWrong.append(df.iloc[i][ClassificationHypothesis]
         TotalTestSet = len(self.ClassificationCorrect) + len(self.ClassificationWrong)
         TotalCorrect = (len(self.ClassificationCorrect) / TotalTestSet) * 100 
         TotalWrong = (len(self.ClassificationWrong) / TotalTestSet) * 100 
@@ -52,7 +47,8 @@ class Results:
     def F1FunctionBins(self,df:pd.DataFrame): 
         ClassificationHypothesis = len(df.columns)
         TrueClassification = len(df.columns -1)
-        
+        if df.iloc[i][ClassificationHypothesis] == df.iloc[i][TrueClassification]: 
+
 
 
 if __name__ == '__main__':
