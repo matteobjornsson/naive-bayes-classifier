@@ -50,12 +50,24 @@ def main():
     TrainingDataFrame = pd.DataFrame()
     #Make One dataframe that is our test Dataframe 
     TestingDataFrame = NoNoiseDf[TestData] 
-    for i in range(len(NoNoiseDf)): 
-        
+    for i in range(len(NoNoiseDf)):     
         if i == TestData: 
             continue 
         else: 
+            #Append the training dataframe to one dataframe to send to the ML algorithm 
+            TrainingDataFrame.append(NoNoiseDf[i])
+    
+    #Calculate the N value for the Training set
+    TrainingN = ML.calculateN(TrainingDataFrame)
+    #Calculate the Q value for the Training set
+    TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
+    #Calculate the F Matrix for the Training set
+    TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
+    #Create a Classifier Object to classify our test set 
+    Classifier = Classifier(TrainingN,TrainingQ,TrainingF)
 
+
+    #Increment the Trial and Testdata Number and do it again 
     Trial+=1 
     TestData +=1
 
