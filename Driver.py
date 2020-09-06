@@ -65,7 +65,20 @@ def main():
     TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
     #Create a Classifier Object to classify our test set 
     Classifier = Classifier(TrainingN,TrainingQ,TrainingF)
+    #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
+    TestingDataFrame = Classifier.calssify(TestingDataFrame)
+    
+    #Get some statistics on the Machine learning 
+    #Create a Results object
+    Analysis = Results()
+    #List to hold our stats
+    Stats = list()  
+    #Run the 0/1 Loss function on our results
+    Stats = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
+    #Run the F1 Loss function on our results 
 
+    #Send the Data to a csv file for human checking and hyper parameter tuning 
+    WRiteToAFile(Stats, TestingDataFrame,Trial)
 
     #Increment the Trial and Testdata Number and do it again 
     Trial+=1 
