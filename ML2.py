@@ -11,32 +11,27 @@ class Training_Algorithm:
 
     #ASSUMING THE ID COLUMN IS YEETED 
     def ShuffleData(self, df: pd.DataFrame) ->pd.DataFrame: 
-        TotalNumColumns = 0 
-        InOrder = list() 
-        for i in df: 
-            TotalNumColumns += 1 
-            InOrder.append(i)
-        Num_Columns_To_Shuffle = TotalNumColumns * .1 
-        temp = list() 
-        for i in range(Num_Columns_To_Shuffle): 
-            Col = Random.randint(0,len(InOrder))
-            temp.append(InOrder[Col])
-            InOrder.remove(InOrder[Col])
-        for i in InOrder: 
-            temp.append(i)
-        string = ""
-        count = 0 
-        for i in temp:
-            if count == len(temp): 
-                string += i
-                break
-            string += i 
-            string += ','
-            count+=1 
-            continue  
-        df1 = df[string]
-        return df1
-        
+        #Calculate the number of records to be sampled for testing 
+        TestSize = int((len(df.columns)-1) * .1)
+        Shuffled = list() 
+        for i in range(TestSize): 
+            while(True): 
+                Column_Shuffle = random.randint(0,len(df.columns))
+                if Column_Shuffle in Shuffled :
+                    continue 
+                else: 
+                    break 
+            Shuffled.append(Column_Shuffle)
+            temp = list()
+            for j in range(len(df)):
+                temp.append(df.iloc[j][Column_Shuffle])
+            for j in range(len(df)): 
+                value = random.randint(0,len(temp)) 
+                df.iloc[j][Column_Shuffle] = temp[value-1]
+                temp.remove(temp[value-1])
+        return df     
+
+ 
 
     def CrossValidation(self,df: pd.DataFrame) -> list():
         columnss = list() 
@@ -48,7 +43,7 @@ class Training_Algorithm:
         #Count until we hit the number of records we want to sample 
         for i in range(int(TestSize)): 
             #Set a value to be a random number from the dataset 
-            TestValue = random.randint(0,len(df)) - 1
+            TestValue = random.randint(0,len(df)-1)
             #Append this row to a new dataframe
             df1.loc[i] = df.index[TestValue]
             df =  df.drop(df.index[TestValue])
@@ -77,7 +72,7 @@ class Training_Algorithm:
             #Count until we hit the number of records we want to sample 
             for i in range(int(TestSize)):
                 #Set a value to be a random number from the dataset 
-                TestValue = random.randint(0,len(df)) - 1
+                TestValue = random.randint(0,len(df)-1)
                 #Append this row to a new dataframe
                 df1.loc[i] = df.index[TestValue]
                 df =  df.drop(df.index[TestValue])
@@ -167,6 +162,13 @@ if __name__ == '__main__':
     for i in range(len(test)): 
         print("LENGTHS")
         print(len(test[i]))
+    df1 = ta.ShuffleData(df)
+    for i in range(len(df)): 
+        for j in range(len(df.columns)):
+            print(df.iloc[i][j]) 
+            print(df1.iloc[i][j])
+    print(df.head())
+    print(df1.head())
 
 
     print("Program Finish")
