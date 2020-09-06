@@ -71,4 +71,5 @@ if __name__ == '__main__':
     filename = sys.argv[1]
     df = pd.read_csv(filename)
     cl = Classifier(n=n, q=q, f=f)
-    cl.classify(df)
+    print(cl.classify(df))
+

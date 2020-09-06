@@ -10,3 +10,24 @@ https://stats.stackexchange.com/questions/296014/why-is-the-naive-bayes-classifi
 
 
 """
+
+
+class Results: 
+
+    
+    def __init__(self):
+       self.ClassificiationLoss = list() 
+
+
+    def AssignClassificationValue(self,df: pd.DataFrame): 
+
+
+
+if __name__ == '__main__':
+    print("Program Start")
+
+
+    print("Program Finish")
+
+
+
