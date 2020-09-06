@@ -68,6 +68,23 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         pass
 
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
+        ClassList = list(cMatrix.columns.values)
+        classCount = len(ClassList)
+        HeaderList = ["TP", "TN", "FP", "FN"]
+        zeroArray = np.zeros(shape=(len(ClassList), len(HeaderList)))
+        StatsMatrix = pd.DataFrame(zeroArray, columns=HeaderList, index=ClassList)
+        for row in range(classCount):
+            for col in range(classCount):
+                value = cMatrix.iloc[row][col]
+                TrueValue = ClassList[row]
+                GuessValue = ClassList[col]
+                if row == col:
+                    StatsMatrix.at[TrueValue, "TP"] = value
+                else: 
+                    StatsMatrix.at[TrueValue, "FN"] += value
+                    StatsMatrix.at[GuessValue, "FP"] += value
+                    for row in range(classCount):
+                        StatsMatrix.at[ClassList[row], "TN"] += value
         pass
 
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
