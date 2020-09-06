@@ -17,10 +17,8 @@ class DataProcessor:
     def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
         count = 0 
         for i in range(len(df.columns)): 
-            print(i)
             if count == len(df.columns)-1: 
                 break
-            
             if type(df.iloc[i][1])  == float: 
                 #Find which column needs to be discretized
                 df = self.discretize(df,i)
@@ -53,10 +51,8 @@ class DataProcessor:
                     df.loc[row,col] = roll   
         return df 
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
-         for i in range(len(df.columns)-1):
-            for j in range(len(df)): 
-                print(i)
-                print(df.iloc[i][j])
+         for i in range(len(df)):
+            for j in range(len(df.columns)-1): 
                 if self.IsMissingAttribute(df.iloc[i][j]): 
                     roll = random.randint(0,99) + 1
                     if roll >50: 
@@ -120,8 +116,8 @@ class DataProcessor:
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
         for col in range(self.NumberOfColumns(df)):
-            for row in range(self.CountTotalRows(df)): 
-                if self.IsMissingAttribute(df.iloc[col][row]): 
+             for row in range(self.CountTotalRows(df)): 
+                if self.IsMissingAttribute(df.iloc[row][col]): 
                     return True
                 continue  
         return False
@@ -299,7 +295,10 @@ class DataProcessor:
         return (TotalMissingColumns/TotalNumberColumns) * 100 
 
 
-
+    def PrintAllData(self,df:pd.DataFrame) -> None: 
+        for i in range(len(df)):
+            for j in range(len(df.columns)): 
+                print(df.iloc[i][j])
 
 if __name__ == '__main__':
     filename = sys.argv[1]
@@ -308,7 +307,7 @@ if __name__ == '__main__':
     dp = DataProcessor()
     print(df)
     df = dp.StartProcess(df)
-    print(df)
+    dp.PrintAllData(df)
     #print(dp.CountTotalRows(df))
     #print(dp.CountRowsMissingValues(df))
     #print(dp.PercentRowsMissingValue(df))

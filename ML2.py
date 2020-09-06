@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import random 
+import sys 
 
 class Training_Algorithm:
 
@@ -33,22 +34,31 @@ class Training_Algorithm:
             string += ','
             count+=1 
             continue  
-        return df1 = df[[string]
+        df1 = df[string]
+        return df1
         
 
     def CrossValidation(self,df: pd.DataFrame) -> list():
+        columnss = list() 
+        for i in df.columns: 
+            columnss.append(i)
+        df1 = pd.DataFrame(columns = columnss)
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
         #Count until we hit the number of records we want to sample 
-        for i in range(TestSize): 
+        for i in range(int(TestSize)): 
             #Set a value to be a random number from the dataset 
-            TestValue = random.randint(0,len(df))
+            TestValue = random.randint(0,len(df)) - 1
             #Append this row to a new dataframe
-            df1.append(df.drop(df.Index[TestValue]))
+            df1.loc[i] = df.index[TestValue]
+            df =  df.drop(df.index[TestValue])
+            
+            #df1.loc[i] = df.drop(df.loc[TestValue].index,inplace =True)
         Temporary = list() 
         #Return the training and test set data 
-        Temporary.append(df,df1)
-        return temporary 
+        Temporary.append(df)
+        Temporary.append(df1)
+        return Temporary 
 
     def BinTestData(self, df: pd.DataFrame) -> list(): 
         #10 bins
@@ -57,14 +67,22 @@ class Training_Algorithm:
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
         for i in range(Binsize):
-            df1 = pd.DataFrame 
+            if i == Binsize-1: 
+                BinsInList.append(df)
+                break
+            columnss = list() 
+            for i in df.columns: 
+                columnss.append(i)
+            df1 = pd.DataFrame(columns = columnss)
             #Count until we hit the number of records we want to sample 
-            for i in range(TestSize):
+            for i in range(int(TestSize)):
                 #Set a value to be a random number from the dataset 
-                TestValue = random.randint(0,len(df))
+                TestValue = random.randint(0,len(df)) - 1
                 #Append this row to a new dataframe
-                df1.append(df.drop(df.Index[TestValue]))
+                df1.loc[i] = df.index[TestValue]
+                df =  df.drop(df.index[TestValue])
             BinsInList.append(df1)
+
         return BinsInList
 
 
@@ -134,3 +152,21 @@ class Training_Algorithm:
             # add 1 and divide by the count of examples in the class (n[class]) plus the total number of examples
             # i.e. (v + 1)/(n[class] + d)
         return f
+
+if __name__ == '__main__':
+    print("Program Start")
+    filename = sys.argv[1]
+    df = pd.read_csv(filename)
+    ta = Training_Algorithm() 
+    te = ta.CrossValidation(df)
+    for i in range(len(te)): 
+        print("LENGTHS: ")
+        print(len(te[i]))
+    test = ta.BinTestData(df)
+    print("=================")
+    for i in range(len(test)): 
+        print("LENGTHS")
+        print(len(test[i]))
+
+
+    print("Program Finish")
