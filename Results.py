@@ -67,20 +67,27 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def recall(self, matrix):
         pass
 
+    def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
+        pass
+
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
-        UniqueClassifiers = list() 
+        UniqueClasses = list() 
         Classes = len(df.columns)-2
+        GroundTruth = Classes + 1
+        ClassifierGuess = GroundTruth +1 
+
         for i in range(len(df)): 
-            if df.iloc[i][Classes] in UniqueClassifiers: 
+            if df.iloc[i][Classes] in UniqueClasses: 
                 continue 
-            UniqueClassifiers.append(df.iloc[i][Classes])
+            UniqueClasses.append(df.iloc[i][Classes])
             continue 
         zeroArray = np.zeros(shape=(Classes, Classes))
-        matrix = pd.DataFrame(zeroArray, columns=UniqueClassifiers, index=UniqueClassifiers)
+        matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
         for i in range(len(df)):
-            truth = df.iloc[i][TrueClassification]
-            guess = df.iloc[i][ClassificationHypothesis]
+            truth = df.iloc[i][GroundTruth]
+            guess = df.iloc[i][ClassifierGuess]
             matrix.at[truth, guess] += 1
+            continue
         return matrix
 
 
