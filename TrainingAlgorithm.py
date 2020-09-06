@@ -154,6 +154,9 @@ class TrainingAlgorithm:
             # i.e. (v + 1)/(n[class] + d)
 
 if __name__ == '__main__':
+    import Classifier
+    import Results
+
     print("Program Start")
     filename = sys.argv[1]
     df = pd.read_csv(filename)
@@ -189,5 +192,14 @@ if __name__ == '__main__':
     f = ta.calculateF(n, df)
     print("f: \n")
     pprint.pprint(f)
+
+    c = Classifier.Classifier(n, q, f)
+    classified = c.classify(df)
+    print(classified)
+
+    r = Results.Results()
+    cM = r.ConfusionMatrix(classified)
+
+    print(cM)
 
     print("Program Finish")
