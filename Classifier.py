@@ -64,12 +64,30 @@ class Classifier:
         return keys[vals.index(max(vals))]
 
 if __name__ == '__main__':
-    f = {"class1": {"A1": {2: (3+1)/(3+2)}, "A2": {1: (0+1)/(3+2)}}, "class2": {"A1": {4: (4+1)/(6+2)}, "A2": {1: (2+1)/(6+2)}}}
+    import Results
+
+    f = {
+        "D1": {"A1": {2: (3+1)/(3+2)}, "A2": {1: (0+1)/(3+2)}}, 
+        "D2": {"A1": {4: (4+1)/(6+2)}, "A2": {1: (2+1)/(6+2)}},
+        "D3": {"A1": {4: (4+1)/(6+2)}, "A2": {1: (2+1)/(6+2)}},
+        "D4": {"A1": {4: (4+1)/(6+2)}, "A2": {1: (2+1)/(6+2)}}
+        }
     print(f)
-    n = {"class1": 4, "class2": 2}
-    q = {"class1": .3, "class2": .5}
+    n = {
+        "D1": 4, 
+        "D2": 2,
+        "D3": 8, 
+        "D4": 1
+        }
+    q = {
+        "D1": .4, 
+        "D2": .2,
+        "D3": .6, 
+        "D4": .12
+        }
     filename = sys.argv[1]
     df = pd.read_csv(filename)
     cl = Classifier(n=n, q=q, f=f)
-    print(cl.classify(df))
+    Classified = cl.classify(df)
+    print(Classified.head)
 
