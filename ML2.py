@@ -167,6 +167,9 @@ if __name__ == '__main__':
         for j in range(len(df.columns)):
             print(df.iloc[i][j]) 
             print(df1.iloc[i][j])
+            if df.iloc[i][j] = df1.iloc[i][j]:
+                print("CHANGE")
+
     print(df.head())
     print(df1.head())
 
