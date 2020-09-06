@@ -37,7 +37,7 @@ class Results:
 
     def ZeroOneLossFunctionStats(self, df: pd.DataFrame)->list(): 
         ClassificationHypothesis = len(df.columns)
-        TrueClassification = len(df.columns -1)
+        TrueClassification = len(df.columns) -1
         for i in range(len(df)): 
             if df.iloc[i][ClassificationHypothesis] == df.iloc[i][TrueClassification]: 
                 self.ClassificationCorrect.append(df.iloc[i][ClassificationHypothesis])

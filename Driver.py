@@ -50,12 +50,37 @@ def main():
     TrainingDataFrame = pd.DataFrame()
     #Make One dataframe that is our test Dataframe 
     TestingDataFrame = NoNoiseDf[TestData] 
-    for i in range(len(NoNoiseDf)): 
-        
+    for i in range(len(NoNoiseDf)):     
         if i == TestData: 
             continue 
         else: 
+            #Append the training dataframe to one dataframe to send to the ML algorithm 
+            TrainingDataFrame.append(NoNoiseDf[i])
+    
+    #Calculate the N value for the Training set
+    TrainingN = ML.calculateN(TrainingDataFrame)
+    #Calculate the Q value for the Training set
+    TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
+    #Calculate the F Matrix for the Training set
+    TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
+    #Create a Classifier Object to classify our test set 
+    Classifier = Classifier(TrainingN,TrainingQ,TrainingF)
+    #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
+    TestingDataFrame = Classifier.calssify(TestingDataFrame)
+    
+    #Get some statistics on the Machine learning 
+    #Create a Results object
+    Analysis = Results()
+    #List to hold our stats
+    Stats = list()  
+    #Run the 0/1 Loss function on our results
+    Stats = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
+    #Run the F1 Loss function on our results 
 
+    #Send the Data to a csv file for human checking and hyper parameter tuning 
+    WRiteToAFile(Stats, TestingDataFrame,Trial)
+
+    #Increment the Trial and Testdata Number and do it again 
     Trial+=1 
     TestData +=1
 
