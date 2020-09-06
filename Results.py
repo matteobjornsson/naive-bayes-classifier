@@ -34,12 +34,12 @@ class Results:
                 self.ClassificationCorrect.append(df.iloc[i][ClassificationHypothesis])
             else: 
                 self.ClassificationWrong.append(df.iloc[i][ClassificationHypothesis]
-        TotalTestSet = len(self.ClassificationCorrect) + len(self.ClassificationWrong)
-        TotalCorrect = (len(self.ClassificationCorrect) / TotalTestSet) * 100 
+        #TotalTestSet = len(self.ClassificationCorrect) + len(self.ClassificationWrong)
+        #TotalCorrect = (len(self.ClassificationCorrect) / TotalTestSet) * 100 
         TotalWrong = (len(self.ClassificationWrong) / TotalTestSet) * 100 
         Statistics = list() 
-        Statistics.append(TotalTestSet)
-        Statistics.append(TotalCorrect)
+        #Statistics.append(TotalTestSet)
+        #Statistics.append(TotalCorrect)
         Statistics.append(TotalWrong)
         return Statistics
 
