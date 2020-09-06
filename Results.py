@@ -15,9 +15,18 @@ https://stats.stackexchange.com/questions/296014/why-is-the-naive-bayes-classifi
 class Results: 
 
     
-    def __init__(self):
+    def __init__(self): 
+       #0/1 Loss Functions
        self.ClassificationCorrect = list() 
        self.ClassificationWrong = list() 
+
+       #F1 Loss Functions 
+       self.TruePositive = list() 
+       self.TrueNegative = list() 
+       self.FalsePositive = list() 
+       self.FalseNegative  = list() 
+
+
 
 
     def AssignClassificationValue(self,df: pd.DataFrame): 
@@ -38,6 +47,13 @@ class Results:
         Statistics.append(TotalCorrect)
         Statistics.append(TotalWrong)
         return Statistics
+
+
+    def F1FunctionBins(self,df:pd.DataFrame): 
+        ClassificationHypothesis = len(df.columns)
+        TrueClassification = len(df.columns -1)
+        
+
 
 if __name__ == '__main__':
     print("Program Start")
