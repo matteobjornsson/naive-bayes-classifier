@@ -13,6 +13,7 @@ class TrainingAlgorithm:
 
 
     def ShuffleData(self, df: pd.DataFrame) ->list(): 
+        #Get a deep copy of the dataframe 
         df1 = copy.deepcopy(df)
         #Calculate the number of records to be sampled for testing 
         TestSize = int((len(df.columns)-1) * .1)
@@ -98,8 +99,9 @@ class TrainingAlgorithm:
             columnss = list() 
             #For each of the columns in the dataframe 
             for i in df.columns: 
-                #
+                #Append the column name to the list 
                 columnss.append(i)
+            #Create a dataframe with the proper columns as above 
             df1 = pd.DataFrame(columns = columnss)
             #Count until we hit the number of records we want to sample 
             for i in range(int(TestSize)):
@@ -107,9 +109,11 @@ class TrainingAlgorithm:
                 TestValue = random.randint(0,len(df)-1)
                 #Append this row to a new dataframe
                 df1.loc[i] = df.index[TestValue]
+                #Remove the dataframe row we appended above from the dataframe
                 df =  df.drop(df.index[TestValue])
+            #Append the dataframe created to the list
             BinsInList.append(df1)
-
+        #Return the list of dataframes 
         return BinsInList
 
 
