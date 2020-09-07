@@ -18,17 +18,20 @@ class Classifier:
         self.q = q
         self.f = f
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Dataframe 
+    #Returns: Dataframe 
+    #Function: Return a dataframe with a new column of guess classification for what a given rows class is 
     # Take in a dataframe containing test data, return frame with all rows classified
     def classify(self, df: pd.DataFrame) -> pd.DataFrame:
         # create new column to hold new classifications
         df['estimate'] = ""
         # collect all attributes of the test set to iterate over
         attributes = []
+        #For each of the columns in the dataframe 
         for col in df.columns:
+            #Append the column name to the array 
             attributes.append(col)
+        #Remove the last 2 characters from the string 
         attributes = attributes[:-2]
         # collect all classes to iterate over
         classes = self.f.keys()
@@ -67,15 +70,17 @@ class Classifier:
             df.at[i, 'estimate'] = estimate
         return df
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # small function to grab the key corresponding to the max value in a dict
+    #Parameters: Dictionary 
+    #Returns: Dictionary
+    #Function: small function to grab the key corresponding to the max value in a dict
     def argmax(self, d: dict):
         vals = list(d.values())
         keys = list(d.keys())
         return keys[vals.index(max(vals))]
 
+
+#Unit Testing the object created above 
+#Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     import Results
 
