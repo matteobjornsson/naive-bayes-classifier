@@ -9,6 +9,12 @@
 ##################################################################### MODULE COMMENTS #####################################################################
 
 import pandas as pd 
+import Results 
+import TrainingAlgorithm 
+import Classifier 
+import DataProcessor 
+
+
 
 #Take in the Result data, The data frame of data, and the trial number and print to a file 
 def WriteToAFile(Results,DataFrame,Trial):
@@ -28,11 +34,11 @@ def main():
     #Which set of the data is being used to test 
     TestData = 0 
     print("Program Starting")
-    VoteData = 'MachineLearning\Project 1\Vote_Data\Votes.data'
-    IrisData = 'MachineLearning\Project 1\Iris_Data\iris.data'
-    GlassData = 'MachineLearning\Project 1\Glass_Data\glass.data'
-    CancerData = 'MachineLearning\Project 1\Breast_Cancer_Data\cancer.data'
-    SoybeanData = 'MachineLearning\Project 1\Soybean_Data\soybean.data'
+    VoteData = 'Vote_Data//Votes.data'
+    IrisData = 'Iris_Data//iris.data'
+    GlassData = 'Glass_Data//glass.data'
+    CancerData = 'Breast_Cancer_Data//cancer.data'
+    SoybeanData = 'Soybean_Data//soybean.data'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
     dp = DataProcessor()
