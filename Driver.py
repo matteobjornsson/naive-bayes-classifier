@@ -16,19 +16,28 @@ import DataProcessor
 import pprint
 
 
-
-#Take in the Result data, The data frame of data, and the trial number and print to a file 
+#Parameters: A list, a Dataframe and an Integer 
+#Return: None
+#Function: Take in the Result data, The data frame of data, and the trial number and print to a file 
 def WriteToAFile(Results,DataFrame,Trial):
+    #Set the file name based on the trial number 
     FileName = "Naive Bayes Results " + str(Trial) + ".csv"
+    #Open the file in write mode 
     f = open(FileName, "w")
+    #For each of the results in the list 
     for i in results: 
+        #Write with a new line character
         f.write(i + "\n")
+    #Append the Dataframe to the file 
     df.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
+    #Close the file 
     f.close()
 
 
 
-
+#Parameters: None
+#Return: None
+#Function: The main function is what combines all of the object together in this project. This is called one time and this function runs the Naive Bayes against all of the data 
 def main(): 
     #What trial number we are on 
     Trial = 0 
