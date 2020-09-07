@@ -94,13 +94,13 @@ def main():
     Stats = list()  
     #Run the 0/1 Loss function on our results
     zeroOne = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
-    #Run the F1 Loss function on our results 
-    f1Matrix = Analysis.F1MatrixScore(TestingDataFrame)
+    #Run the stats summary on our results 
+    classStats, microStats = Analysis.statsSummary(TestingDataFrame)
 
     print("Zero one loss: \n")
     print(zeroOne)
     print("F1 Matrix score: \n")
-    print(f1Matrix)
+    print("per-class stats: \n", classStats, '\n micro-Averaged stats: \n', microStats)
 
     # #Send the Data to a csv file for human checking and hyper parameter tuning 
     # WriteToAFile(Stats, TestingDataFrame,Trial)
