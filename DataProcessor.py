@@ -162,52 +162,65 @@ class DataProcessor:
         return attribute == "?" or attribute == np.nan
 
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
-    def KillRows(self,df: pd.DataFrame) -> pd.DataFrame: 
+    #Returns: Clean Dataframe with not missing values 
+    #Function: This function takes in a dataframe and returns a dataframe with all rows contianing missing values removed 
+    def KillRows(self,df: pd.DataFrame) -> pd.DataFrame:
+        # For each of the rows missing a value in the dataframe 
         for i in self.MissingRowIndexList: 
+            #Set the dataframe equal to the dataframe with the row missing a value removed 
             df = df.drop(df.index[i])
+        #Clear out all of the data in the set as to not try and drop these values again 
         self.MissingRowIndexList = set() 
+        #Return the dataframe 
         return df
 
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function:  
+    #Returns: Dataframe with all columns with missing values dropped 
+    #Function: This function takes in a dataframe and drops all columns with missing attributes 
     def KillColumns(self,df: pd.DataFrame) -> pd.DataFrame: 
+        #For each of the columns with missing attributes which is appending into a object list 
         for i in self.MissingColumnNameList: 
+            #Set the dataframe equal to the dataframe with these values dropped 
             df = df.drop(i,axis=1)
+        #Set the object list back to an empty set as to not try and drop these columns again 
         self.MissingColumnNameList = set() 
+        #Returnn the dataframe 
         return df
-
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    def GenerateValue(self,Upperbounds,Lowerbounds,types): 
-        return types(random.uniform(Upperbounds,Lowerbounds))    
-
+ 
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: a Data frame with no missing attributes 
+    #Function: Take in a given dataframe and replace all missing attributes with a randomly assigned value 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
+        #Get the total percentage of rows missing values in the dataframe
         PercentRowsMissing = self.PercentRowsMissingValue(df)
+        #Get the total number of columns missing values in the dataframe 
         PercentColumnsMissingData = self.PercentColumnsMissingData(df)
+        #If the total number of rows missing data is less than the value specified in the init 
         if(PercentRowsMissing < self.PercentBeforeDrop): 
+            #Return the dataframe that removes all rows with missing values 
             return self.KillRows(df)
+        #If the percentage of columns missing values is less than the value specified in the init 
         elif(PercentColumnsMissingData < self.PercentBeforeDrop):
+            #Return the dataframe with all columns including missing values dropped 
             return self.KillColumns(df)  
+        #otherwise 
         else: 
             #If the Data frame has no missing attributes than the Data frame is ready to be processed 
             if self.has_missing_attrs(df) == False:
+                #Return the dataframe 
                 return df  
             #Find the Type of the first entry of data
             types = type(df.iloc[1][1])
             #If it is a string then we know it is a yes or no value 
             if types == str: 
+                #Set the dataframe equal to the dataframe with all missing values randmoly generated
                 df = self.RandomRollVotes(df) 
             #Else this is an integer value 
             else:
+                #Set the dataframe equal to the dataframe with all missing values randmoly generated
                 df =self.RandomRollInts(df) 
+        #Return the dataframe 
         return df
         # https://thispointer.com/pandas-get-frequency-of-a-value-in-dataframe-column-index-find-its-positions-in-python/
         # if only small percent of examples have missing attributes, remove those examples.
@@ -218,51 +231,85 @@ class DataProcessor:
         #   find attribute value distribution across discrete options (find min/max?) Use pandas stats for this
        
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: Boolean value: true or false 
+    #Function: Take in a dataframe and identify if the dataframe has non-discrete values 
     def has_continuous_values(self, df: pd.DataFrame) -> bool:
+        #For each column in the data frame 
         for col in df:
             # if number of unique values is greater than threshold, consider column continuous-valued
             if df[col].nunique() > self.discrete_threshold:
+                #Return true
                 return True
+        #If we never returned true and we are out of the loop return false 
         return False
 
     #Parameters: Pandas DataFrame, Integer Column Number 
-    #Returns: 
-    #Function: 
+    #Returns: DataFrame: New discretized values
+    #Function: Takes in a dataframe and a column number of the data frame and bins all values in that column to discretize them 
     def discretize(self, df: pd.DataFrame,col) -> pd.DataFrame:
+            #Set a min variable to a large number 
             Min = 100000
+            #Set a max number to a small value 
             Max = -1
-            for i in range(self.CountTotalRows(df)): 
+            #For each of the rows in the data frame 
+            for i in range(self.CountTotalRows(df)):
+                #Store the value at the given position in the column of the dataframe  
                 Value = df.iloc[i][col]
+                #If the value is a missing attribute 
                 if self.IsMissingAttribute(Value): 
                     #Do nothing 
                     continue 
+                #Otherwise 
                 else: 
+                    #If the value is bigger than the max then we need to set the new max value 
                     if Value  > Max: 
+                        #Max is equal to the new value 
                         Max = Value 
+                        #Go back to the top of the loop
                         continue 
+                    #If the value is less than the min set the new min value 
                     elif Value < Min: 
+                        #Min is now equal to the value in the given dataframe 
                         Min = Value
+                        #Go back to the top of the loop 
                         continue 
+                    #Go back to the top of the loop 
                     continue             
+            #Set the delta to be the difference between the max and the min 
             Delta = Max - Min 
+            #Set the binrange to be the delta divided by the number of mins which is set in init 
             BinRange = Delta / self.bin_count 
+            #Create an empty list 
             Bins = list() 
+            #Loop through the number of bins 
             for i in range(self.bin_count): 
+                #If we are at the first bin 
                 if i == 0: 
+                    #Set the bin value to be the min + the offset between each bin 
                     Bins.append(Min + BinRange)
+                #Otherwise 
                 else: 
+                    #Set the bin to be the position in the bin list multiplied by the bin offset + the min value 
                     Bins.append(((i+1) * BinRange) + Min)
+            #Loop through all of the rows in the given dataframe 
             for row in range(self.CountTotalRows(df)): 
+                #Store the value of a given position in the dataframe 
                 Value = df.iloc[row][col]
+                #Loop through each of the bins 
                 for i in range(len(Bins)):
+                    #If we are at the last bin and have not been assigned a bin 
                     if i == len(Bins)-1: 
+                        #Set the value to be the last bin 
                         df.at[row,df.columns[col]] = i +1 
+                        #Break out 
                         break 
+                    #Otherwise if the value is less than the value stored to be assigned a given bin 
                     elif Value < Bins[i]: 
+                        #Set the row to be that bin value 
                         df.at[row,df.columns[col]] = i + 1
+                        #Break 
                         break 
+            #Return the new changed dataframe 
             return df
 
 
