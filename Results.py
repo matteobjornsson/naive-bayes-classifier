@@ -66,33 +66,93 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
     def recall(self, matrix):
         pass
+    
+    # return a list of true positive counts for each class
+    def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
+        tp = []
+        for i in classCount:
+            # true positive for each class is where truth == guess
+            tp.append(cMatrix.iloc[i][i])
+        return tp
 
+
+    # return a list of false positive counts for each class
+    def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
+        fp = []
+        for i in classCount:
+            count = 0
+            for j in classCount:
+                if i == j:
+                    continue
+                else:
+                    # false positive is the sum of every count in the class
+                    # column except the true positive count
+                    count += cMatrix.iloc[j][i]
+            fp.append(count)
+        return fp
+
+
+    # return a list of false negative counts for each class
+    def falseNegative(self, classCount: range, cMatrix: pd.DataFrame) -> list:
+        fn = []
+        for i in classCount:
+            count = 0
+            for j in classCount:
+                if i == j:
+                    continue
+                else:
+                    # false negative is the sum of every count in the class
+                    # row except the true positive count
+                    count += cMatrix.iloc[i][j]
+            fn.append(count)
+        return fn
+
+
+    # return a list of true negative counts for each class
+    def trueNegative(self, classCount: range, cMatrix: pd.DataFrame, tp: list, fp: list, fn: list) -> list:
+        tn = []
+        for i in classCount:
+            count = 0
+            # sum the value of every cell
+            for j in classCount:
+                for k in classCount:
+                    count += cMatrix.iloc[j][k]
+            # true negative counts are the sum of every cell minus true 
+            # positive, false positive and false negative.
+            count = count - tp[i] - fp[i] - fn[i]
+            tn.append(count)
+        return tn
+
+
+    # create a stats summary matrix for all classes
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
+        # grab the class names
         ClassList = list(cMatrix.columns.values)
-        classCount = len(ClassList)
-        HeaderList = ["TP", "TN", "FP", "FN"]
-        zeroArray = np.zeros(shape=(len(ClassList), len(HeaderList)))
-        StatsMatrix = pd.DataFrame(zeroArray, columns=HeaderList, index=ClassList)
-        for row in range(classCount):
-            for col in range(classCount):
-                value = cMatrix.iloc[row][col]
-                TrueValue = ClassList[row]
-                GuessValue = ClassList[col]
-                if row == col:
-                    StatsMatrix.at[TrueValue, "TP"] = value
-                else: 
-                    StatsMatrix.at[TrueValue, "FN"] += value
-                    StatsMatrix.at[GuessValue, "FP"] += value
-                    for row in range(classCount):
-                        StatsMatrix.at[ClassList[row], "TN"] += value
-        return StatsMatrix
+        classCount = range(len(ClassList))
+        # init an empty matrix with class indexes labeled
+        statsMatrix = pd.DataFrame(index=ClassList)
 
+        # calculate stats
+        tp = self.truePositive(classCount, cMatrix)
+        fp = self.falsePositive(classCount, cMatrix)
+        fn = self.falseNegative(classCount, cMatrix)
+        tn = self.trueNegative(classCount, cMatrix, tp, fp, fn)
+
+        # insert stats into matrix
+        statsMatrix["TP"] = tp
+        statsMatrix["FP"] = fp
+        statsMatrix["FN"] = fn
+        statsMatrix["TN"] = tn
+
+        return statsMatrix
+
+    # generate a matrix that checks classified test data against ground truth
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
-        ClassesIndex = len(df.columns)-3
-        GroundTruthIndex = ClassesIndex + 1
-        ClassifierGuessIndex = GroundTruthIndex + 1 
+        # identify column index of ground truth and classification
+        GroundTruthIndex = len(df.columns)- 2
+        ClassifierGuessIndex = len(df.columns)-1 
 
-
+        # generate a list of all unique classes
         UniqueClasses = list() 
         for i in range(len(df)): 
             if df.iloc[i][GroundTruthIndex] in UniqueClasses: 
@@ -101,16 +161,19 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             continue 
         ClassCount = len(UniqueClasses)
 
+        # initialize empty confusion matrix
         zeroArray = np.zeros(shape=(ClassCount, ClassCount))
         matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
-        print(matrix.head)
+
         for i in range(len(df)):
+            # for each example, increment a counter where row = truth, col = guess
             truth = df.iloc[i][GroundTruthIndex]
             guess = df.iloc[i][ClassifierGuessIndex]
             matrix.at[truth, guess] += 1
             continue
         return matrix
-        
+
+
 if __name__ == '__main__':
     print("Program Start")
 
