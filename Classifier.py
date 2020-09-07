@@ -18,6 +18,9 @@ class Classifier:
         self.q = q
         self.f = f
 
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # Take in a dataframe containing test data, return frame with all rows classified
     def classify(self, df: pd.DataFrame) -> pd.DataFrame:
         # create new column to hold new classifications
@@ -63,6 +66,9 @@ class Classifier:
             df.at[i, 'estimate'] = estimate
         return df
 
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # small function to grab the key corresponding to the max value in a dict
     def argmax(self, d: dict):
         vals = list(d.values())

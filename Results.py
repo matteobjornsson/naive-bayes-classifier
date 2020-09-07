@@ -39,7 +39,9 @@ class Results:
        self.TrueNegative = list() 
        self.FalsePositive = list() 
        self.FalseNegative  = list() 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     def ZeroOneLossFunctionStats(self, df: pd.DataFrame)->list(): 
         ClassificationHypothesis = len(df.columns)
         TrueClassification = len(df.columns) -1
@@ -72,6 +74,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def recall(self, matrix):
         pass
     
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # return a list of true positive counts for each class
     def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         tp = []
@@ -80,7 +85,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tp.append(cMatrix.iloc[i][i])
         return tp
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # return a list of false positive counts for each class
     def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         fp = []
@@ -96,7 +103,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fp.append(count)
         return fp
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # return a list of false negative counts for each class
     def falseNegative(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         fn = []
@@ -112,7 +121,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fn.append(count)
         return fn
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # return a list of true negative counts for each class
     def trueNegative(self, classCount: range, cMatrix: pd.DataFrame, tp: list, fp: list, fn: list) -> list:
         tn = []
@@ -128,7 +139,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tn.append(count)
         return tn
 
-
+    #Parameters: 
+    #Returns: 
+    #Function:  
     # create a stats summary matrix for all classes
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
         # grab the class names
@@ -150,7 +163,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         statsMatrix["TN"] = tn
 
         return statsMatrix
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # generate a matrix that checks classified test data against ground truth
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
         # identify column index of ground truth and classification
