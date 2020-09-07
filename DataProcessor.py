@@ -267,8 +267,8 @@ class DataProcessor:
 
   
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: Integer; Number of rows missing values 
+    #Function: Take in a dataframe and return the number of rows in the dataframe with missing attribute values 
     def CountRowsMissingValues(self,df: pd.DataFrame ) -> int:
         #Set a Counter Variable for the number of columns in the data frame 
         Count = 0 
@@ -367,10 +367,41 @@ class DataProcessor:
                 print(df.iloc[i][j])
 
 if __name__ == '__main__':
-    #filename = sys.argv[1]
-    df = pd.read_csv(filename)
-    dp = DataProcessor()
-    print(df)
-    df = dp.StartProcess(df)
-    dp.PrintAllData(df)
-    
+    #Location of each data file stored off into variables for later retrieval of data 
+    VoteData = 'Vote_Data//Votes.data'
+    IrisData = 'Iris_Data//iris.data'
+    GlassData = 'Glass_Data//glass.data'
+    CancerData = 'Breast_Cancer_Data//cancer.data'
+    SoybeanData = 'Soybean_Data//soybean.data'
+    #DataFrame With Voting data 
+    df = pd.read_csv(VoteData)
+    #DataFrame With Iris data 
+    df1 = pd.read_csv(IrisData)
+    #DataFrame With Glass data 
+    df2 = pd.read_csv(GlassData)
+    #DataFrame With Cancer data 
+    df3 = pd.read_csv(CancerData)
+    #DataFrame With Soybean data 
+    df4 = pd.read_csv(SoybeanData)
+
+
+    Vote = DataProcessor()
+    iris = DataProcessor() 
+    Glass = DataProcessor() 
+    Cancer = DataProcessor() 
+    Soybean = DataProcessor() 
+
+    df = Vote.StartProcess(df)
+    df1 = iris.StartProcess(df1)
+    df2 = Glass.StartProcess(df2)
+    df3 = Cancer.StartProcess(df3)
+    df4 = Soybean.StartProcess(df4)
+
+
+    df.to_csv('PreProcessedVoting.csv')
+    df1.to_csv('PreProcessedIris.csv')
+    df2.to_csv('PreProcessedGlass.csv')
+    df3.to_csv('PreProcessedCancer.csv')
+    df4.to_csv('PreProcessedSoybean.csv')
+
+
