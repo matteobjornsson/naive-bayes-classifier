@@ -67,14 +67,53 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     
     """
 
+    def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict):
+        classStats = self.perClassStats(df)
+        tpList = list(classStats["TP"])
+        fpList = list(classStats["FP"])
+        fnList = list(classStats["FN"])
+        microStats = self.microAverageStats(tpList, fpList, fnList)
+        return classStats, microStats
 
-    def F1MatrixScore(self,df:pd.DataFrame): 
+    def perClassStats(self,df:pd.DataFrame): 
         cMatrix = self.ConfusionMatrix(df)
         classStats = self.classStats(cMatrix)
         return classStats
 
-    def recall(self, matrix):
-        pass
+    def microAverageStats(self, truePositives: list, falsePositives: list, falseNegatives: list) -> dict:
+        microStatsDict = {}
+
+        tpSum = sum(truePositives)
+        fpSum = sum(falsePositives)
+        fnSum = sum(falseNegatives)
+
+        microRecall = self.recall(tpSum, fnSum)
+        microPrecision = self.precision(tpSum, fpSum)
+
+        microStatsDict["microRecall"] = microRecall
+        microStatsDict["microPrecision"] = microPrecision
+        microStatsDict["microF1Score"] = self.f1Score(precision=microPrecision, recall=microRecall)
+
+        return microStatsDict
+
+
+    def f1Score(self, precision, recall) -> float:
+            if (precision + recall) == 0:
+                return 0
+            else:
+                return 2 * precision * recall / (precision + recall)
+
+    def recall(self, truePositiveCount, falseNegativeCount) -> float:
+        if truePositiveCount + falseNegativeCount == 0:
+            return 0
+        else:
+            return truePositiveCount/(truePositiveCount + falseNegativeCount)
+
+    def precision(self, truePositiveCount, falsePositiveCount) -> float:
+        if truePositiveCount + falsePositiveCount == 0:
+            return 0
+        else:
+            return truePositiveCount/(truePositiveCount + falsePositiveCount)
     
     #Parameters: 
     #Returns: 
@@ -164,7 +203,32 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         statsMatrix["FN"] = fn
         statsMatrix["TN"] = tn
 
+        precisionList = []
+        recallList = []
+        fScoreList = []
+        for i in classCount:
+            singleClassStats = statsMatrix.iloc[i]
+
+            tp = singleClassStats["TP"]
+            fp = singleClassStats["FP"]
+            fn = singleClassStats["FN"]
+
+            prec = self.precision(tp, fp)
+            rec = self.recall(tp, fn)
+
+            f1 = self.f1Score(prec, rec)
+
+            print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
+            precisionList.append(prec)
+            recallList.append(rec)
+            fScoreList.append(f1)
+
+        statsMatrix["Precision"] = precisionList
+        statsMatrix["Recall"] = recallList
+        statsMatrix["F1"] = fScoreList
+
         return statsMatrix
+
     #Parameters: 
     #Returns: 
     #Function: 
@@ -194,6 +258,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             matrix.at[truth, guess] += 1
             continue
         return matrix
+
 
 
 if __name__ == '__main__':
