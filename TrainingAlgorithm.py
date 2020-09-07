@@ -87,21 +87,23 @@ class TrainingAlgorithm:
 
 
 
-    # take in dataset and calculate occurence of each class
+    # take in dataset and count occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
-        n = {}
-        print(df.head)
-        ClassIndex = len(df.columns)-1
-        print("class index: ", ClassIndex)
+        CountsPerClass = {}
+        ClassColumn = len(df.columns)-1
+        # iterate over all all examples of test data
         for i in range(len(df)):
-            ClassValue = df.iloc[i][ClassIndex] 
-            if ClassValue in n: 
-               n[ClassValue] += 1 
-               continue
-            n[ClassValue] = 1        
-        # init dict with keys = class names
-        # iterate over all rows and increment the class associated with that row
-        return n
+            # grab the ground truth for the data point
+            ClassValue = df.iloc[i][ClassColumn] 
+            # if the class value has already been counted once before, increment
+            if ClassValue in CountsPerClass: 
+               CountsPerClass[ClassValue] += 1 
+            # else add that class to the count
+            else:
+                CountsPerClass[ClassValue] = 1
+            continue   
+        # return a dictionary with class keys and count values         
+        return CountsPerClass
 
 
     # take in n and create a new dict q that is each value / total rows
