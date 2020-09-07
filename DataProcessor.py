@@ -499,6 +499,9 @@ class DataProcessor:
                 #Print the value in that position of the dataframe 
                 print(df.iloc[i][j])
 
+
+#Unit Testing the object created above 
+#Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     #Location of each data file stored off into variables for later retrieval of data 
     VoteData = 'Vote_Data//Votes.data'

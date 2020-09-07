@@ -11,15 +11,17 @@ import pprint
 
 class TrainingAlgorithm:
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Dataframe
+    #Returns: List of Dataframes
+    #Function: This function takes in adataframe and breaks the dataframe down into multiple dataframes that are returned Goal of this is to separate testing and training datasets
     def ShuffleData(self, df: pd.DataFrame) ->list(): 
         #Get a deep copy of the dataframe 
         df1 = copy.deepcopy(df)
         #Calculate the number of records to be sampled for testing 
         TestSize = int((len(df.columns)-1) * .1)
+        #if the test size is 0 
         if TestSize ==  0: 
+            #Set it to 1 
             TestSize = 1
         #intialize an empty list to store all of the data frames
         Shuffled = list() 
@@ -54,9 +56,9 @@ class TrainingAlgorithm:
                 temp.remove(temp[value])
         #Return the Data Frame 
         return df1
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Dataframe 
+    #Returns: List of dataframes
+    #Function: Take in a given dataframe and break the dataframe down into 2 dataframes, a test and training dataframe. Append both of those to a list and return the list 
     def CrossValidation(self,df: pd.DataFrame) -> list():
         #Create an empty list 
         columnss = list() 
@@ -74,8 +76,8 @@ class TrainingAlgorithm:
             TestValue = random.randint(0,len(df)-1)
             #Append this row to a new dataframe
             df1.loc[i] = df.index[TestValue]
+            #Drop the row from the dataframe 
             df =  df.drop(df.index[TestValue])
-            
             #df1.loc[i] = df.drop(df.loc[TestValue].index,inplace =True)
         Temporary = list() 
         #Return the training and test set data 
@@ -83,33 +85,41 @@ class TrainingAlgorithm:
         Temporary.append(df1)
         #Return the List of dataframes
         return Temporary 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: DataFrame
+    #Returns: List of dataframes 
+    #Function: Take in a dataframe and break dataframe into 10 similar sized sets and append each of these to a list to be returned 
     def BinTestData(self, df: pd.DataFrame) -> list(): 
+        #Set the bin size to 10 
         Binsize = 10
+        #Create a List of column names that are in the dataframe 
         columnHeaders = list(df.columns.values)
+        #Create an empty list 
         bins = []
+        #Loop through the size of the bins 
         for i in range(Binsize):
+            #Append the dataframe columns to the list created above 
             bins.append(pd.DataFrame(columns=columnHeaders))
-        
+        #Set a list of all rows in the in the dataframe 
         dataIndices = list(range(len(df)))
+        #Shuffle the data 
         random.shuffle(dataIndices)
-
+        #Shuffle the count to 0 
         count = 0
+        #For each of the indexs in the dataIndices 
         for index in dataIndices:
+            #Set the bin number to count mod the bin size 
             binNumber = count % Binsize
             bins[binNumber] = bins[binNumber].append(df.iloc[index], ignore_index=True)
+            #Increment count 
             count += 1
+            #Go to the next 
             continue
+        #Return the list of Bins 
         return bins
 
-
-
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # take in dataset and count occurence of each class
+    #Parameters: DataFrame 
+    #Returns: Dictionary of the calculated N 
+    #Function: take in dataset and count occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
         CountsPerClass = {}
         ClassColumn = len(df.columns)-1
@@ -118,34 +128,37 @@ class TrainingAlgorithm:
             # grab the ground truth for the data point
             ClassValue = df.iloc[i][ClassColumn] 
             # if the class value has already been counted once before, increment
-            if ClassValue in CountsPerClass: 
+            if ClassValue in CountsPerClass:
+                #Increment by 1  
                CountsPerClass[ClassValue] += 1 
             # else add that class to the count
             else:
+                #Set the value to 1 
                 CountsPerClass[ClassValue] = 1
+            #Go to the next one 
             continue   
         # return a dictionary with class keys and count values         
         return CountsPerClass
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # take in n and create a new dict q that is each value / total rows
+    #Parameters: Dictionary N from function above and Total Rows in dataframe 
+    #Returns: Dictionary 
+    #Function: take in n and create a new dict q that is each value / total rows
     def calculateQ(self, n: dict, TotalRows) -> dict:
+        #Set an empty dictionary
         QValue = {} 
         # divide each class count by total data points
         for k in n.keys(): 
+            #Given Key K take the N value at Key K divided by The total number of rows 
             QValue[k] = n[k] / TotalRows
+        #Return the Q value 
         return QValue
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # generate the smoothed past probability of each feature value found in a given class
+    #Parameters: Dictionary, Dataframe 
+    #Returns: Dictionary 
+    #Function: generate the smoothed past probability of each feature value found in a given class
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
         fMatrix = {}
         # get list of all features
         columnList = list(df.columns.values)[:-1]
-
         # F(Aj = ak, C = ci) is calculated per feature, where ak is a specific 
         # value of the feature and ci is a specific class value.
         for feature in columnList: 
@@ -183,7 +196,8 @@ class TrainingAlgorithm:
         # return the complete "past feature value probability matrix"
         return fMatrix
 
-
+#Unit Testing the object created above 
+#Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     import Classifier
     import Results
@@ -193,26 +207,5 @@ if __name__ == '__main__':
     df = pd.read_csv(filename)
     ta = TrainingAlgorithm()
     cross_validation_chunks = ta.BinTestData(df)
-
-   
-    # n = ta.calculateN(df)
-    # q = ta.calculateQ(n, len(df))
-    # f = ta.calculateF(n, df)
-    # print("input dataframe: ")
-    # print(df.head)
-
-    # c = Classifier.Classifier(n, q, f)
-    # classified = c.classify(df)
-    # print("classified dataframe")
-    # print(classified)
-
-    # r = Results.Results()
-    # cM = r.ConfusionMatrix(classified)
-
-    # print("Confusion Matrix")
-    # print(cM)
-
-    # stats = r.classStats(cM)
-    # print(stats)
 
     print("Program Finish")
