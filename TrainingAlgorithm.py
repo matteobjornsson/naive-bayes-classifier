@@ -16,6 +16,8 @@ class TrainingAlgorithm:
         df1 = copy.deepcopy(df)
         #Calculate the number of records to be sampled for testing 
         TestSize = int((len(df.columns)-1) * .1)
+        if TestSize ==  0: 
+            TestSize = 1
         #intialize an empty list to store all of the data frames
         Shuffled = list() 
         #Loop through the number of columns that need to have data shuffled 
@@ -42,20 +44,22 @@ class TrainingAlgorithm:
             #Loop through weach row in the data frame again 
             for j in range(len(df)): 
                 #Pull a value out from the size of the list 
-                value = random.randint(0,len(temp)) 
+                value = random.randint(0,len(temp)-1) 
                 #Set the dataframe value at this position to a random value from the list 
-                df1.at[j,df.columns[Column_Shuffle]] = temp[value-1]
+                df1.at[j,df.columns[Column_Shuffle]] = temp[value]
                 #Remove the value that was radomly assigned
-                temp.remove(temp[value-1])
+                temp.remove(temp[value])
         #Return the Data Frame 
         return df1
-
  
-
     def CrossValidation(self,df: pd.DataFrame) -> list():
+        #Create an empty list 
         columnss = list() 
+        #For each of the columns in the dataframe
         for i in df.columns: 
+            #Append the column name to the list we created above 
             columnss.append(i)
+        #Create a dataframe that has the same columns in the same format as the list we created
         df1 = pd.DataFrame(columns = columnss)
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
@@ -72,20 +76,29 @@ class TrainingAlgorithm:
         #Return the training and test set data 
         Temporary.append(df)
         Temporary.append(df1)
+        #Return the List of dataframes
         return Temporary 
 
     def BinTestData(self, df: pd.DataFrame) -> list(): 
-        #10 bins
-        Binsize = 10          
+        #Set the binsize to be 10 
+        Binsize = 10    
+        #Create an empty list     
         BinsInList = list()     
         #Calculate the number of records to be sampled for testing 
         TestSize = len(df) * .1 
+        #Loop through the number of bins we set the binsize to
         for i in range(Binsize):
+            #If the counter is on the last bin 
             if i == Binsize-1: 
+                #Append the dataframe to the list 
                 BinsInList.append(df)
+                #Break out of the loop 
                 break
+            #Create a new column list 
             columnss = list() 
+            #For each of the columns in the dataframe 
             for i in df.columns: 
+                #
                 columnss.append(i)
             df1 = pd.DataFrame(columns = columnss)
             #Count until we hit the number of records we want to sample 
