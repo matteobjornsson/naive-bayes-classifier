@@ -10,7 +10,8 @@ import pandas as pd
 import numpy as np
 import sys
 import random 
-
+import copy 
+import math 
 
 class DataProcessor:
 
@@ -25,18 +26,21 @@ class DataProcessor:
     #Returns: 
     #Function: 
     def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
+        df1 = copy.deepcopy(df)
         count = 0 
         for i in range(len(df.columns)): 
             if count == len(df.columns)-1: 
                 break
-            if type(df.iloc[i][1])  == float: 
+            if type(df1.iloc[0][i]) == np.float64: 
                 #Find which column needs to be discretized
-                df = self.discretize(df,i)
-                    
-            if self.has_missing_attrs(df): 
-                df = self.fix_missing_attrs(df)
+                df1 = self.discretize(df1,i)
+                count+=1
+                continue 
+
+            if self.has_missing_attrs(df1): 
+                df1 = self.fix_missing_attrs(df1)
             count+=1
-        return df 
+        return df1
 
     #Parameters: Pandas DataFrame 
     #Returns: 
@@ -138,8 +142,8 @@ class DataProcessor:
     #Function: 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
-        for col in range(self.NumberOfColumns(df)):
-             for row in range(self.CountTotalRows(df)): 
+        for row in range(self.CountTotalRows(df)): 
+            for col in range(self.NumberOfColumns(df)): 
                 if self.IsMissingAttribute(df.iloc[row][col]): 
                     return True
                 continue  
@@ -227,34 +231,38 @@ class DataProcessor:
     #Returns: 
     #Function: 
     def discretize(self, df: pd.DataFrame,col) -> pd.DataFrame:
- 
-            Min = df.iloc[col][1]
-            Max = df.iloc[col][1]
+            Min = 100000
+            Max = -1
             for i in range(self.CountTotalRows(df)): 
-                if self.IsMissingAttribute(df.iloc[i][col]): 
+                Value = df.iloc[i][col]
+                if self.IsMissingAttribute(Value): 
                     #Do nothing 
                     continue 
                 else: 
-                    if df.iloc[i][col]  > Max: 
-                        Max = df.iloc[i][col] 
+                    if Value  > Max: 
+                        Max = Value 
                         continue 
-                    elif df.iloc[i][col] < Min: 
-                        Min = df.iloc[i][col]
+                    elif Value < Min: 
+                        Min = Value
                         continue 
-                    continue                 
+                    continue             
             Delta = Max - Min 
-            BinRange = Delta / self.bin_count
-            Bins = list(np.arange(Min, Max,BinRange))
+            BinRange = Delta / self.bin_count 
+            Bins = list() 
+            for i in range(self.bin_count): 
+                if i == 0: 
+                    Bins.append(Min + BinRange)
+                else: 
+                    Bins.append(((i+1) * BinRange) + Min)
             for row in range(self.CountTotalRows(df)): 
                 Value = df.iloc[row][col]
                 for i in range(len(Bins)):
-                    if i == len(Bins): 
-                        df.at[row,col] = Bins[i]
-                         
-                        continue  
+                    if i == len(Bins)-1: 
+                        df.at[row,df.columns[col]] = i +1 
+                        break 
                     elif Value < Bins[i]: 
-                        df.at[row,col] = Bins[i]
-                        continue 
+                        df.at[row,df.columns[col]] = i + 1
+                        break 
             return df
 
 
@@ -398,6 +406,7 @@ if __name__ == '__main__':
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
     print("Processing is complete ")
+
 
     df.to_csv('PreProcessedVoting.csv')
     df1.to_csv('PreProcessedIris.csv')
