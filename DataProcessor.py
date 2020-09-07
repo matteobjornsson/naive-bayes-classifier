@@ -14,89 +14,154 @@ import copy
 import math 
 
 class DataProcessor:
-
+    #On the creation of a Dataprocessor object set the following values 
     def __init__(self):
+        #Discrete threshold 
         self.discrete_threshold = 5
+        #Total number of bins to bin the non-discrete values 
         self.bin_count = 5
+        #Set the percentage of missing values to be dropped 
         self.PercentBeforeDrop = 10.00 
+        #Set the missing value row index to an empty set 
         self.MissingRowIndexList = set() 
+        #SEt the missing value column index to an empty set 
         self.MissingColumnNameList = set()
 
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: Clean ready to process Dataframe 
+    #Function: This is the main function that should be called for each object that takes in the dataframe, processes it and returns the clean dataframe 
     def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
+        #Get a deep copy of the dataframe 
         df1 = copy.deepcopy(df)
+        #SEt the count to 0 
         count = 0 
+        #For each of the columns in the dataframe 
         for i in range(len(df.columns)): 
+            #If the count is at the last column in the dataframe end because this is the classifier 
             if count == len(df.columns)-1: 
+                #Break 
                 break
+            #If the type of the dataframe is a float then we need to discretize 
             if type(df1.iloc[0][i]) == np.float64: 
                 #Find which column needs to be discretized
                 df1 = self.discretize(df1,i)
+                #Increment the count 
                 count+=1
+                #Go to the next one
                 continue 
-
+            #If the data frame has missing attributes 
             if self.has_missing_attrs(df1): 
+                #Remove the missing attributes 
                 df1 = self.fix_missing_attrs(df1)
+            #Increment the count 
             count+=1
+        #Return the cleaned dataframe 
         return df1
 
-    #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function:        
-    def RandomRollInts(self, df: pd.DataFrame) -> pd.DataFrame: 
+
+"""
+NIU 
+"""
+    #Parameters: Pandas DataFrame, Integer Column 
+    #Returns: Dataframe -> with all values randomly assigned 
+    #Function:  Take in a dataframe and weight each value in the dataframe with an occurence then fill in a missing attribute based on the weight of the value in the dataframe 
+    def RandomRollInts(self, df: pd.DataFrame, col) -> pd.DataFrame: 
+        #Set the min value to the first value in the dataframe 
         Min = df.iloc[1][col]
+        #Set the max value to the first value in the dataframe 
         Max = df.iloc[1][col]
-        for i in range(self.CountTotalRows(df)): 
+        #Loop through each row in the dataframe 
+        for i in range(self.CountTotalRows(df)):
+            #If the  Value in the dataframe is a missing value 
             if self.IsMissingAttribute(df.iloc[i][col]): 
                 #Do nothing 
                 continue 
+            #Otherwise 
             else: 
+                #If the value in the dataframe is greater than the recorded max 
                 if df.iloc[i][col]  > Max: 
+                    #Assign this value to the max 
                     Max = df.iloc[i][col] 
+                    #Go to the next 
                     continue 
+                #If the value is less than the recorded min 
                 elif df.iloc[i][col] < Min: 
+                    #Assign the new min value 
                     Min = df.iloc[i][col]
+                    #Go to the next
                     continue 
+                #Go to the next 
                 continue                 
+        #For each of the columns in the dataframe 
         for col in range(self.TotalNumberColumns(df)):
-            for row in range(self.TotalNumberRows(df)): 
+            #For each of the rows in the dataframe 
+            for row in range(self.TotalNumberRows(df)):
+                #If the value in the dataframe is a missing attribute  
                 if self.IsMissingAttribute(df.iloc[col][row]): 
+                    #Assign the roll to a random value between min and max 
                     roll = random.randint(Min,Max)
+                    #Assign the random value about to the position in the dataframe 
                     df.loc[row,col] = roll   
+        #Return the dataframe 
         return df 
    
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: A dataframe with all missing values filled in with a Y or N 
+    #Function: Take in a dataframe and randomly assigned a Y or a N to a missing value 
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
+        #Loop through each of the rows in the dataframe 
          for i in range(len(df)):
+            #loop through all of the columns except the classification column
             for j in range(len(df.columns)-1): 
+                #If the given value in the dataframe is missing a value 
                 if self.IsMissingAttribute(df.iloc[i][j]): 
+                    #Randomly assign a value from 1 - 100 
                     roll = random.randint(0,99) + 1
+                    #If the roll is greater than 50 
                     if roll >50: 
+                        #Assign the value to a Y 
                         roll = 'y'
+                    #Otherwise 
                     else: 
-                        roll = 'n' 
-                    df.iloc[i][j] = roll 
+                        #Assign the value to a N 
+                        roll = 'n'
+                    #Set the position in the dataframe equal to the value in the roll  
+                    df.iloc[i][j] = roll
+                #Go to the next  
                 continue  
+         #Return the dataframe 
          return df 
+  
+    
+"""
+NIU 
+"""
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: Integer: Number of times a value appears in a dataframe 
+    #Function: Take in column, a dataframe and a value and return the number of times that value appears in the given column in the dataframe 
     def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
+        #Set count to 0 
         count = 0  
+        #Loop through each row in the dataframe 
         for i in range(len(df)): 
-            if df.iloc[Column][i] == Value:
+            #If the value in the columna and given row is equal to the value taken in as a parameter
+            if df.iloc[i][Column] == Value:
+                #Increment the count 
                 count += 1 
+            #Go to the next one 
             continue
+        #Reuturn the total count 
         return count 
 
+   
+   
+"""
+NIU 
+"""
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
-    def StatsFillInInts(self,df:pd.DataFrame): 
+    #Returns: Dataframe with all of the int values filled in
+    #Function: Take in a dataframe and fill in each missing value with a random value based on the weight of the occurence of the given values in the dataframe 
+    def StatsFillInInts(self,df:pd.DataFrame) -> pd.DataFrame: 
         #Set a weighted vote string
         WeightedVote = ''
         #Set a unweighted vote string 
@@ -125,40 +190,57 @@ class DataProcessor:
                         WeightedVote = 'y'
                         #SEt the unweighted vote value 
                         UnweightedVote ='n'
+                    #Otherwise 
                     else: 
+                        #Set the max equal to the percent saying no 
                         Max = PercentNay
+                        #Set the percent saying yes to the inverse of percent no 
                         PercentYay = 1 - PercentNay
+                        #Set the weighted vote to N 
                         WeightedVote = 'n'
+                        Set the unweighted vote to Y 
                         UnweightedVote ='y'
-                    Stats = Random.randint(0,Max)
+                    #Randomly roll a value between 0 and 1 
+                    Stats = random() 
+                    #If the stat rolled it greater than max 
                     if Stats > Max: 
+                        #Set the dataframe equal to the weighted vote 
                         df.iloc[col][row] = WeightedVote
+                    #Otherwise 
                     else: 
+                        #Set the dataframe equal to the unweighted vote 
                         df.iloc[col][row] = UnweightedVote
+        #Return the Dataframe 
         return df 
 
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
-    #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
+    #Returns: Bool if the dataframe has a missing attribute in it 
+    #Function: Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
     def has_missing_attrs(self, df: pd.DataFrame) -> bool:
+        #For each row in the dataframe 
         for row in range(self.CountTotalRows(df)): 
+            #For each column in the dataframe 
             for col in range(self.NumberOfColumns(df)): 
+                #If the dataframe has a missing value in any of the cells
                 if self.IsMissingAttribute(df.iloc[row][col]): 
+                    #Return true 
                     return True
+                #Go to the next value 
                 continue  
+        #We searched the entire list and never returned true so return false 
         return False
     
     #Parameters: Pandas DataFrame 
-    #Returns: 
-    #Function: 
+    #Returns: Cleaned Dataframe
+    #Function: Take in a dataframe and an index and return a new dataframe with the row corresponding to the index removed 
     def KillRow(self, df: pd.DataFrame,index) -> pd.DataFrame: 
         return df.drop(df.Index[index])
           
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Attribute Value 
+    #Returns: Bool -> True if the value is a missing value 
+    #Function: Take in a given value from a data frame and return true if the value is a missing value false otherwise 
     def IsMissingAttribute(self, attribute) -> bool: 
+        #Return true if the value is ? or NaN else return false 
         return attribute == "?" or attribute == np.nan
 
     #Parameters: Pandas DataFrame 
@@ -417,8 +499,11 @@ class DataProcessor:
     #Returns: None
     #Function: This is a test function that will print every cell to the screen that is in the dataframe
     def PrintAllData(self,df:pd.DataFrame) -> None: 
+        #For each of the rows in the dataframe 
         for i in range(len(df)):
+            #For each of the columns in the dataframe 
             for j in range(len(df.columns)): 
+                #Print the value in that position of the dataframe 
                 print(df.iloc[i][j])
 
 if __name__ == '__main__':
