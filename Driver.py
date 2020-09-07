@@ -75,7 +75,7 @@ def main():
     #Run the F1 Loss function on our results 
 
     #Send the Data to a csv file for human checking and hyper parameter tuning 
-    WRiteToAFile(Stats, TestingDataFrame,Trial)
+    WriteToAFile(Stats, TestingDataFrame,Trial)
 
     #Increment the Trial and Testdata Number and do it again 
     Trial+=1 

@@ -11,7 +11,9 @@ import pprint
 
 class TrainingAlgorithm:
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     def ShuffleData(self, df: pd.DataFrame) ->list(): 
         #Get a deep copy of the dataframe 
         df1 = copy.deepcopy(df)
@@ -52,7 +54,9 @@ class TrainingAlgorithm:
                 temp.remove(temp[value])
         #Return the Data Frame 
         return df1
- 
+    #Parameters: 
+    #Returns: 
+    #Function: 
     def CrossValidation(self,df: pd.DataFrame) -> list():
         #Create an empty list 
         columnss = list() 
@@ -79,7 +83,9 @@ class TrainingAlgorithm:
         Temporary.append(df1)
         #Return the List of dataframes
         return Temporary 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     def BinTestData(self, df: pd.DataFrame) -> list(): 
         Binsize = 10
         columnHeaders = list(df.columns.values)
@@ -101,7 +107,9 @@ class TrainingAlgorithm:
 
 
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # take in dataset and count occurence of each class
     def calculateN(self, df: pd.DataFrame) -> dict:
         CountsPerClass = {}
@@ -120,7 +128,9 @@ class TrainingAlgorithm:
         # return a dictionary with class keys and count values         
         return CountsPerClass
 
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # take in n and create a new dict q that is each value / total rows
     def calculateQ(self, n: dict, TotalRows) -> dict:
         QValue = {} 
@@ -128,7 +138,9 @@ class TrainingAlgorithm:
         for k in n.keys(): 
             QValue[k] = n[k] / TotalRows
         return QValue
-
+    #Parameters: 
+    #Returns: 
+    #Function: 
     # generate the smoothed past probability of each feature value found in a given class
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
         fMatrix = {}
