@@ -39,6 +39,7 @@ class Results:
        self.TrueNegative = list() 
        self.FalsePositive = list() 
        self.FalseNegative  = list() 
+
     #Parameters: 
     #Returns: 
     #Function: 
@@ -241,9 +242,10 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         # generate a list of all unique classes
         UniqueClasses = list() 
         for i in range(len(df)): 
-            if df.iloc[i][GroundTruthIndex] in UniqueClasses: 
-                continue 
-            UniqueClasses.append(df.iloc[i][GroundTruthIndex])
+            if df.iloc[i][GroundTruthIndex] not in UniqueClasses:
+                UniqueClasses.append(df.iloc[i][GroundTruthIndex])
+            if df.iloc[i][ClassifierGuessIndex] not in UniqueClasses:
+                UniqueClasses.append(df.iloc[i][ClassifierGuessIndex])
             continue 
         ClassCount = len(UniqueClasses)
 

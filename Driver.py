@@ -35,17 +35,17 @@ def main():
     #Which set of the data is being used to test 
     TestData = 0 
     print("Program Starting")
-    VoteData = 'Vote_Data//Votes.data'
-    IrisData = 'Iris_Data//iris.data'
-    GlassData = 'Glass_Data//glass.data'
-    CancerData = 'Breast_Cancer_Data//cancer.data'
-    SoybeanData = 'Soybean_Data//soybean.data'
+    VoteData = 'PreProcessedVoting.csv'
+    IrisData = 'PreProcessedIris.csv'
+    GlassData = 'PreProcessedGlass.csv'
+    CancerData = 'PreProcessedCancer.csv'
+    SoybeanData = 'PreProcessedSoybean.csv'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
     dp = DataProcessor.DataProcessor()
     df = pd.read_csv(SoybeanData) 
     #Return a clean dataframe with missing attributes taken care of 
-    df = dp.StartProcess(df)
+    # df = dp.StartProcess(df)
     ML = TrainingAlgorithm.TrainingAlgorithm()
     #Dataframe without noise Its a list of 10 mostly equal dataframes
     NoNoiseDf = ML.BinTestData(df)
