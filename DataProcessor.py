@@ -1,7 +1,11 @@
-#################################################################### MODULE COMMENTS ####################################################################
-##
-##
-#################################################################### MODULE COMMENTS ####################################################################
+#################################################################### MODULE COMMENTS ############################################################################
+#The following class is a python object that takes in the libraries: Nunmpy, Pandas, Sys and Random.                                                            #
+#The python Object "DataProcessor" that is created below is a python object designed to take in a pandas dataframe and formats the data such that is can be     #
+#Run into a Naive Bayes learning algorithm. The data processing function can discretize an entire dataset, and remove missing attribute values from a dataset   #
+#The removal of missing attribute values is done first by identifying the percentage of rows that have missing data, if that percentage is less than 5% then we #
+#Drop all of rows that have a missing value. A similar tactic is pursued for columns missing data, if the percentage of columns missing data is less than 5%    #   
+#Then we drop the entire column. If the value is greater than 5 % then we randomly generate a new value to replace the missing attribute in the data set        #
+#################################################################### MODULE COMMENTS ############################################################################
 import pandas as pd
 import numpy as np
 import sys
@@ -9,7 +13,7 @@ import random
 
 
 class DataProcessor:
-    
+
     def __init__(self):
         self.discrete_threshold = 5
         self.bin_count = 5
