@@ -58,10 +58,7 @@ class DataProcessor:
         #Return the cleaned dataframe 
         return df1
 
-
-"""
-NIU 
-"""
+    #NIU
     #Parameters: Pandas DataFrame, Integer Column 
     #Returns: Dataframe -> with all values randomly assigned 
     #Function:  Take in a dataframe and weight each value in the dataframe with an occurence then fill in a missing attribute based on the weight of the value in the dataframe 
@@ -133,9 +130,7 @@ NIU
          return df 
   
     
-"""
-NIU 
-"""
+    #NIU
     #Parameters: Pandas DataFrame 
     #Returns: Integer: Number of times a value appears in a dataframe 
     #Function: Take in column, a dataframe and a value and return the number of times that value appears in the given column in the dataframe 
@@ -155,9 +150,7 @@ NIU
 
    
    
-"""
-NIU 
-"""
+    #NIU
     #Parameters: Pandas DataFrame 
     #Returns: Dataframe with all of the int values filled in
     #Function: Take in a dataframe and fill in each missing value with a random value based on the weight of the occurence of the given values in the dataframe 
@@ -198,7 +191,7 @@ NIU
                         PercentYay = 1 - PercentNay
                         #Set the weighted vote to N 
                         WeightedVote = 'n'
-                        Set the unweighted vote to Y 
+                        # Set the unweighted vote to Y 
                         UnweightedVote ='y'
                     #Randomly roll a value between 0 and 1 
                     Stats = random() 

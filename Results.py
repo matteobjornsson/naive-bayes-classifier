@@ -203,29 +203,29 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         statsMatrix["FN"] = fn
         statsMatrix["TN"] = tn
 
-        precisionList = []
-        recallList = []
-        fScoreList = []
-        for i in classCount:
-            singleClassStats = statsMatrix.iloc[i]
+        # precisionList = []
+        # recallList = []
+        # fScoreList = []
+        # for i in classCount:
+        #     singleClassStats = statsMatrix.iloc[i]
 
-            tp = singleClassStats["TP"]
-            fp = singleClassStats["FP"]
-            fn = singleClassStats["FN"]
+        #     tp = singleClassStats["TP"]
+        #     fp = singleClassStats["FP"]
+        #     fn = singleClassStats["FN"]
 
-            prec = self.precision(tp, fp)
-            rec = self.recall(tp, fn)
+        #     prec = self.precision(tp, fp)
+        #     rec = self.recall(tp, fn)
 
-            f1 = self.f1Score(prec, rec)
+        #     f1 = self.f1Score(prec, rec)
 
-            print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
-            precisionList.append(prec)
-            recallList.append(rec)
-            fScoreList.append(f1)
+        #     print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
+        #     precisionList.append(prec)
+        #     recallList.append(rec)
+        #     fScoreList.append(f1)
 
-        statsMatrix["Precision"] = precisionList
-        statsMatrix["Recall"] = recallList
-        statsMatrix["F1"] = fScoreList
+        # statsMatrix["Precision"] = precisionList
+        # statsMatrix["Recall"] = recallList
+        # statsMatrix["F1"] = fScoreList
 
         return statsMatrix
 
