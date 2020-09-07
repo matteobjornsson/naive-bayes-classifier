@@ -21,7 +21,7 @@ class DataProcessor:
         self.MissingRowIndexList = set() 
         self.MissingColumnNameList = set()
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def StartProcess(self, df:pd.DataFrame) -> pd.DataFrame:
@@ -38,7 +38,7 @@ class DataProcessor:
             count+=1
         return df 
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function:        
     def RandomRollInts(self, df: pd.DataFrame) -> pd.DataFrame: 
@@ -63,7 +63,7 @@ class DataProcessor:
                     df.loc[row,col] = roll   
         return df 
    
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def RandomRollVotes(self, df: pd.DataFrame) -> pd.DataFrame: 
@@ -78,7 +78,7 @@ class DataProcessor:
                     df.iloc[i][j] = roll 
                 continue  
          return df 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def Occurence(self,Column,df:pd.DataFrame,Value) -> int:
@@ -89,7 +89,7 @@ class DataProcessor:
             continue
         return count 
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def StatsFillInInts(self,df:pd.DataFrame): 
@@ -133,7 +133,7 @@ class DataProcessor:
                         df.iloc[col][row] = UnweightedVote
         return df 
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     #Takes in a data frame and returns true if the data frame has  a ? value somewhere in the frame
@@ -145,7 +145,7 @@ class DataProcessor:
                 continue  
         return False
     
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def KillRow(self, df: pd.DataFrame,index) -> pd.DataFrame: 
@@ -157,7 +157,7 @@ class DataProcessor:
     def IsMissingAttribute(self, attribute) -> bool: 
         return attribute == "?" or attribute == np.nan
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def KillRows(self,df: pd.DataFrame) -> pd.DataFrame: 
@@ -166,7 +166,7 @@ class DataProcessor:
         self.MissingRowIndexList = set() 
         return df
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function:  
     def KillColumns(self,df: pd.DataFrame) -> pd.DataFrame: 
@@ -182,7 +182,7 @@ class DataProcessor:
         return types(random.uniform(Upperbounds,Lowerbounds))    
 
     #Takes in a dataframe and populates attributes based on the existing distribution of attribute values 
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def fix_missing_attrs(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -213,7 +213,7 @@ class DataProcessor:
         # if many datapoints across many columns have missing attributes, generate at random to match column distribution. 
         #   find attribute value distribution across discrete options (find min/max?) Use pandas stats for this
        
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def has_continuous_values(self, df: pd.DataFrame) -> bool:
@@ -223,7 +223,7 @@ class DataProcessor:
                 return True
         return False
 
-    #Parameters: 
+    #Parameters: Pandas DataFrame, Integer Column Number 
     #Returns: 
     #Function: 
     def discretize(self, df: pd.DataFrame,col) -> pd.DataFrame:
@@ -258,15 +258,15 @@ class DataProcessor:
             return df
 
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Pandas DataFrame 
+    #Returns: Integer; Total number of rows in a dataframe
+    #Function: Take in a dataframe and return the number of rows in the dataframe 
     def CountTotalRows(self,df: pd.DataFrame) -> int: 
         #Return the total number of rows in the data frame 
         return len(df)
 
   
-    #Parameters: 
+    #Parameters: Pandas DataFrame 
     #Returns: 
     #Function: 
     def CountRowsMissingValues(self,df: pd.DataFrame ) -> int:
@@ -295,9 +295,9 @@ class DataProcessor:
                 continue  
         #Return the number of rows missing values in the data set 
         return MissingValues 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Pandas DataFrame 
+    #Returns: float; Percent rows missing data
+    #Function: Take in a dataframe and count the number of rows with missing attributes, return the percentage value 
     def PercentRowsMissingValue(self,df: pd.DataFrame) -> float: 
         #Get the total number of rows in the dataset
         TotalNumRows = self.CountTotalRows(df)
@@ -306,9 +306,9 @@ class DataProcessor:
         #Return the % of rows missing values  
         return (TotalMissingRows/TotalNumRows) * 100 
 
-    #Parameters: 
-    #Returns: 
-    #Function:    
+    #Parameters: Pandas DataFrame 
+    #Returns: Integer; Number of columns with missing attributes
+    #Function: Return a count of the number of columns with atleast one missing attribute value in the data frame 
     def ColumnMissingData(self,df: pd.DataFrame) -> int: 
         #Create a counter variable to track the total number of columns missing data 
         Count = 0 
@@ -333,9 +333,9 @@ class DataProcessor:
         #Return the count variable 
         return Count
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Pandas DataFrame 
+    #Returns: Integer; Number of columns
+    #Function: Take in a given dataframe and count the number of columns in the dataframe 
     def NumberOfColumns(self,df: pd.DataFrame) -> int: 
         #Create a counter variable 
         Count = 0 
@@ -346,9 +346,9 @@ class DataProcessor:
         #Return the total number of Columns 
         return Count 
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Pandas DataFrame 
+    #Returns: Float; The percentage of columns with missing data 
+    #Function: Take in a given dataframe and find the total number of columns divided by the number of columns with missing attribute values 
     def PercentColumnsMissingData(self,df: pd.DataFrame) -> float: 
         #Total Number of Columns in the dataset 
         TotalNumberColumns = self.NumberOfColumns(df)
@@ -358,16 +358,16 @@ class DataProcessor:
         return (TotalMissingColumns/TotalNumberColumns) * 100 
 
     
-    #Parameters: 
-    #Returns: 
-    #Function: 
+    #Parameters: Pandas DataFrame
+    #Returns: None
+    #Function: This is a test function that will print every cell to the screen that is in the dataframe
     def PrintAllData(self,df:pd.DataFrame) -> None: 
         for i in range(len(df)):
             for j in range(len(df.columns)): 
                 print(df.iloc[i][j])
 
 if __name__ == '__main__':
-    filename = sys.argv[1]
+    #filename = sys.argv[1]
     df = pd.read_csv(filename)
     dp = DataProcessor()
     print(df)
