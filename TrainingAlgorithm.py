@@ -11,28 +11,43 @@ class TrainingAlgorithm:
         self.attr = []
 
 
-    #ASSUMING THE ID COLUMN IS YEETED 
+
     def ShuffleData(self, df: pd.DataFrame) ->list(): 
         df1 = copy.deepcopy(df)
         #Calculate the number of records to be sampled for testing 
         TestSize = int((len(df.columns)-1) * .1)
+        #intialize an empty list to store all of the data frames
         Shuffled = list() 
+        #Loop through the number of columns that need to have data shuffled 
         for i in range(TestSize): 
+            #Just continue until we break 
             while(True): 
-                Column_Shuffle = random.randint(0,len(df.columns))
+                #Set a variable to a random number for the column to be shuffled around 
+                Column_Shuffle = random.randint(0,len(df.columns)-1)
+                #If the column number is in the list above then it has been shuffled, try again 
                 if Column_Shuffle in Shuffled :
+                    #Go to the top of the loop 
                     continue 
                 else: 
+                    #We found a new column that needs to be shuffled, break out of the loop 
                     break 
+            #Append the column number to the list to save what columns have been shuffled
             Shuffled.append(Column_Shuffle)
+            #Create a temp list 
             temp = list()
+            #Loop through the number of rows in the data frame
             for j in range(len(df)):
+                #Append the value in a given cell for a given column to a list 
                 temp.append(df.iloc[j][Column_Shuffle])
+            #Loop through weach row in the data frame again 
             for j in range(len(df)): 
+                #Pull a value out from the size of the list 
                 value = random.randint(0,len(temp)) 
-                
+                #Set the dataframe value at this position to a random value from the list 
                 df1.at[j,df.columns[Column_Shuffle]] = temp[value-1]
+                #Remove the value that was radomly assigned
                 temp.remove(temp[value-1])
+        #Return the Data Frame 
         return df1
 
  
