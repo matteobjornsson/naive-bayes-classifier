@@ -43,8 +43,8 @@ class Results:
     #Returns: 
     #Function: 
     def ZeroOneLossFunctionStats(self, df: pd.DataFrame)->list(): 
-        ClassificationHypothesis = len(df.columns)
-        TrueClassification = len(df.columns) -1
+        ClassificationHypothesis = len(df.columns)-1
+        TrueClassification = len(df.columns) -2
         for i in range(len(df)): 
             if df.iloc[i][ClassificationHypothesis] == df.iloc[i][TrueClassification]: 
                 self.ClassificationCorrect.append(df.iloc[i][ClassificationHypothesis])
@@ -68,8 +68,10 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     """
 
 
-    def F1FunctionBins(self,df:pd.DataFrame): 
-        pass
+    def F1MatrixScore(self,df:pd.DataFrame): 
+        cMatrix = self.ConfusionMatrix(df)
+        classStats = self.classStats(cMatrix)
+        return classStats
 
     def recall(self, matrix):
         pass

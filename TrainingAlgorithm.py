@@ -99,8 +99,7 @@ class TrainingAlgorithm:
         count = 0
         for index in dataIndices:
             binNumber = count % Binsize
-            print(df.iloc[index])
-            bins[binNumber] = bins[binNumber].append(df.iloc[index], ignore_index=False)
+            bins[binNumber] = bins[binNumber].append(df.iloc[index], ignore_index=True)
             count += 1
             continue
         return bins

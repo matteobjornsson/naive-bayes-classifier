@@ -13,6 +13,7 @@ import Results
 import TrainingAlgorithm 
 import Classifier 
 import DataProcessor 
+import pprint
 
 
 
@@ -41,11 +42,11 @@ def main():
     SoybeanData = 'Soybean_Data//soybean.data'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
-    dp = DataProcessor()
-    df = pd.read_csv(VoteData) 
+    dp = DataProcessor.DataProcessor()
+    df = pd.read_csv(SoybeanData) 
     #Return a clean dataframe with missing attributes taken care of 
     df = dp.StartProcess(df)
-    ML = Training_Algorithm()
+    ML = TrainingAlgorithm.TrainingAlgorithm()
     #Dataframe without noise Its a list of 10 mostly equal dataframes
     NoNoiseDf = ML.BinTestData(df)
     #DataFrame with Noise 
@@ -58,41 +59,53 @@ def main():
     TestingDataFrame = NoNoiseDf.pop(TestData) 
     for i in range(len(NoNoiseDf)):     
         #Append the training dataframe to one dataframe to send to the ML algorithm 
-        TrainingDataFrame.append(NoNoiseDf[i])
+        TrainingDataFrame = TrainingDataFrame.append(NoNoiseDf[i], ignore_index=True)
     
+    print("Driver training data: \n", TrainingDataFrame)
+    print("Driver testing dataframe: \n", TestingDataFrame)
+
+
     #Calculate the N value for the Training set
     TrainingN = ML.calculateN(TrainingDataFrame)
     #Calculate the Q value for the Training set
     TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
     #Calculate the F Matrix for the Training set
     TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
+    print("N: \n")
+    pprint.pprint(TrainingN)
+    print("Q: \n")
+    pprint.pprint(TrainingQ)
+    print("F: \n")
+    pprint.pprint(TrainingF)
+
     #Create a Classifier Object to classify our test set 
-    Classifier = Classifier(TrainingN,TrainingQ,TrainingF)
+    model = Classifier.Classifier(TrainingN,TrainingQ,TrainingF)
     #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
-    TestingDataFrame = Classifier.calssify(TestingDataFrame)
+    TestingDataFrame = model.classify(TestingDataFrame)
     
+    print("Classified test set: \n")
+    print(TestingDataFrame)
+
     #Get some statistics on the Machine learning 
     #Create a Results object
-    Analysis = Results()
+    Analysis = Results.Results()
+
     #List to hold our stats
     Stats = list()  
     #Run the 0/1 Loss function on our results
-    Stats = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
+    Stats.append(Analysis.ZeroOneLossFunctionStats(TestingDataFrame))
     #Run the F1 Loss function on our results 
+    Stats.append(Analysis.F1MatrixScore(TestingDataFrame))
 
-    #Send the Data to a csv file for human checking and hyper parameter tuning 
-    WriteToAFile(Stats, TestingDataFrame,Trial)
-
-    #Increment the Trial and Testdata Number and do it again 
-    Trial+=1 
-    TestData +=1
+    print(Stats)
 
 
+    # #Send the Data to a csv file for human checking and hyper parameter tuning 
+    # WriteToAFile(Stats, TestingDataFrame,Trial)
 
-
-
-
-
+    # #Increment the Trial and Testdata Number and do it again 
+    # Trial+=1 
+    # TestData +=1
 
     print("Program Finish")
 
