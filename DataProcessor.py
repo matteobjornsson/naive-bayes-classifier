@@ -383,7 +383,7 @@ if __name__ == '__main__':
     df3 = pd.read_csv(CancerData)
     #DataFrame With Soybean data 
     df4 = pd.read_csv(SoybeanData)
-
+    print("DataFrames have been created")
 
     Vote = DataProcessor()
     iris = DataProcessor() 
@@ -391,17 +391,18 @@ if __name__ == '__main__':
     Cancer = DataProcessor() 
     Soybean = DataProcessor() 
 
+    print("Pre Processor Objects Built ")
     df = Vote.StartProcess(df)
     df1 = iris.StartProcess(df1)
     df2 = Glass.StartProcess(df2)
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
-
+    print("Processing is complete ")
 
     df.to_csv('PreProcessedVoting.csv')
     df1.to_csv('PreProcessedIris.csv')
     df2.to_csv('PreProcessedGlass.csv')
     df3.to_csv('PreProcessedCancer.csv')
     df4.to_csv('PreProcessedSoybean.csv')
-
+    print("File creation is complete ")
 
