@@ -17,13 +17,11 @@ class Classifier:
     def classify(self, df: pd.DataFrame) -> pd.DataFrame:
         # create new column to hold new classifications
         df['estimate'] = ""
-
         # collect all attributes of the test set to iterate over
         attributes = []
         for col in df.columns:
             attributes.append(col)
         attributes = attributes[:-2]
-
         # collect all classes to iterate over
         classes = self.f.keys()
        
@@ -34,23 +32,26 @@ class Classifier:
             x = x.drop(['class', 'estimate'])
             # create blank dict to store classification estimate for each class
             ClassEstimates = dict.fromkeys(classes)
+
             # for each potential class, multiply the chance of that class by the
             # chance of each feature attribute appearing for that class
-            for c in self.f.keys():
+            for ClassValue in self.f.keys():
                 probability = 1
                 # assign a default value of the test vector attribute value if 
                 # it was not seen in the training set (count ak = 0)
-                default_value = 1/(self.n[c] + len(attributes))
-                for Aj in self.f[c].keys():
-                    for ak in x:
-                        # reference the training matrix f for the chance of 
-                        # seeing the attribute value ak
-                        try:
-                            probability = probability * self.f[c][Aj][ak]
-                        except KeyError:
-                            probability = probability * default_value
+                default_value = 1/(self.n[ClassValue] + len(attributes))
+
+                for feature, featureValue in x.items():
+                    # reference the training matrix f for the chance of 
+                    # seeing the attribute value ak
+                    try:
+                        probability = probability * self.f[ClassValue][feature][featureValue]
+                    except KeyError:
+                        probability = probability * default_value
+
                 # store the final calculated value for the class
-                ClassEstimates[c] = probability
+                ClassEstimates[ClassValue] = probability
+
             # take the class with the highest calculated value
             estimate = self.argmax(ClassEstimates)
             # store the classification value with the feature vector

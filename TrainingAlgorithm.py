@@ -117,7 +117,6 @@ class TrainingAlgorithm:
     # generate the smoothed past probability of each feature value found in a given class
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
         fMatrix = {}
-        print(df.head)
         # get list of all features
         columnList = list(df.columns.values)[:-1]
 
@@ -190,22 +189,30 @@ if __name__ == '__main__':
     # print(count)
     ta = TrainingAlgorithm()
     n = ta.calculateN(df)
-    print("n: ", n)
+    # print("n: ", n)
 
     q = ta.calculateQ(n, len(df))
-    print("q: ", q)
+    # print("q: ", q)
 
     f = ta.calculateF(n, df)
-    print("f: \n")
-    pprint.pprint(f)
+    # print("f: \n")
+    # pprint.pprint(f)
+
+    print("input dataframe: ")
+    print(df.head)
 
     c = Classifier.Classifier(n, q, f)
     classified = c.classify(df)
+    print("classified dataframe")
     print(classified)
 
     r = Results.Results()
     cM = r.ConfusionMatrix(classified)
 
+    print("Confusion Matrix")
     print(cM)
+
+    stats = r.classStats(cM)
+    print(stats)
 
     print("Program Finish")
