@@ -1,14 +1,14 @@
 #Created by Nick Stone and Matteo Bjornsson 
 #Created on 8/20/2020 
-#################################################################### MODULE COMMENTS ####################################################################
-##
-##
-#################################################################### MODULE COMMENTS ####################################################################
+##################################################################### MODULE COMMENTS #####################################################################
+#
+#
+#
+#
+#
+##################################################################### MODULE COMMENTS #####################################################################
+
 import pandas as pd 
-from DataProcessor import DataProcessor
-from TrainingAlgorithm import TrainingAlgorithm
-from Results import Results 
-from Classifier import Classifier
 
 #Take in the Result data, The data frame of data, and the trial number and print to a file 
 def WriteToAFile(Results,DataFrame,Trial):
@@ -28,19 +28,18 @@ def main():
     #Which set of the data is being used to test 
     TestData = 0 
     print("Program Starting")
-    VoteData = 'Vote_Data//Votes.data'
-    IrisData = 'Iris_Data//iris.data'
-    GlassData = 'Glass_Data//glass.data'
-    CancerData = 'Breast_Cancer_Data//cancer.data'
-    SoybeanData = 'Soybean_Data//soybean.data'
+    VoteData = 'MachineLearning\Project 1\Vote_Data\Votes.data'
+    IrisData = 'MachineLearning\Project 1\Iris_Data\iris.data'
+    GlassData = 'MachineLearning\Project 1\Glass_Data\glass.data'
+    CancerData = 'MachineLearning\Project 1\Breast_Cancer_Data\cancer.data'
+    SoybeanData = 'MachineLearning\Project 1\Soybean_Data\soybean.data'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
     dp = DataProcessor()
-    df = pd.read_csv(SoybeanData) 
+    df = pd.read_csv(VoteData) 
     #Return a clean dataframe with missing attributes taken care of 
     df = dp.StartProcess(df)
-  
-    ML = TrainingAlgorithm()
+    ML = Training_Algorithm()
     #Dataframe without noise Its a list of 10 mostly equal dataframes
     NoNoiseDf = ML.BinTestData(df)
     #DataFrame with Noise 
@@ -50,27 +49,21 @@ def main():
     #Make One dataframe to hold all of the other Training dataframes 
     TrainingDataFrame = pd.DataFrame()
     #Make One dataframe that is our test Dataframe 
-    TestingDataFrame = NoNoiseDf[TestData] 
+    TestingDataFrame = NoNoiseDf.pop(TestData) 
     for i in range(len(NoNoiseDf)):     
-        if i == TestData: 
-            continue 
-        else: 
-            #Append the training dataframe to one dataframe to send to the ML algorithm 
-            TrainingDataFrame.append(NoNoiseDf[i])
+        #Append the training dataframe to one dataframe to send to the ML algorithm 
+        TrainingDataFrame.append(NoNoiseDf[i])
     
     #Calculate the N value for the Training set
     TrainingN = ML.calculateN(TrainingDataFrame)
     #Calculate the Q value for the Training set
-    print(TrainingN)
     TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
     #Calculate the F Matrix for the Training set
-    print(TrainingQ)
     TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
     #Create a Classifier Object to classify our test set 
-    print(TrainingF)
-    ClassifierObj = Classifier(TrainingN,TrainingQ,TrainingF)
+    Classifier = Classifier(TrainingN,TrainingQ,TrainingF)
     #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
-    TestingDataFrame = ClassifierObj.classify(TestingDataFrame)
+    TestingDataFrame = Classifier.calssify(TestingDataFrame)
     
     #Get some statistics on the Machine learning 
     #Create a Results object
@@ -80,9 +73,6 @@ def main():
     #Run the 0/1 Loss function on our results
     Stats = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
     #Run the F1 Loss function on our results 
-
-
-
 
     #Send the Data to a csv file for human checking and hyper parameter tuning 
     WRiteToAFile(Stats, TestingDataFrame,Trial)

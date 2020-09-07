@@ -81,40 +81,23 @@ class TrainingAlgorithm:
         return Temporary 
 
     def BinTestData(self, df: pd.DataFrame) -> list(): 
-        #Set the binsize to be 10 
-        Binsize = 10    
-        #Create an empty list     
-        BinsInList = list()     
-        #Calculate the number of records to be sampled for testing 
-        TestSize = len(df) * .1 
-        #Loop through the number of bins we set the binsize to
+        Binsize = 10
+        columnHeaders = list(df.columns.values)
+        bins = []
         for i in range(Binsize):
-            #If the counter is on the last bin 
-            if i == Binsize-1: 
-                #Append the dataframe to the list 
-                BinsInList.append(df)
-                #Break out of the loop 
-                break
-            #Create a new column list 
-            columnss = list() 
-            #For each of the columns in the dataframe 
-            for i in df.columns: 
-                #Append the column name to the list 
-                columnss.append(i)
-            #Create a dataframe with the proper columns as above 
-            df1 = pd.DataFrame(columns = columnss)
-            #Count until we hit the number of records we want to sample 
-            for i in range(int(TestSize)):
-                #Set a value to be a random number from the dataset 
-                TestValue = random.randint(0,len(df)-1)
-                #Append this row to a new dataframe
-                df1.loc[i] = df.index[TestValue]
-                #Remove the dataframe row we appended above from the dataframe
-                df =  df.drop(df.index[TestValue])
-            #Append the dataframe created to the list
-            BinsInList.append(df1)
-        #Return the list of dataframes 
-        return BinsInList
+            bins.append(pd.DataFrame(columns=columnHeaders))
+        
+        dataIndices = list(range(len(df)))
+        random.shuffle(dataIndices)
+
+        count = 0
+        for index in dataIndices:
+            binNumber = count % Binsize
+            print(df.iloc[index])
+            bins[binNumber] = bins[binNumber].append(df.iloc[index], ignore_index=False)
+            count += 1
+            continue
+        return bins
 
 
 
@@ -198,24 +181,27 @@ if __name__ == '__main__':
     filename = sys.argv[1]
     df = pd.read_csv(filename)
     ta = TrainingAlgorithm()
-    n = ta.calculateN(df)
-    q = ta.calculateQ(n, len(df))
-    f = ta.calculateF(n, df)
-    print("input dataframe: ")
-    print(df.head)
+    cross_validation_chunks = ta.BinTestData(df)
 
-    c = Classifier.Classifier(n, q, f)
-    classified = c.classify(df)
-    print("classified dataframe")
-    print(classified)
+   
+    # n = ta.calculateN(df)
+    # q = ta.calculateQ(n, len(df))
+    # f = ta.calculateF(n, df)
+    # print("input dataframe: ")
+    # print(df.head)
 
-    r = Results.Results()
-    cM = r.ConfusionMatrix(classified)
+    # c = Classifier.Classifier(n, q, f)
+    # classified = c.classify(df)
+    # print("classified dataframe")
+    # print(classified)
 
-    print("Confusion Matrix")
-    print(cM)
+    # r = Results.Results()
+    # cM = r.ConfusionMatrix(classified)
 
-    stats = r.classStats(cM)
-    print(stats)
+    # print("Confusion Matrix")
+    # print(cM)
+
+    # stats = r.classStats(cM)
+    # print(stats)
 
     print("Program Finish")
