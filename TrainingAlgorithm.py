@@ -1,3 +1,7 @@
+#################################################################### MODULE COMMENTS ####################################################################
+##
+##
+#################################################################### MODULE COMMENTS ####################################################################
 import pandas as pd
 import numpy as np
 import random 
@@ -6,10 +10,6 @@ import copy
 import pprint
 
 class TrainingAlgorithm:
-
-    def __init__(self):
-        self.attr = []
-
 
 
     def ShuffleData(self, df: pd.DataFrame) ->list(): 
@@ -197,39 +197,10 @@ if __name__ == '__main__':
     print("Program Start")
     filename = sys.argv[1]
     df = pd.read_csv(filename)
-    # ta = Training_Algorithm() 
-    # te = ta.CrossValidation(df)
-    # for i in range(len(te)): 
-    #     print("LENGTHS: ")
-    #     print(len(te[i]))
-    # test = ta.BinTestData(df)
-    # print("=================")
-    # for i in range(len(test)): 
-    #     print("LENGTHS")
-    #     print(len(test[i]))
-    # df1 = ta.ShuffleData(df)
-
-    #df2 = pd.DataFrame(df1)
-    # count = 0 
-    # for i in range(len(df)): 
-    #     for j in range(len(df.columns)):
-           
-    #         #print(df2.iloc[i][j])
-    #         if df.iloc[i][j] != df1.iloc[i][j]:
-    #             print("CHANGE")
-    #             count+=1 
-    # print(count)
     ta = TrainingAlgorithm()
     n = ta.calculateN(df)
-    # print("n: ", n)
-
     q = ta.calculateQ(n, len(df))
-    # print("q: ", q)
-
     f = ta.calculateF(n, df)
-    # print("f: \n")
-    # pprint.pprint(f)
-
     print("input dataframe: ")
     print(df.head)
 

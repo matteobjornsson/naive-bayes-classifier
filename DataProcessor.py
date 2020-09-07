@@ -1,3 +1,7 @@
+#################################################################### MODULE COMMENTS ####################################################################
+##
+##
+#################################################################### MODULE COMMENTS ####################################################################
 import pandas as pd
 import numpy as np
 import sys
@@ -303,36 +307,8 @@ class DataProcessor:
 if __name__ == '__main__':
     filename = sys.argv[1]
     df = pd.read_csv(filename)
-    #print(df.head())
     dp = DataProcessor()
     print(df)
     df = dp.StartProcess(df)
     dp.PrintAllData(df)
-
-    
-    #print(dp.CountTotalRows(df))
-    #print(dp.CountRowsMissingValues(df))
-    #print(dp.PercentRowsMissingValue(df))
-    ##print(dp.NumberOfColumns(df))
-    #print(dp.ColumnMissingData(df))
-    #print(dp.PercentColumnsMissingData(df))
-    #df = df.drop(df.index[1]
-    #print(len(dp.MissingColumnNameList))
-    #print(len(dp.MissingRowIndexList))
-    #df1 = dp.fix_missing_attrs(df)
-    
-    #print(len(df1.columns))
-    #print(df1.describe())
-    #print("============================")
-    #print("\n")
-    #print(df1["Clump_Thickness"])
-    #print("============================")
-    #print("\n")
-    #df1 = dp.discretize(df1,"Clump_Thickness")
-    #print(df1["Clump_Thickness"])
-
-    #if dp.has_continuous_values(df):
-     #   print("Attribute values continuous, discretizing...\n")
-     #   df = dp.discretize(df)
-    #print(df.head())
     
