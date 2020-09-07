@@ -57,8 +57,9 @@ class Classifier:
                     except KeyError:
                         probability = probability * default_value
 
-                # store the final calculated value for the class
-                ClassEstimates[ClassValue] = probability
+                # multiply the attribute value probability by the class 
+                # probability and store the value
+                ClassEstimates[ClassValue] = probability * self.q[ClassValue]
 
             # take the class with the highest calculated value
             estimate = self.argmax(ClassEstimates)

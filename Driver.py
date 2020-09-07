@@ -93,12 +93,14 @@ def main():
     #List to hold our stats
     Stats = list()  
     #Run the 0/1 Loss function on our results
-    Stats.append(Analysis.ZeroOneLossFunctionStats(TestingDataFrame))
+    zeroOne = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
     #Run the F1 Loss function on our results 
-    Stats.append(Analysis.F1MatrixScore(TestingDataFrame))
+    f1Matrix = Analysis.F1MatrixScore(TestingDataFrame)
 
-    print(Stats)
-
+    print("Zero one loss: \n")
+    print(zeroOne)
+    print("F1 Matrix score: \n")
+    print(f1Matrix)
 
     # #Send the Data to a csv file for human checking and hyper parameter tuning 
     # WriteToAFile(Stats, TestingDataFrame,Trial)
