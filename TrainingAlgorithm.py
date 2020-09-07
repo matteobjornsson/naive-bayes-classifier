@@ -109,51 +109,55 @@ class TrainingAlgorithm:
     # take in n and create a new dict q that is each value / total rows
     def calculateQ(self, n: dict, TotalRows) -> dict:
         QValue = {} 
+        # divide each class count by total data points
         for k in n.keys(): 
             QValue[k] = n[k] / TotalRows
         return QValue
 
+    # generate the smoothed past probability of each feature value found in a given class
     def calculateF(self, n: dict, df: pd.DataFrame) -> dict:
         fMatrix = {}
         print(df.head)
+        # get list of all features
         columnList = list(df.columns.values)[:-1]
-        for col in columnList: 
-            for row in range(len(df)): 
-                AttributeValue = df.at[row, col]
+
+        # F(Aj = ak, C = ci) is calculated per feature, where ak is a specific 
+        # value of the feature and ci is a specific class value.
+        for feature in columnList: 
+            for row in range(len(df)):
+                # for each feature, iterate over every row (feature vector x).
+                # save the value of the feature and the associated ground truth
+                # for the row. 
+                AttributeValue = df.at[row, feature]
                 ClassValue = df.iloc[row][len(df.columns)-1]
 
+                # for each (class value, feature, feature value) combination encountered,
+                # increment the counter for that combination. If the combination
+                # has not been found yet, add the necessary keys and counter.
                 if ClassValue in fMatrix.keys(): 
-                    if col in fMatrix[ClassValue].keys():
-                        if AttributeValue in fMatrix[ClassValue][col].keys(): 
-                            fMatrix[ClassValue][col][AttributeValue] +=1 
+                    if feature in fMatrix[ClassValue].keys():
+                        if AttributeValue in fMatrix[ClassValue][feature].keys():
+                            fMatrix[ClassValue][feature][AttributeValue] +=1 
                         else: 
-                            fMatrix[ClassValue][col][AttributeValue] = 1 
+                            fMatrix[ClassValue][feature][AttributeValue] = 1 
                     else: 
-                        fMatrix[ClassValue][col] = {AttributeValue:1}
+                        fMatrix[ClassValue][feature] = {AttributeValue:1}
                 else: 
-                    fMatrix[ClassValue] = {col:{AttributeValue:1}}
-       
+                    fMatrix[ClassValue] = {feature:{AttributeValue:1}}
+        # after counting all attribute values per class per feature, modify each
+        # by dividing by the count of the associated class plus the number of 
+        # features, and +1 in the numerator (+1 and + features are for smoothing)
         for ClassValueI in fMatrix.keys():
             for Attribute in fMatrix[ClassValueI].keys(): 
                 for AttributeValue in fMatrix[ClassValueI][Attribute].keys(): 
                     Value = fMatrix[ClassValueI][Attribute][AttributeValue] 
                     Value +=1 
-                    fMatrix[ClassValueI][Attribute][AttributeValue]  = (Value/(n[ClassValueI] + (len(df.columns)-1)))
+                    fMatrix[ClassValueI][Attribute][AttributeValue] = (
+                        (Value/(n[ClassValueI] + (len(df.columns)-1)))
+                    )
+        # return the complete "past feature value probability matrix"
         return fMatrix
-               
-                
-                
-    #List = { 0,1,2,3,4,5,6,7,8,9,}
-        
-        #f = {"class1": {"A1": 0, "A2": 0}, "class2": {"A1": 0, "A2": 0}}
 
-        # init nested dict where first layer keys are classes and second layer keys are each possible attribute value
-        # iterate over every column that is an attribute
-            # iterate over every row
-                # increment counter of the class x attribute value 
-        # iterate over all values in nested dict
-            # add 1 and divide by the count of examples in the class (n[class]) plus the total number of examples
-            # i.e. (v + 1)/(n[class] + d)
 
 if __name__ == '__main__':
     import Classifier
