@@ -15,11 +15,9 @@ import math
 
 class DataProcessor:
     #On the creation of a Dataprocessor object set the following values 
-    def __init__(self):
-        #Discrete threshold 
-        self.discrete_threshold = 5
+    def __init__(self, bin_count):
         #Total number of bins to bin the non-discrete values 
-        self.bin_count = 5
+        self.bin_count = bin_count
         #Set the percentage of missing values to be dropped 
         self.PercentBeforeDrop = 10.00 
         #Set the missing value row index to an empty set 

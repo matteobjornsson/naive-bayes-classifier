@@ -123,17 +123,17 @@ def main():
             #Run the 0/1 Loss function on our results
             zeroOnePercent = Analysis.ZeroOneLoss(TestingDataFrame)
             #Run the stats summary on our results 
-            classStats, microStats, macroStats = Analysis.statsSummary(TestingDataFrame)
+            macroF1Average = Analysis.statsSummary(TestingDataFrame)
             print("Zero one loss: \n")
             print(zeroOnePercent)
-            print("F1 Matrix score: \n")
-            print(
-                "per-class stats: \n", classStats, 
-                '\n micro-Averaged stats: \n', microStats, 
-                '\n macro-Averaged stats: \n', macroStats
-                )
+            # print("F1 Matrix score: \n")
+            # print(
+            #     "per-class stats: \n", classStats, 
+            #     '\n micro-Averaged stats: \n', microStats, 
+            #     '\n macro-Averaged stats: \n', macroStats
+            #     )
             AvgZeroOne.append(zeroOnePercent)
-            AvgF1.append(macroStats["macroF1"])
+            AvgF1.append(macroF1Average)
             
             
             # #Send the Data to a csv file for human checking and hyper parameter tuning 

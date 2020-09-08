@@ -55,12 +55,12 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict, dict):
         cMatrix = self.ConfusionMatrix(df)
         classStats = self.perClassStats(cMatrix)
-        tpList = list(classStats["TP"])
-        fpList = list(classStats["FP"])
-        fnList = list(classStats["FN"])
-        microStats = self.microAverageStats(tpList, fpList, fnList)
-        macroStats = self.weightedMacroAverageStats(classStats, cMatrix)
-        return classStats, microStats, macroStats
+        # tpList = list(classStats["TP"])
+        # fpList = list(classStats["FP"])
+        # fnList = list(classStats["FN"])
+        # microStats = self.microAverageStats(tpList, fpList, fnList)
+        macroF1Average = self.weightedMacroAverageStats(classStats, cMatrix)
+        return macroF1Average
     #Parameters: DataFrame 
     #Returns: DataFrame
     #Function: 
@@ -82,23 +82,23 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             #Add the total class occurence to the variable initialized above 
             totalClassCount += classCounts[key]
         #Set a series of statistical variables to 0 
-        macroRecallAverage = 0
-        macroPrecisionAverage = 0
+        # macroRecallAverage = 0
+        # macroPrecisionAverage = 0
         macroF1Average = 0
         #Loop through all of the classes 
         for i in range(len(classValues)):
-            #Add the total number of occurence of the class multiplied by the stat percentage 
-            macroRecallAverage += (perClassStats["Recall"].iloc[i] * classCounts[classValues[i]])
-            #Add the total number of occurence of the class multiplied by the stat percentage 
-            macroPrecisionAverage += (perClassStats["Precision"].iloc[i] * classCounts[classValues[i]])
+            # #Add the total number of occurence of the class multiplied by the stat percentage 
+            # macroRecallAverage += (perClassStats["Recall"].iloc[i] * classCounts[classValues[i]])
+            # #Add the total number of occurence of the class multiplied by the stat percentage 
+            # macroPrecisionAverage += (perClassStats["Precision"].iloc[i] * classCounts[classValues[i]])
             #Add the total number of occurence of the class multiplied by the stat percentage 
             macroF1Average += (perClassStats["F1"].iloc[i] * classCounts[classValues[i]])
         #THen divide by the total number of examples 
-        macroStatsDict["macroRecall"] = macroRecallAverage / totalClassCount
-        macroStatsDict["macroPrecision"] = macroPrecisionAverage / totalClassCount
-        macroStatsDict["macroF1"] = macroF1Average / totalClassCount
+        # macroStatsDict["macroRecall"] = macroRecallAverage / totalClassCount
+        # macroStatsDict["macroPrecision"] = macroPrecisionAverage / totalClassCount
+        macroF1Average = macroF1Average / totalClassCount
         #Return the dictionary 
-        return macroStatsDict
+        return macroF1Average
         
 
     def countClassOccurence(self, cMatrix: pd.DataFrame) -> dict:
