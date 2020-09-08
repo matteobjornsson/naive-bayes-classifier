@@ -1,3 +1,4 @@
+<<<<<<< HEAD
               TP   FP   FN    TN  Precision    Recall        F1
 democrat    26.0  1.0  2.0  15.0   0.962963  0.928571  0.945455
 republican  15.0  2.0  1.0  26.0   0.882353  0.937500  0.909091
@@ -40,3 +41,12 @@ republican  15.0  2.0  1.0  26.0   0.882353  0.937500  0.909091
 63 y y y n n n y y y n y n n n n y democrat democrat
 67 n y n y y y n n n y n y y y n n republican republican
 184 n n y n n n y y y y y n n n y y democrat democrat
+=======
+     TP   FP   FN   TN  Precision  Recall        F1
+D1  2.0  0.0  0.0  3.0        1.0     1.0  1.000000
+D4  1.0  1.0  0.0  3.0        0.5     1.0  0.666667
+D3  0.0  0.0  1.0  4.0        0.0     0.0  0.000000
+D2  1.0  0.0  0.0  4.0        1.0     1.0  1.000000
+{'microRecall': 0.8, 'microPrecision': 0.8, 'microF1Score': 0.8000000000000002}
+{'macroRecall': 0.8224852071005917, 'macroPrecision': 0.6952662721893492, 'macroF1': 0.73767258382643}
+>>>>>>> 61a77c3ef715d1fa4d3fa8c2b12970345dc05c1c
