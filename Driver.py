@@ -21,7 +21,7 @@ import pprint
 #Function: Take in the Result data, The data frame of data, and the trial number and print to a file 
 def WriteToAFile(Setname, Results,Trial):
     #Set the file name based on the trial number 
-    FileName = "Naive Bayes Results " + str(Trial) + ".csv"
+    FileName = Setname + "_" + str(Trial) + ".csv"
     #Open the file in write mode 
     f = open(FileName, "w")
     #Append the data set name to the csv files 
@@ -47,6 +47,13 @@ def Average(TotalRunCount, Stats ) -> list:
     Avg.append(ZOloss)
     return Avg
 
+def train(trainingAlgorithm, trainingData: pd.DataFrame) -> (dict, dict, dict):
+    N = trainingAlgorithm.calculateN(trainingData)
+    Q = trainingAlgorithm.calculateQ(N, len(trainingData))
+    F = trainingAlgorithm.calculateF(N, trainingData)
+
+    return N, Q, F
+
 #Parameters: None
 #Return: None
 #Function: The main function is what combines all of the object together in this project. This is called one time and this function runs the Naive Bayes against all of the data 
@@ -63,78 +70,62 @@ def main():
         'PreProcessedCancer.csv',
         'PreProcessedSoybean.csv',
     ]
-    # VoteData = 'PreProcessedVoting.csv'
-    # IrisData = 'PreProcessedIris.csv'
-    # GlassData = 'PreProcessedGlass.csv'
-    # CancerData = 'PreProcessedCancer.csv'
-    # SoybeanData = 'PreProcessedSoybean.csv'
+    dataset_names = [
+        "Vote", "Iris", "Glass", "Cancer", "Soybean", 
+        "Vote_Noise", "Iris_Noise", "Glass_Noise", "Cancer_Noise", "Soybean_Noise"
+    ] 
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
-    AvgZeroOne = list()
-    AvgF1 = list() 
-    TotalRun = 3 
+
+    TotalRun = 10 
     for dataset in data_sets:
-        for i in range(TotalRun): 
-            print(dataset)
-            df = pd.read_csv(dataset) 
-            #Return a clean dataframe with missing attributes taken care of 
-            # df = dp.StartProcess(df)
-            ML = TrainingAlgorithm.TrainingAlgorithm()
-            #Dataframe without noise Its a list of 10 mostly equal dataframes
-            NoNoiseDf = ML.BinTestData(df)
-            #DataFrame with Noise 
-            NoiseDf =  ML.ShuffleData(df)
-            #Return a list of 10 mostly equal sized dataframes
-            NoiseDf = ML.BinTestData(NoiseDf)
+        AvgZeroOne = []
+        AvgF1 = []
+        datasetName = dataset_names[data_sets.index(dataset)]
+        print(datasetName)
+        df = pd.read_csv(dataset) 
+        #Return a clean dataframe with missing attributes taken care of 
+        # df = dp.StartProcess(df)
+        ML = TrainingAlgorithm.TrainingAlgorithm()
+        #Dataframe without noise Its a list of 10 mostly equal dataframes
+        tenFoldDataset = ML.BinTestData(df)
+        # #DataFrame with Noise 
+        # NoiseDf =  ML.ShuffleData(df)
+        # #Return a list of 10 mostly equal sized dataframes
+        # NoiseDf = ML.BinTestData(NoiseDf)
+        for i in range(10): 
             #Make One dataframe to hold all of the other Training dataframes 
             TrainingDataFrame = pd.DataFrame()
             #Make One dataframe that is our test Dataframe 
-            TestingDataFrame = NoNoiseDf.pop(TestData) 
-            for i in range(len(NoNoiseDf)):     
+            TestingDataFrame = tenFoldDataset[j]
+            for j in range(10):
+                if i == j:
+                    continue    
                 #Append the training dataframe to one dataframe to send to the ML algorithm 
-                TrainingDataFrame = TrainingDataFrame.append(NoNoiseDf[i], ignore_index=True)
-            
-            # print("Driver training data: \n", TrainingDataFrame)
-            # print("Driver testing dataframe: \n", TestingDataFrame)
+                TrainingDataFrame = TrainingDataFrame.append(tenFoldDataset[j], ignore_index=True)
 
-
-            #Calculate the N value for the Training set
-            TrainingN = ML.calculateN(TrainingDataFrame)
-            #Calculate the Q value for the Training set
-            TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
-            #Calculate the F Matrix for the Training set
-            TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
-
+            # calculate the N, Q, and F probabiliies
+            N, Q, F = train(ML, TrainingDataFrame)
 
             #Create a Classifier Object to classify our test set 
-            model = Classifier.Classifier(TrainingN,TrainingQ,TrainingF)
+            model = Classifier.Classifier(N, Q, F)
             #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
-            TestingDataFrame = model.classify(TestingDataFrame)
+            classifiedDataFrame = model.classify(TestingDataFrame)
             
-            # print("Classified test set: \n")
-            # print(TestingDataFrame)
 
             #Get some statistics on the Machine learning 
             #Create a Results object
             Analysis = Results.Results()
 
-            #List to hold our stats
-            Stats = list()  
             #Run the 0/1 Loss function on our results
-            zeroOnePercent = Analysis.ZeroOneLoss(TestingDataFrame)
+            zeroOnePercent = Analysis.ZeroOneLoss(classifiedDataFrame)
             #Run the stats summary on our results 
-            macroF1Average = Analysis.statsSummary(TestingDataFrame)
+            macroF1Average = Analysis.statsSummary(classifiedDataFrame)
             print("Zero one loss: \n")
             print(zeroOnePercent)
-            # print("F1 Matrix score: \n")
-            # print(
-            #     "per-class stats: \n", classStats, 
-            #     '\n micro-Averaged stats: \n', microStats, 
-            #     '\n macro-Averaged stats: \n', macroStats
-            #     )
+
             AvgZeroOne.append(zeroOnePercent)
             AvgF1.append(macroF1Average)
-            
             
             # #Send the Data to a csv file for human checking and hyper parameter tuning 
             
@@ -147,7 +138,7 @@ def main():
             "F1": sum(AvgF1)/len(AvgF1), 
             "ZeroOne": sum(AvgZeroOne)/len(AvgZeroOne)
             }
-        WriteToAFile(dataset, AvgStats,Trial)
+        WriteToAFile(datasetName, AvgStats,Trial)
     print("Program Finish")
 
 
