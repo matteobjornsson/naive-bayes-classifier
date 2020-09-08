@@ -30,17 +30,26 @@ class Results:
 
     #Parameters: DataFrames
     #Returns: List 
-    #Function: 
+    #Function: Take in a dataframe and count the number of correct classifications and return the percentage value 
     def ZeroOneLoss(self, df: pd.DataFrame)->list(): 
+        #Store off the guessed classifier 
         guessIndex = len(df.columns)-1
+        #Store off the true classification 
         groundTruthIndex = len(df.columns) -2
+        #Set the count correct to 0 
         countCorrect = 0
+        #Get the total number of rows from the dataframe 
         totalCount = len(df)
+        #For each of the rows in the dataframe 
         for i in range(totalCount): 
+            #If the classified true is equal to the guess classification 
             if df.iloc[i][guessIndex] == df.iloc[i][groundTruthIndex]: 
+                #INcrement the correct value 
                 countCorrect += 1
+        #The percent Correct divided by total count * 100 
         percentCorrect = (countCorrect / totalCount) * 100 
         #TotalWrong = (len(self.ClassificationWrong) / TotalTestSet) * 100 
+        #Return the percent correct 
         return percentCorrect
 
     """
@@ -51,23 +60,46 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     """
     #Parameters: Dataframe 
     #Returns: DataFrame, Dictionary 
-    #Function: 
+    #Function: Take in a given dataframe and get a series of statistics about the given dataframe 
     def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict, dict):
+        #Create a dataframe of the confusion matrix 
         cMatrix = self.ConfusionMatrix(df)
+        #Create a Dataframe to get stats about the classes 
         classStats = self.perClassStats(cMatrix)
+<<<<<<< HEAD
         # tpList = list(classStats["TP"])
         # fpList = list(classStats["FP"])
         # fnList = list(classStats["FN"])
         # microStats = self.microAverageStats(tpList, fpList, fnList)
         macroF1Average = self.weightedMacroAverageStats(classStats, cMatrix)
         return macroF1Average
+=======
+        #Create a series of lists for True positive, false positive, false negative 
+        tpList = list(classStats["TP"])
+        fpList = list(classStats["FP"])
+        fnList = list(classStats["FN"])
+        #Create a dicationary of the micro average stats 
+        microStats = self.microAverageStats(tpList, fpList, fnList)
+        #Create a dictionary of the weighted averages 
+        macroStats = self.weightedMacroAverageStats(classStats, cMatrix)
+        #Return the dataframe, a dictionary and a dictionary 
+        return classStats, microStats, macroStats
+   
+   
+>>>>>>> f661b1f7b364b00c5c85b7eb408ae020b615c22f
     #Parameters: DataFrame 
     #Returns: DataFrame
-    #Function: 
+    #Function: Take in a dataframe and generate all of the class stats from the given dataframe and return it 
     def perClassStats(self, cMatrix): 
+        #Set the dataframe of the class stats
         classStats = self.classStats(cMatrix)
+        #return the dataframe of class stats
         return classStats
-
+    
+    
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: Take in the float of class stats and the cmatrix and generate the weighted macro averages 
     def weightedMacroAverageStats(self, perClassStats, cMatrix) -> dict: 
         #Create a list of the names of classes 
         classValues = list(perClassStats.index.values)
@@ -100,7 +132,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         #Return the dictionary 
         return macroF1Average
         
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: Count the number of times a class occurs in a given dataframe and return this in a dictionary 
     def countClassOccurence(self, cMatrix: pd.DataFrame) -> dict:
         #Get a list of all the class names 
         classValues = list(cMatrix.index.values)
@@ -122,47 +156,65 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         #Return the dictionary 
         return classCounts
         
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: This set takes in the number of true positives followed by a series of lists of several other confusion matrix values to generate micro average stats 
     def microAverageStats(self, truePositives: list, falsePositives: list, falseNegatives: list) -> dict:
+        #Create an empty dictionary 
         microStatsDict = {}
-
+        #Store off the sum of the given values into the respective variable name 
         tpSum = sum(truePositives)
         fpSum = sum(falsePositives)
         fnSum = sum(falseNegatives)
-
+        #Get the micro recall from the values above 
         microRecall = self.recall(tpSum, fnSum)
+        #Get the micro precision from the values above 
         microPrecision = self.precision(tpSum, fpSum)
-
+        #Save the micro recall value in the dictionary with the following key 
         microStatsDict["microRecall"] = microRecall
+        #Save the micro precision value with the following key in the dictionary 
         microStatsDict["microPrecision"] = microPrecision
+        #Calculate and save the following F1 score with the following key in the dictionary 
         microStatsDict["microF1Score"] = self.f1Score(precision=microPrecision, recall=microRecall)
-
+        #Return the dicationary that is full of data 
         return microStatsDict
 
     #Parameters: Float, Float
     #Returns: Float 
-    #Function: 
+    #Function: Take in the precision and recall that is calculated below and generate the F1 score 
     def f1Score(self, precision, recall) -> float:
+            #If the precision + recall is 0 
             if (precision + recall) == 0:
+                #Return 0 
                 return 0
+            #Otherwise 
             else:
+                #Return the value asscoiated with the following computation 
                 return 2 * precision * recall / (precision + recall)
 
     #Parameters: Inter, Integer
     #Returns: Float 
-    #Function: 
+    #Function: Take in the true positive count and the false negative count to calculate and return the recall 
     def recall(self, truePositiveCount, falseNegativeCount) -> float:
+        #If the TP + FN is 0 
         if truePositiveCount + falseNegativeCount == 0:
+            #Return 0 
             return 0
+        #Otherwise 
         else:
+            #Return the following computation( TP/ *TPC + FN )
             return truePositiveCount/(truePositiveCount + falseNegativeCount)
     #Parameters: Integer, Integer
     #Returns: Float
-    #Function: 
+    #Function:Function takes in the true positives and the false positive from the confusion matrix and calulates the precision  
     def precision(self, truePositiveCount, falsePositiveCount) -> float:
+        #If the TP + FP is 0 
         if truePositiveCount + falsePositiveCount == 0:
+            #Return 0 
             return 0
+        #Otherwise 
         else:
+            #Return the formula for precision 
             return truePositiveCount/(truePositiveCount + falsePositiveCount)
     
     #Parameters: Integer, DataFame
@@ -197,37 +249,48 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
     #Parameters: Integer, DataFrame 
     #Returns: List 
-    #Function: 
-    # return a list of false negative counts for each class
+    #Function: return a list of false negative counts for each class
     def falseNegative(self, classCount: range, cMatrix: pd.DataFrame) -> list:
+        #Create an empty array 
         fn = []
+        #For each of the values in the classcount 
         for i in classCount:
+            #Set count to 0 
             count = 0
             for j in classCount:
+                #If the class count is the same 
                 if i == j:
+                    #Do nothing 
                     continue
+                #Otherwise 
                 else:
                     # false negative is the sum of every count in the class
                     # row except the true positive count
                     count += cMatrix.iloc[i][j]
             fn.append(count)
+        #Return the list 
         return fn
 
     #Parameters: Int, DataFrame, List, List,List 
     #Returns: List 
     #Function: return a list of true negative counts for each class
     def trueNegative(self, classCount: range, cMatrix: pd.DataFrame, tp: list, fp: list, fn: list) -> list:
+        #Create an empty array 
         tn = []
+        #For each of the values in classcount 
         for i in classCount:
+            #Set count to 0 d
             count = 0
             # sum the value of every cell
             for j in classCount:
                 for k in classCount:
+                    #Add the value at the given dataframe position to count 
                     count += cMatrix.iloc[j][k]
             # true negative counts are the sum of every cell minus true 
             # positive, false positive and false negative.
             count = count - tp[i] - fp[i] - fn[i]
             tn.append(count)
+        #Return the list 
         return tn
 
     #Parameters: DataFrame
