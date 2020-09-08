@@ -30,8 +30,6 @@ def WriteToAFile(Setname, Results,Trial):
     for i in Results: 
         #Write with a new line character
         f.write(str(i) + "\n")
-    #Append the Dataframe to the file 
-    DataFrame.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
     #Close the file 
     f.close()
 
