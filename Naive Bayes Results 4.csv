@@ -1,8 +1,0 @@
-     TP   FP   FN   TN  Precision  Recall   F1
-D4  2.0  1.0  0.0  2.0   0.666667     1.0  0.8
-D3  0.0  0.0  1.0  4.0   0.000000     0.0  0.0
-D1  1.0  0.0  0.0  4.0   1.000000     1.0  1.0
-D2  1.0  0.0  0.0  4.0   1.000000     1.0  1.0
-{'microRecall': 0.8, 'microPrecision': 0.8, 'microF1Score': 0.8000000000000002}
-{'macroRecall': 0.8, 'macroPrecision': 0.6666666666666666, 'macroF1': 0.72}
-
