@@ -54,6 +54,7 @@ class TrainingAlgorithm:
                 df1.at[j,df.columns[Column_Shuffle]] = temp[value]
                 #Remove the value that was radomly assigned
                 temp.remove(temp[value])
+        print(Shuffled)
         #Return the Data Frame 
         return df1
     #Parameters: Dataframe 

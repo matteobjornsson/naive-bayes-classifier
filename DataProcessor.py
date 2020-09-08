@@ -41,6 +41,7 @@ class DataProcessor:
                 #Break 
                 break
             #bin Integers
+           
             #If the type of the dataframe is a float then we need to discretize 
             if type(df1.iloc[0][i]) == np.float64: 
                 #Find which column needs to be discretized
@@ -500,26 +501,29 @@ class DataProcessor:
                 print(df.iloc[i][j])
 
 
+
 #Unit Testing the object created above 
 #Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     NumberBins = 32
     #Location of each data file stored off into variables for later retrieval of data 
-    VoteData = 'Vote_Data//Votes.data'
-    IrisData = 'Iris_Data//iris.data'
-    GlassData = 'Glass_Data//glass.data'
-    CancerData = 'Breast_Cancer_Data//cancer.data'
-    SoybeanData = 'Soybean_Data//soybean.data'
+    VoteData = 'PreProcessedVoting32.csv'
+    IrisData = 'PreProcessediris32.csv'
+    GlassData = 'PreProcessedGlass.csv'
+    CancerData = 'PreProcessedCancer32.csv'
+    SoybeanData = 'PreProcessedSoybean32.csv'
     #DataFrame With Voting data 
-    df = pd.read_csv(VoteData)
+    df = pd.read_csv(VoteData,index_col = False )
+    #print(df)
     #DataFrame With Iris data 
-    df1 = pd.read_csv(IrisData)
+    df1 = pd.read_csv(IrisData,index_col = False)
+    
     #DataFrame With Glass data 
-    df2 = pd.read_csv(GlassData)
+    df2 = pd.read_csv(GlassData,index_col = False)
     #DataFrame With Cancer data 
-    df3 = pd.read_csv(CancerData)
+    df3 = pd.read_csv(CancerData,index_col = False)
     #DataFrame With Soybean data 
-    df4 = pd.read_csv(SoybeanData)
+    df4 = pd.read_csv(SoybeanData,index_col = False)
     print("DataFrames have been created")
 
     Vote = DataProcessor(NumberBins)
@@ -533,22 +537,32 @@ if __name__ == '__main__':
     Soybean = DataProcessor(NumberBins) 
     #Soybean.bin_count = NumberBins 
     print("Pre Processor Objects Built ")
+    #df2 = Glass.StartProcess(df2)
+    """
     df = Vote.StartProcess(df)
     df1 = iris.StartProcess(df1)
     df2 = Glass.StartProcess(df2)
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
+    """
 
-    Ta = TrainingAlgorithm() 
+    Ta = TrainingAlgorithm.TrainingAlgorithm() 
+    print("Starting shuffle")
+    #df = Ta.ShuffleData(df)
+    print("First dataframe shuffled")
+    #df1 = Ta.ShuffleData(df1)
+    df2 = Ta.ShuffleData(df2)
+    ##df3 = Ta.ShuffleData(df3)
+    #df4 = Ta.ShuffleData(df4)
 
-    df = Ta.ShuffleData()
 
 
     print("Processing is complete ")
-    df.to_csv('PreProcessedVoting' + str(NumberBins) + '.csv')
-    df1.to_csv('PreProcessediris' + str(NumberBins) + '.csv')
-    df2.to_csv('PreProcessedGlass' + str(NumberBins) + '.csv')
-    df3.to_csv('PreProcessedCancer' + str(NumberBins) + '.csv')
-    df4.to_csv('PreProcessedSoybean' + str(NumberBins) + '.csv')
+    #df.to_csv('PreProcessedVoting' +'_Noise'+ '.csv')
+    #df1.to_csv('PreProcessediris' + '_Noise'+ '.csv')
+    df2.to_csv('PreProcessedGlass' + '_Noise' +  '.csv')
+    #df3.to_csv('PreProcessedCancer'  + '_Noise'+ '.csv')
+    #df4.to_csv('PreProcessedSoybean' + '_Noise'+ '.csv')
     print("File creation is complete ")
+
 
