@@ -528,7 +528,7 @@ if __name__ == '__main__':
         Vote = DataProcessor()
         Vote.bin_count = NumberBins
         iris = DataProcessor() 
-        Iris.bin_count = NumberBins 
+        iris.bin_count = NumberBins 
         Glass = DataProcessor() 
         Glass.bin_count = NumberBins
         Cancer = DataProcessor()
