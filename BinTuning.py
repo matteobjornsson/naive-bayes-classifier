@@ -23,13 +23,12 @@ iris_data = pd.read_csv('Iris_Data/iris.data')
 glass_data = pd.read_csv('Glass_Data/glass.data')
 datasets = [glass_data, iris_data]
 
-binCount = 11000
+binCount = 7000
 trials = 4
 
 for j in range(2):
-    bins = binCount
-    for i in range(8):
-        bins -= 1000
+    for i in range(5):
+        bins = 2^(4+i)
         results = []
         for k in range(trials):
             dp = DataProcessor.DataProcessor(bin_count=bins)

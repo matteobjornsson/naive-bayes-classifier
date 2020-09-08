@@ -66,27 +66,12 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         cMatrix = self.ConfusionMatrix(df)
         #Create a Dataframe to get stats about the classes 
         classStats = self.perClassStats(cMatrix)
-<<<<<<< HEAD
         # tpList = list(classStats["TP"])
         # fpList = list(classStats["FP"])
         # fnList = list(classStats["FN"])
         # microStats = self.microAverageStats(tpList, fpList, fnList)
         macroF1Average = self.weightedMacroAverageStats(classStats, cMatrix)
         return macroF1Average
-=======
-        #Create a series of lists for True positive, false positive, false negative 
-        tpList = list(classStats["TP"])
-        fpList = list(classStats["FP"])
-        fnList = list(classStats["FN"])
-        #Create a dicationary of the micro average stats 
-        microStats = self.microAverageStats(tpList, fpList, fnList)
-        #Create a dictionary of the weighted averages 
-        macroStats = self.weightedMacroAverageStats(classStats, cMatrix)
-        #Return the dataframe, a dictionary and a dictionary 
-        return classStats, microStats, macroStats
-   
-   
->>>>>>> f661b1f7b364b00c5c85b7eb408ae020b615c22f
     #Parameters: DataFrame 
     #Returns: DataFrame
     #Function: Take in a dataframe and generate all of the class stats from the given dataframe and return it 
