@@ -29,7 +29,7 @@ def WriteToAFile(Results,DataFrame,Trial):
         #Write with a new line character
         f.write(i + "\n")
     #Append the Dataframe to the file 
-    df.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
+    DataFrame.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
     #Close the file 
     f.close()
 
@@ -112,7 +112,7 @@ def main():
     print("per-class stats: \n", classStats, '\n micro-Averaged stats: \n', microStats)
 
     # #Send the Data to a csv file for human checking and hyper parameter tuning 
-    # WriteToAFile(Stats, TestingDataFrame,Trial)
+    WriteToAFile(Stats, TestingDataFrame,Trial)
 
     # #Increment the Trial and Testdata Number and do it again 
     # Trial+=1 
