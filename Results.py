@@ -1,6 +1,9 @@
 #################################################################### MODULE COMMENTS ####################################################################
-##
-##
+# The following Python object is responsible for calculating two loss functions to identify a series of statistical data points for a programmer to view #
+# In order to see how 'Well' the Naive bayes program is functioning. The two loss functions that Nick Stone and Matteo Bjornsson implemented for this pr-#
+# -oject were the 0/1 loss function which we will use to calculate the algorithms precision and the F1 score for a multidimensional data set.            #
+# All of the functions have been documented such that a programmer can understand the mathematics and statistics involved for undersanding each of the l-#
+# -oss Functions. The main datastructures used were a dataframe and a dictionary to keep track of a given confusion matrix                               # 
 #################################################################### MODULE COMMENTS ####################################################################
 
 import pandas as pd

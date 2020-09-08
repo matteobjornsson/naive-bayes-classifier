@@ -1,11 +1,11 @@
 #Created by Nick Stone and Matteo Bjornsson 
 #Created on 8/20/2020 
 ##################################################################### MODULE COMMENTS #####################################################################
-##
-##
-##
-##
-##
+# This is the main function for the Naive Bayes project that was created by Nick Stone and Matteo Bjornsson. The purpose of this class is to import all of #
+# The other classes and objects that were created and tie them together to run a series of experiments about the outcome stats on the data sets in question#
+# The following program is just intended to run as an experiment and hyper parameter tuning will need to be done in each of the respective classes.        #
+# It is important to note that the main datastructure that is used by these classes and objects is the pandas dataframe, and is used to pass the datasets  #
+# Between all of the objects and functions that have been created. The classes are set up for easy modification for hyper parameter tuning.                #
 ##################################################################### MODULE COMMENTS #####################################################################
 
 import pandas as pd 
@@ -30,7 +30,9 @@ def WriteToAFile(Setname, Results,Trial):
     f.write(str(Results) + "\n")
     #Close the file 
     f.close()
-
+#Parameters: 
+#Return: 
+#Function: 
 def Average(TotalRunCount, Stats ) -> list: 
     print(Stats)
     f1score = 0 
@@ -46,7 +48,9 @@ def Average(TotalRunCount, Stats ) -> list:
     Avg.append(f1score)
     Avg.append(ZOloss)
     return Avg
-
+#Parameters: 
+#Return: 
+#Function: 
 def train(trainingAlgorithm, trainingData: pd.DataFrame) -> (dict, dict, dict):
     N = trainingAlgorithm.calculateN(trainingData)
     Q = trainingAlgorithm.calculateQ(N, len(trainingData))
