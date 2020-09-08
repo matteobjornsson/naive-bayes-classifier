@@ -133,8 +133,9 @@ def main():
                 '\n micro-Averaged stats: \n', microStats, 
                 '\n macro-Averaged stats: \n', macroStats
                 )
-            AvgStats.append(macroStats["macroF1"])
             AvgStats.append(zeroOne)
+            AvgStats.append(macroStats["macroF1"])
+            
             
             # #Send the Data to a csv file for human checking and hyper parameter tuning 
             
