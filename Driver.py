@@ -41,7 +41,7 @@ def Average(TotalRunCount, Stats ) -> list:
         if i % 2 == 0: 
             f1score += Stats[i]
         else: 
-            ZOloss += Stats[i][1]
+            ZOloss += Stats[i]
     f1score = f1score / TotalRunCount
     ZOloss = ZOloss / TotalRunCount
     Avg = list() 
@@ -122,18 +122,18 @@ def main():
             #List to hold our stats
             Stats = list()  
             #Run the 0/1 Loss function on our results
-            zeroOne = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
+            zeroOnePercent = Analysis.ZeroOneLoss(TestingDataFrame)
             #Run the stats summary on our results 
             classStats, microStats, macroStats = Analysis.statsSummary(TestingDataFrame)
             print("Zero one loss: \n")
-            print(zeroOne)
+            print(zeroOnePercent)
             print("F1 Matrix score: \n")
             print(
                 "per-class stats: \n", classStats, 
                 '\n micro-Averaged stats: \n', microStats, 
                 '\n macro-Averaged stats: \n', macroStats
                 )
-            AvgStats.append(zeroOne)
+            AvgStats.append(zeroOnePercent)
             AvgStats.append(macroStats["macroF1"])
             
             
