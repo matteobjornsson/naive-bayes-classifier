@@ -67,6 +67,8 @@ class Classifier:
 
             # take the class with the highest calculated value
             estimate = self.argmax(ClassEstimates)
+            if i % 10 == 0:
+                print(estimate, end="\r", flush=True)
             # store the classification value with the feature vector
             df.at[i, 'estimate'] = estimate
         return df

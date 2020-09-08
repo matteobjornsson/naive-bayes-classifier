@@ -14,6 +14,7 @@ import TrainingAlgorithm
 import Classifier 
 import DataProcessor 
 import pprint
+import copy
 
 
 #Parameters: Dataset name, A list, a Dataframe and an Integer 
@@ -21,7 +22,7 @@ import pprint
 #Function: Take in the Result data, The data frame of data, and the trial number and print to a file 
 def WriteToAFile(Setname, Results,Trial):
     #Set the file name based on the trial number 
-    FileName = Setname + "_" + str(Trial) + ".csv"
+    FileName = Setname + "2_" + str(Trial) + ".csv"
     #Open the file in write mode 
     f = open(FileName, "w")
     #Append the data set name to the csv files 
@@ -91,25 +92,31 @@ def main():
         datasetName = dataset_names[data_sets.index(dataset)]
         print(datasetName)
         df = pd.read_csv(dataset) 
-        #Return a clean dataframe with missing attributes taken care of 
-        # df = dp.StartProcess(df)
+
         ML = TrainingAlgorithm.TrainingAlgorithm()
-        #Dataframe without noise Its a list of 10 mostly equal dataframes
+        # a list of 10 mostly equal dataframes
         tenFoldDataset = ML.BinTestData(df)
-        # #DataFrame with Noise 
-        # NoiseDf =  ML.ShuffleData(df)
-        # #Return a list of 10 mostly equal sized dataframes
-        # NoiseDf = ML.BinTestData(NoiseDf)
+        # print('************************************************')
+        # print("Number of datasets: ", len(tenFoldDataset))
+        # for tfold in tenFoldDataset:
+        #     print("size of fold: ", len(tfold))
+        # # print(tenFoldDataset)
+        # print('************************************************')
         for i in range(10): 
             #Make One dataframe to hold all of the other Training dataframes 
             TrainingDataFrame = pd.DataFrame()
             #Make One dataframe that is our test Dataframe 
-            TestingDataFrame = tenFoldDataset[i]
+            TestingDataFrame = copy.deepcopy(tenFoldDataset[i])
             for j in range(10):
                 if i == j:
                     continue    
                 #Append the training dataframe to one dataframe to send to the ML algorithm 
-                TrainingDataFrame = TrainingDataFrame.append(tenFoldDataset[j], ignore_index=True)
+                TrainingDataFrame = TrainingDataFrame.append(copy.deepcopy(tenFoldDataset[j]), ignore_index=True)
+
+            # print('************************************************')
+            # print(TrainingDataFrame)
+            # print(TestingDataFrame)
+            # print('************************************************')
 
             # calculate the N, Q, and F probabiliies
             N, Q, F = train(ML, TrainingDataFrame)
@@ -118,7 +125,6 @@ def main():
             model = Classifier.Classifier(N, Q, F)
             #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
             classifiedDataFrame = model.classify(TestingDataFrame)
-            
 
             #Get some statistics on the Machine learning 
             #Create a Results object
@@ -128,8 +134,7 @@ def main():
             zeroOnePercent = Analysis.ZeroOneLoss(classifiedDataFrame)
             #Run the stats summary on our results 
             macroF1Average = Analysis.statsSummary(classifiedDataFrame)
-            print("Zero one loss: \n")
-            print(zeroOnePercent)
+            print("Zero one loss: ", zeroOnePercent, "F1: ", macroF1Average)
 
             AvgZeroOne.append(zeroOnePercent)
             AvgF1.append(macroF1Average)
@@ -148,7 +153,7 @@ def main():
             }
         finalDataSummary = finalDataSummary.append(AvgStats, ignore_index=True)
         WriteToAFile(datasetName, AvgStats,Trial)
-    finalDataSummary.to_csv("ExperimentalSummary.csv")
+    finalDataSummary.to_csv("ExperimentalSummary2.csv")
     print("Program Finish")
 
 #Call the main function
