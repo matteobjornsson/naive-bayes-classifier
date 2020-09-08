@@ -76,13 +76,19 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         macroStats = self.weightedMacroAverageStats(classStats, cMatrix)
         #Return the dataframe, a dictionary and a dictionary 
         return classStats, microStats, macroStats
+   
+   
     #Parameters: DataFrame 
     #Returns: DataFrame
     #Function: 
     def perClassStats(self, cMatrix): 
         classStats = self.classStats(cMatrix)
         return classStats
-
+    
+    
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: 
     def weightedMacroAverageStats(self, perClassStats, cMatrix) -> dict: 
         #Create a list of the names of classes 
         classValues = list(perClassStats.index.values)
@@ -115,7 +121,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         #Return the dictionary 
         return macroStatsDict
         
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: 
     def countClassOccurence(self, cMatrix: pd.DataFrame) -> dict:
         #Get a list of all the class names 
         classValues = list(cMatrix.index.values)
@@ -137,7 +145,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         #Return the dictionary 
         return classCounts
         
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: 
     def microAverageStats(self, truePositives: list, falsePositives: list, falseNegatives: list) -> dict:
         #Create an empty dictionary 
         microStatsDict = {}
