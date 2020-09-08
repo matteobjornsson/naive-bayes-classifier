@@ -67,7 +67,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
     
     """
-
+    #Parameters: Dataframe 
+    #Returns: DataFrame, Dictionary 
+    #Function: 
     def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict):
         classStats = self.perClassStats(df)
         tpList = list(classStats["TP"])
@@ -75,12 +77,16 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         fnList = list(classStats["FN"])
         microStats = self.microAverageStats(tpList, fpList, fnList)
         return classStats, microStats
-
+    #Parameters: DataFrame 
+    #Returns: DataFrame
+    #Function: 
     def perClassStats(self,df:pd.DataFrame): 
         cMatrix = self.ConfusionMatrix(df)
         classStats = self.classStats(cMatrix)
         return classStats
-
+    #Parameters: List, List, List 
+    #Returns: Dictionary 
+    #Function: 
     def microAverageStats(self, truePositives: list, falsePositives: list, falseNegatives: list) -> dict:
         microStatsDict = {}
 
@@ -97,27 +103,34 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
         return microStatsDict
 
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: 
     def f1Score(self, precision, recall) -> float:
             if (precision + recall) == 0:
                 return 0
             else:
                 return 2 * precision * recall / (precision + recall)
 
+    #Parameters: Inter, Integer
+    #Returns: Float 
+    #Function: 
     def recall(self, truePositiveCount, falseNegativeCount) -> float:
         if truePositiveCount + falseNegativeCount == 0:
             return 0
         else:
             return truePositiveCount/(truePositiveCount + falseNegativeCount)
-
+    #Parameters: Integer, Integer
+    #Returns: Float
+    #Function: 
     def precision(self, truePositiveCount, falsePositiveCount) -> float:
         if truePositiveCount + falsePositiveCount == 0:
             return 0
         else:
             return truePositiveCount/(truePositiveCount + falsePositiveCount)
     
-    #Parameters: 
-    #Returns: 
+    #Parameters: Integer, DataFame
+    #Returns: List 
     #Function: 
     # return a list of true positive counts for each class
     def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
@@ -128,8 +141,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tp.append(cMatrix.iloc[i][i])
         return tp
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: Integer, DataFrame 
+    #Returns: List 
     #Function: 
     # return a list of false positive counts for each class
     def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
@@ -148,8 +161,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fp.append(count)
         return fp
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: Integer, DataFrame 
+    #Returns: List 
     #Function: 
     # return a list of false negative counts for each class
     def falseNegative(self, classCount: range, cMatrix: pd.DataFrame) -> list:
@@ -166,8 +179,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fn.append(count)
         return fn
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: Int, DataFrame, List, List,List 
+    #Returns: List 
     #Function: 
     # return a list of true negative counts for each class
     def trueNegative(self, classCount: range, cMatrix: pd.DataFrame, tp: list, fp: list, fn: list) -> list:
@@ -184,8 +197,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tn.append(count)
         return tn
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: DataFrame
+    #Returns: DataFrame
     #Function:  
     # create a stats summary matrix for all classes
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
@@ -238,8 +251,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
         return statsMatrix
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: DataFrame 
+    #Returns: DataFrame
     #Function: 
     # generate a matrix that checks classified test data against ground truth
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -271,7 +284,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         return matrix
 
 
-
+#Unit Testing the object created above 
+#Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     print("Program Start")
 
