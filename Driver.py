@@ -30,32 +30,45 @@ def WriteToAFile(Setname, Results,Trial):
     f.write(str(Results) + "\n")
     #Close the file 
     f.close()
-#Parameters: 
-#Return: 
-#Function: 
+#Parameters: # of Times the data was run, List of stats of the given runs such as F1 score 
+#Return: List of Averages for each of the given runs 
+#Function: Function that takes in the number of times a dataset was run and a list of statistical values and then averages all of the stats in the given list  
 def Average(TotalRunCount, Stats ) -> list: 
+    #Print out the list of stats that we are going to average
     print(Stats)
+    #Set the values to be 0 and used to track stats later on 
     f1score = 0 
     ZOloss = 0 
+    #For each of the stats in the array 
     for i in range(len(Stats)): 
+        #If the position is in the even position it is the F1 score 
         if i % 2 == 0: 
+            #Add the F1 score to the variable 
             f1score += Stats[i]
+        #Otherwise it is ZO loss 
         else: 
+            #Add the ZO Loss to the variable above
             ZOloss += Stats[i]
+    #Average the F1 score 
     f1score = f1score / TotalRunCount
+    #Average the zero one loss 
     ZOloss = ZOloss / TotalRunCount
+    #Create a new list 
     Avg = list() 
+    #Append the averaged scores to the list 
     Avg.append(f1score)
     Avg.append(ZOloss)
+    #Return the list 
     return Avg
-#Parameters: 
-#Return: 
-#Function: 
+#Parameters: Training Algorithm Object , Dataframe 
+#Return: Calculated N Dictionary, Calculated Q Dictionary, Calculated F dictonary 
+#Function: Take in a training algorithm object and a training set of data and produce a series of datapoints to be used in the classification object on the test dataframe 
 def train(trainingAlgorithm, trainingData: pd.DataFrame) -> (dict, dict, dict):
+    #Calculate N,Q,F and store them into dictionarys to be later used in the classification 
     N = trainingAlgorithm.calculateN(trainingData)
     Q = trainingAlgorithm.calculateQ(N, len(trainingData))
     F = trainingAlgorithm.calculateF(N, trainingData)
-
+    #Return the dictionary of stats 
     return N, Q, F
 
 #Parameters: None
