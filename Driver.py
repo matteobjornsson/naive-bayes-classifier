@@ -58,14 +58,8 @@ def main():
     # SoybeanData = 'PreProcessedSoybean.csv'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
-<<<<<<< HEAD
-    for i in range(100): 
-        dp = DataProcessor.DataProcessor()
-        df = pd.read_csv(VoteData) 
-=======
     for dataset in data_sets:
         df = pd.read_csv(dataset) 
->>>>>>> 61a77c3ef715d1fa4d3fa8c2b12970345dc05c1c
         #Return a clean dataframe with missing attributes taken care of 
         # df = dp.StartProcess(df)
         ML = TrainingAlgorithm.TrainingAlgorithm()
@@ -132,20 +126,15 @@ def main():
 
         # #Send the Data to a csv file for human checking and hyper parameter tuning 
         WriteToAFile(Stats, TestingDataFrame,Trial)
-
-<<<<<<< HEAD
+        Trial += 1 
+        TestData +=1 
+        if TestData == 10: 
+            TestData = 0 
     # #Increment the Trial and Testdata Number and do it again 
     # Trial+=1 
     # TestData +=1
 
     print("Program Finish")
-=======
-        # #Increment the Trial and Testdata Number and do it again 
-        # Trial+=1 
-        # TestData +=1
-
-        print("Program Finish")
->>>>>>> 61a77c3ef715d1fa4d3fa8c2b12970345dc05c1c
 
 
 
