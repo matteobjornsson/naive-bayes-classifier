@@ -28,38 +28,20 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-sc
 
 class Results: 
 
-    #On the creation of a Results object 
-    def __init__(self): 
-       #0/1 Loss Function Lists 
-       self.ClassificationCorrect = list() 
-       self.ClassificationWrong = list() 
-
-       #F1 Loss Function Lists 
-       self.TruePositive = list() 
-       self.TrueNegative = list() 
-       self.FalsePositive = list() 
-       self.FalseNegative  = list() 
-
     #Parameters: DataFrames
     #Returns: List 
     #Function: 
-    def ZeroOneLossFunctionStats(self, df: pd.DataFrame)->list(): 
-        ClassificationHypothesis = len(df.columns)-1
-        TrueClassification = len(df.columns) -2
-        for i in range(len(df)): 
-            if df.iloc[i][ClassificationHypothesis] == df.iloc[i][TrueClassification]: 
-                self.ClassificationCorrect.append(df.iloc[i][ClassificationHypothesis])
-            else: 
-                self.ClassificationWrong.append(df.iloc[i][ClassificationHypothesis])
-        TotalTestSet = len(self.ClassificationCorrect) + len(self.ClassificationWrong)
-        TotalCorrect = (len(self.ClassificationCorrect) / TotalTestSet) * 100 
+    def ZeroOneLoss(self, df: pd.DataFrame)->list(): 
+        guessIndex = len(df.columns)-1
+        groundTruthIndex = len(df.columns) -2
+        countCorrect = 0
+        totalCount = len(df)
+        for i in range(totalCount): 
+            if df.iloc[i][guessIndex] == df.iloc[i][groundTruthIndex]: 
+                countCorrect += 1
+        percentCorrect = (countCorrect / totalCount) * 100 
         #TotalWrong = (len(self.ClassificationWrong) / TotalTestSet) * 100 
-        Statistics = list() 
-        Statistics.append(TotalTestSet)
-        Statistics.append(TotalCorrect)
-        #Statistics.append(TotalWrong)
-        return Statistics
-
+        return percentCorrect
 
     """
     https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-and-recall-9250280bddc2
