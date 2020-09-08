@@ -12,6 +12,7 @@ import sys
 import random 
 import copy 
 import math 
+import TrainingAlgorithm 
 
 class DataProcessor:
     #On the creation of a Dataprocessor object set the following values 
@@ -537,6 +538,12 @@ if __name__ == '__main__':
     df2 = Glass.StartProcess(df2)
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
+
+    Ta = TrainingAlgorithm() 
+
+    df = Ta.ShuffleData()
+
+
     print("Processing is complete ")
     df.to_csv('PreProcessedVoting' + str(NumberBins) + '.csv')
     df1.to_csv('PreProcessediris' + str(NumberBins) + '.csv')
