@@ -1,6 +1,7 @@
 #################################################################### MODULE COMMENTS ####################################################################
-##
-##
+#The following Python object is the classifcation object for our Naive Bayes Program. This part of the Naive Bayes program takes in a dataframe and     #
+#Makes a classification hypothsis for the given row and places this classification in a new column in the dataframe then returns this dataframe         #
+#This program takes in the Calculated N, Q and F scores/matrix's that are calculated in the Training Algorithm Object                                   #
 #################################################################### MODULE COMMENTS ####################################################################
 
 import numpy as np

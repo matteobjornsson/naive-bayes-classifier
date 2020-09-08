@@ -1,6 +1,6 @@
 #################################################################### MODULE COMMENTS ####################################################################
-##
-##
+#The Training Algorithm python object bins and shuffles the column data and adds noise to the dataframe columns. this object also is in charge of       #
+#Calculating the N,Q and F Scores and matrices. Each of the function calls are stand alone and can be calculated independent of each other              #
 #################################################################### MODULE COMMENTS ####################################################################
 import pandas as pd
 import numpy as np
