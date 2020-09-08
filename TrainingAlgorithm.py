@@ -1,6 +1,9 @@
 #################################################################### MODULE COMMENTS ####################################################################
 #The Training Algorithm python object bins and shuffles the column data and adds noise to the dataframe columns. this object also is in charge of       #
 #Calculating the N,Q and F Scores and matrices. Each of the function calls are stand alone and can be calculated independent of each other              #
+#The main Datastructures that are used by this algorithm are the Pandas datastructure to move data sets between classes and functions and dictionarys   #
+#The purpose of the dictionary is to count the number of occurences of classes in a given dataset and other data points that are needed to derive the   #
+#Statistics that were mentioned above.                                                                                                                  #
 #################################################################### MODULE COMMENTS ####################################################################
 import pandas as pd
 import numpy as np
