@@ -113,7 +113,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def countClassOccurence(self, perClassStats: pd.DataFrame) -> dict:
         classValues = list(perClassStats.index.values)
         classCounts = dict.fromkeys(classValues)
-        print("perclass stats from countclass occurence method: \n", perClassStats)
+        # print("perclass stats from countclass occurence method: \n", perClassStats)
         for i in range(len(classValues)):
             x = perClassStats.iloc[i]
             count = 0
@@ -170,7 +170,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     #Function: return a list of true positive counts for each class
     def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         tp = []
-        print("cmatrix true positive method: \n", cMatrix)
+        # print("cmatrix true positive method: \n", cMatrix)
         for i in classCount:
             # true positive for each class is where truth == guess
             tp.append(cMatrix.iloc[i][i])
@@ -180,8 +180,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     #Returns: List 
     #Function: return a list of false positive counts for each class
     def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
-        print("cmatrix in true positive method: \n")
-        print(cMatrix)
+        # print("cmatrix in true positive method: \n")
+        # print(cMatrix)
         fp = []
         for i in classCount:
             count = 0
@@ -236,13 +236,13 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
         # grab the class names
         #Print some data to the screen 
-        print("cmatrix stats method: \n")
-        print(cMatrix)
+        # print("cmatrix stats method: \n")
+        # print(cMatrix)
         #Create a list to the column names from the dataframe 
         ClassList = list(cMatrix.columns.values)
         #Print some data to the screen 
-        print("classList class stats method: \n")
-        print(ClassList)
+        # print("classList class stats method: \n")
+        # print(ClassList)
         #Sent a class count to the len of the class list 
         classCount = range(len(ClassList))
         # init an empty matrix with class indexes labeled
@@ -277,7 +277,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             #Get the value of the f1 score 
             f1 = self.f1Score(prec, rec)
             #Print some data to the screen 
-            print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
+            # print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
             #Append data to the following lists 
             precisionList.append(prec)
             recallList.append(rec)
@@ -319,7 +319,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         #Set a variable to a dataframe that has the columns from the unique classes 
         matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
         #Print some data to the screen 
-        print("empty Cmatrix, cmatrix method: \n", matrix)
+        # print("empty Cmatrix, cmatrix method: \n", matrix)
         #For each of the rows in the dataframe 
         for i in range(len(df)):
             # for each example, increment a counter where row = truth, col = guess
