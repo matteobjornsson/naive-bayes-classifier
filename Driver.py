@@ -36,15 +36,20 @@ def WriteToAFile(Setname, Results,Trial):
     f.close()
 
 def Average(TotalRunCount, Stats ) -> list: 
+    print(Stats)
     f1score = 0 
     ZOloss = 0 
     for i in range(len(Stats)): 
         if i % 2 == 0: 
-            ZOloss += Stats[i][1]
-        else: 
             f1score += Stats[i]
+        else: 
+            ZOloss += Stats[i][1]
     f1score = f1score / TotalRunCount
     ZOloss = ZOloss / TotalRunCount
+    Avg = list() 
+    Avg.append(f1score)
+    Avg.append(ZOloss)
+    return Avg
 
 #Parameters: None
 #Return: None
