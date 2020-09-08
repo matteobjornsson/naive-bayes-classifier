@@ -25,7 +25,7 @@ def WriteToAFile(Results,DataFrame,Trial):
     #Open the file in write mode 
     f = open(FileName, "w")
     #For each of the results in the list 
-    for i in results: 
+    for i in Results: 
         #Write with a new line character
         f.write(i + "\n")
     #Append the Dataframe to the file 
