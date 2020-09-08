@@ -83,7 +83,9 @@ def main():
     ####################################################### MACHINE LEARNING PROCESS #####################################################
 
     TotalRun = 10 
+    finalDataSummary = pd.DataFrame(columns=["Dataset", "F1", "ZeroOne"])
     for dataset in data_sets:
+        
         AvgZeroOne = []
         AvgF1 = []
         datasetName = dataset_names[data_sets.index(dataset)]
@@ -137,16 +139,20 @@ def main():
             Trial += 1 
             TestData +=1 
             if TestData == 10: 
-                TestData = 0 
+                TestData = 0
+            break 
     # #Increment the Trial and Testdata Number and do it again 
         AvgStats = {
+            "Dataset": datasetName, 
             "F1": sum(AvgF1)/len(AvgF1), 
             "ZeroOne": sum(AvgZeroOne)/len(AvgZeroOne)
             }
+        finalDataSummary = finalDataSummary.append(AvgStats, ignore_index=True)
         WriteToAFile(datasetName, AvgStats,Trial)
+        if datasetName == "Cancer":
+            break
+    finalDataSummary.to_csv("ExperimentalSummary.csv")
     print("Program Finish")
-
-
 
 #Call the main function
 main() 
