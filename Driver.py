@@ -69,6 +69,11 @@ def main():
         'PreProcessedGlass.csv',
         'PreProcessedCancer.csv',
         'PreProcessedSoybean.csv',
+        'PreProcessedVoting_Noise.csv',
+        'PreProcessedIris_Noise.csv',
+        'PreProcessedGlass_Noise.csv',
+        'PreProcessedCancer_Noise.csv',
+        'PreProcessedSoybean_Noise.csv'
     ]
     dataset_names = [
         "Vote", "Iris", "Glass", "Cancer", "Soybean", 
