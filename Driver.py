@@ -26,10 +26,8 @@ def WriteToAFile(Setname, Results,Trial):
     f = open(FileName, "w")
     #Append the data set name to the csv files 
     f.write(str(Setname) + "\n")
-    #For each of the results in the list 
-    for i in Results: 
-        #Write with a new line character
-        f.write(str(i) + "\n")
+    #write the results to file
+    f.write(str(Results) + "\n")
     #Close the file 
     f.close()
 
@@ -72,10 +70,11 @@ def main():
     # SoybeanData = 'PreProcessedSoybean.csv'
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
-    AvgStats = list() 
-    TotalRun = 10 
+    AvgZeroOne = list()
+    AvgF1 = list() 
+    TotalRun = 3 
     for dataset in data_sets:
-        for i in range(10): 
+        for i in range(TotalRun): 
             print(dataset)
             df = pd.read_csv(dataset) 
             #Return a clean dataframe with missing attributes taken care of 
@@ -133,8 +132,8 @@ def main():
                 '\n micro-Averaged stats: \n', microStats, 
                 '\n macro-Averaged stats: \n', macroStats
                 )
-            AvgStats.append(zeroOnePercent)
-            AvgStats.append(macroStats["macroF1"])
+            AvgZeroOne.append(zeroOnePercent)
+            AvgF1.append(macroStats["macroF1"])
             
             
             # #Send the Data to a csv file for human checking and hyper parameter tuning 
@@ -144,7 +143,10 @@ def main():
             if TestData == 10: 
                 TestData = 0 
     # #Increment the Trial and Testdata Number and do it again 
-        AvgStats = Average(TotalRun,AvgStats)
+        AvgStats = {
+            "F1": sum(AvgF1)/len(AvgF1), 
+            "ZeroOne": sum(AvgZeroOne)/len(AvgZeroOne)
+            }
         WriteToAFile(dataset, AvgStats,Trial)
     print("Program Finish")
 
