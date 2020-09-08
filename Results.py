@@ -122,6 +122,7 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     # return a list of true positive counts for each class
     def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         tp = []
+        print("cmatrix true positive method: \n", cMatrix)
         for i in classCount:
             # true positive for each class is where truth == guess
             tp.append(cMatrix.iloc[i][i])
@@ -132,6 +133,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     #Function: 
     # return a list of false positive counts for each class
     def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
+        print("cmatrix in true positive method: \n")
+        print(cMatrix)
         fp = []
         for i in classCount:
             count = 0
@@ -187,7 +190,12 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     # create a stats summary matrix for all classes
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
         # grab the class names
+
+        print("cmatrix stats method: \n")
+        print(cMatrix)
         ClassList = list(cMatrix.columns.values)
+        print("classList class stats method: \n")
+        print(ClassList)
         classCount = range(len(ClassList))
         # init an empty matrix with class indexes labeled
         statsMatrix = pd.DataFrame(index=ClassList)
@@ -242,10 +250,10 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         # generate a list of all unique classes
         UniqueClasses = list() 
         for i in range(len(df)): 
-            if df.iloc[i][GroundTruthIndex] not in UniqueClasses:
-                UniqueClasses.append(df.iloc[i][GroundTruthIndex])
-            if df.iloc[i][ClassifierGuessIndex] not in UniqueClasses:
-                UniqueClasses.append(df.iloc[i][ClassifierGuessIndex])
+            if str(df.iloc[i][GroundTruthIndex]) not in UniqueClasses:
+                UniqueClasses.append(str(df.iloc[i][GroundTruthIndex]))
+            if str(df.iloc[i][ClassifierGuessIndex]) not in UniqueClasses:
+                UniqueClasses.append(str(df.iloc[i][ClassifierGuessIndex]))
             continue 
         ClassCount = len(UniqueClasses)
 
@@ -253,10 +261,11 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         zeroArray = np.zeros(shape=(ClassCount, ClassCount))
         matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
 
+        print("empty Cmatrix, cmatrix method: \n", matrix)
         for i in range(len(df)):
             # for each example, increment a counter where row = truth, col = guess
-            truth = df.iloc[i][GroundTruthIndex]
-            guess = df.iloc[i][ClassifierGuessIndex]
+            truth = str(df.iloc[i][GroundTruthIndex])
+            guess = str(df.iloc[i][ClassifierGuessIndex])
             matrix.at[truth, guess] += 1
             continue
         return matrix
