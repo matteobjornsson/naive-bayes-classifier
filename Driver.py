@@ -52,7 +52,7 @@ def main():
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
     dp = DataProcessor.DataProcessor()
-    df = pd.read_csv(CancerData) 
+    df = pd.read_csv(IrisData) 
     #Return a clean dataframe with missing attributes taken care of 
     # df = dp.StartProcess(df)
     ML = TrainingAlgorithm.TrainingAlgorithm()
