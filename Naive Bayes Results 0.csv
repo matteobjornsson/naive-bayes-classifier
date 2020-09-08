@@ -1,42 +1,7 @@
-              TP   FP   FN    TN  Precision    Recall        F1
-democrat    27.0  1.0  1.0  15.0   0.964286  0.964286  0.964286
-republican  15.0  1.0  1.0  27.0   0.937500  0.937500  0.937500
-{'microRecall': 0.9545454545454546, 'microPrecision': 0.9545454545454546, 'microF1Score': 0.9545454545454546}
-{'macroRecall': 0.9509043422037705, 'macroPrecision': 0.9509043422037705, 'macroF1': 0.9509043422037705}
- y y y n y y y y y n y republican republican
-294 n y y n n y y y n y y n y y n n democrat democrat
-350 n y n n n y y n y n y n n n y y democrat democrat
-243 n y y n n n y y y y n n y n y y democrat democrat
-46 y y y n n n y y y n n n n n n y democrat democrat
-141 n n n y y y y y y y n y y y y y republican republican
-334 n y y n n y y y y n y y n n y y democrat democrat
-274 y n n y y n y n n y n n n y y y republican republican
-89 n n n y y y n n n y n n y y n n republican republican
-63 y y y n n n y y y n y n n n n y democrat democrat
-285 n n y n n y y y y y y n n n y y democrat democrat
-70 y n y n n n y y y n n n y n y y democrat democrat
-15 n y n y y y n n n y n y y y n n republican republican
-288 y y y n y y n y n y y n y y y y democrat democrat
-156 y y n y y y y n n n n y y y n n republican republican
-234 n n y n n y y y y y n y n y y n democrat democrat
-247 n y n y y y n n n n n y y y n n republican republican
-397 y y n n y n n n n n y n y y n y democrat democrat
-30 n y n y y y n n n n n y y y n n republican republican
-87 n n n y y y n n n n n y y y n n republican republican
-190 n y n y y y n n n n n y y y n y republican republican
-376 y n y n n n y y y n y n n n y y democrat democrat
-419 y y y n n n y y y n n n n n n y democrat democrat
-124 n n y n n n y y y n n n n n y y democrat democrat
-319 y n y n n n y y y n n n n n y y democrat democrat
-395 y y y y n n n y n n y y n n y y democrat democrat
-292 y n y n n y y y n y y n y y y y democrat democrat
-378 n n n y y y n n n n n y y y n y republican republican
-393 y n n y n y n y y n n y y n n y republican democrat
-260 y n y n n n y y y y n n n n n y democrat democrat
-157 n y y n n y n y y n y n y n y n democrat democrat
-235 n n n y y y n n n y n y n y n y republican republican
-254 y n y n n n y y y y n n n n n y democrat democrat
-218 y n y n n n y y y n y n n n y n democrat democrat
-64 y y y n n n y y y n y y n n n y democrat democrat
-101 y n y n y y y n n n y n n y n y democrat democrat
-174 y y y n n n y y y n n n n n y y democrat democrat
+     TP   FP   FN   TN  Precision  Recall        F1
+D1  2.0  0.0  0.0  3.0        1.0     1.0  1.000000
+D4  1.0  1.0  0.0  3.0        0.5     1.0  0.666667
+D3  0.0  0.0  1.0  4.0        0.0     0.0  0.000000
+D2  1.0  0.0  0.0  4.0        1.0     1.0  1.000000
+{'microRecall': 0.8, 'microPrecision': 0.8, 'microF1Score': 0.8000000000000002}
+{'macroRecall': 0.8224852071005917, 'macroPrecision': 0.6952662721893492, 'macroF1': 0.73767258382643}
