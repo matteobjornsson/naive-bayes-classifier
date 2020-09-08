@@ -87,26 +87,35 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         return classStats
 
     def weightedMacroAverageStats(self, perClassStats, cMatrix) -> dict: 
+        #Create a list of the names of classes 
         classValues = list(perClassStats.index.values)
+        #Create an empty dictionary To store macro stats
         macroStatsDict = {}
+        #Get the total count of occurence of each class 
         classCounts = self.countClassOccurence(cMatrix)
-
+        #Set a total class count variable to 0 
         totalClassCount = 0
+        #For each of the class keys 
         for key in classCounts.keys():
+            #Add the total class occurence to the variable initialized above 
             totalClassCount += classCounts[key]
-
+        #Set a series of statistical variables to 0 
         macroRecallAverage = 0
         macroPrecisionAverage = 0
         macroF1Average = 0
+        #Loop through all of the classes 
         for i in range(len(classValues)):
+            #Add the total number of occurence of the class multiplied by the stat percentage 
             macroRecallAverage += (perClassStats["Recall"].iloc[i] * classCounts[classValues[i]])
+            #Add the total number of occurence of the class multiplied by the stat percentage 
             macroPrecisionAverage += (perClassStats["Precision"].iloc[i] * classCounts[classValues[i]])
+            #Add the total number of occurence of the class multiplied by the stat percentage 
             macroF1Average += (perClassStats["F1"].iloc[i] * classCounts[classValues[i]])
-        
+        #THen divide by the total number of examples 
         macroStatsDict["macroRecall"] = macroRecallAverage / totalClassCount
         macroStatsDict["macroPrecision"] = macroPrecisionAverage / totalClassCount
         macroStatsDict["macroF1"] = macroF1Average / totalClassCount
-
+        #Return the dictionary 
         return macroStatsDict
         
 

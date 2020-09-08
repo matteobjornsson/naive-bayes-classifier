@@ -1,0 +1,12 @@
+                  TP   FP   FN    TN  Precision    Recall        F1
+Iris-virginica   6.0  1.0  1.0   7.0   0.857143  0.857143  0.857143
+Iris-versicolor  3.0  1.0  1.0  10.0   0.750000  0.750000  0.750000
+Iris-setosa      4.0  0.0  0.0  11.0   1.000000  1.000000  1.000000
+{'microRecall': 0.8666666666666667, 'microPrecision': 0.8666666666666667, 'microF1Score': 0.8666666666666667}
+{'macroRecall': 0.8666666666666667, 'macroPrecision': 0.8666666666666667, 'macroF1': 0.8666666666666667}
+sa
+149 3.0 3.0 4.0 4.0 Iris-virginica Iris-virginica
+1 1.0 3.0 1.0 1.0 Iris-setosa Iris-setosa
+75 4.0 3.0 3.0 3.0 Iris-versicolor Iris-versicolor
+35 1.0 3.0 1.0 1.0 Iris-setosa Iris-setosa
+121 2.0 2.0 4.0 4.0 Iris-virginica Iris-versicolor
