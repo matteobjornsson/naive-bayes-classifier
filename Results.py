@@ -28,20 +28,20 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-ii-the-f1-sc
 
 class Results: 
 
-    
+    #On the creation of a Results object 
     def __init__(self): 
-       #0/1 Loss Functions
+       #0/1 Loss Function Lists 
        self.ClassificationCorrect = list() 
        self.ClassificationWrong = list() 
 
-       #F1 Loss Functions 
+       #F1 Loss Function Lists 
        self.TruePositive = list() 
        self.TrueNegative = list() 
        self.FalsePositive = list() 
        self.FalseNegative  = list() 
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: DataFrames
+    #Returns: List 
     #Function: 
     def ZeroOneLossFunctionStats(self, df: pd.DataFrame)->list(): 
         ClassificationHypothesis = len(df.columns)-1
@@ -67,7 +67,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
     
     """
-
+    #Parameters: Dataframe 
+    #Returns: DataFrame, Dictionary 
+    #Function: 
     def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict):
         classStats = self.perClassStats(df)
         tpList = list(classStats["TP"])
@@ -75,7 +77,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         fnList = list(classStats["FN"])
         microStats = self.microAverageStats(tpList, fpList, fnList)
         return classStats, microStats
-
+    #Parameters: DataFrame 
+    #Returns: DataFrame
+    #Function: 
     def perClassStats(self,df:pd.DataFrame): 
         cMatrix = self.ConfusionMatrix(df)
         classStats = self.classStats(cMatrix)
@@ -133,29 +137,35 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
         return microStatsDict
 
-
+    #Parameters: Float, Float
+    #Returns: Float 
+    #Function: 
     def f1Score(self, precision, recall) -> float:
             if (precision + recall) == 0:
                 return 0
             else:
                 return 2 * precision * recall / (precision + recall)
 
+    #Parameters: Inter, Integer
+    #Returns: Float 
+    #Function: 
     def recall(self, truePositiveCount, falseNegativeCount) -> float:
         if truePositiveCount + falseNegativeCount == 0:
             return 0
         else:
             return truePositiveCount/(truePositiveCount + falseNegativeCount)
-
+    #Parameters: Integer, Integer
+    #Returns: Float
+    #Function: 
     def precision(self, truePositiveCount, falsePositiveCount) -> float:
         if truePositiveCount + falsePositiveCount == 0:
             return 0
         else:
             return truePositiveCount/(truePositiveCount + falsePositiveCount)
     
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # return a list of true positive counts for each class
+    #Parameters: Integer, DataFame
+    #Returns: List 
+    #Function: return a list of true positive counts for each class
     def truePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         tp = []
         print("cmatrix true positive method: \n", cMatrix)
@@ -164,10 +174,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tp.append(cMatrix.iloc[i][i])
         return tp
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # return a list of false positive counts for each class
+    #Parameters: Integer, DataFrame 
+    #Returns: List 
+    #Function: return a list of false positive counts for each class
     def falsePositive(self, classCount: range, cMatrix: pd.DataFrame) -> list:
         print("cmatrix in true positive method: \n")
         print(cMatrix)
@@ -184,8 +193,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fp.append(count)
         return fp
 
-    #Parameters: 
-    #Returns: 
+    #Parameters: Integer, DataFrame 
+    #Returns: List 
     #Function: 
     # return a list of false negative counts for each class
     def falseNegative(self, classCount: range, cMatrix: pd.DataFrame) -> list:
@@ -202,10 +211,9 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             fn.append(count)
         return fn
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # return a list of true negative counts for each class
+    #Parameters: Int, DataFrame, List, List,List 
+    #Returns: List 
+    #Function: return a list of true negative counts for each class
     def trueNegative(self, classCount: range, cMatrix: pd.DataFrame, tp: list, fp: list, fn: list) -> list:
         tn = []
         for i in classCount:
@@ -220,18 +228,20 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
             tn.append(count)
         return tn
 
-    #Parameters: 
-    #Returns: 
-    #Function:  
-    # create a stats summary matrix for all classes
+    #Parameters: DataFrame
+    #Returns: DataFrame
+    #Function: create a stats summary matrix for all classes
     def classStats(self, cMatrix: pd.DataFrame) -> pd.DataFrame:
         # grab the class names
-
+        #Print some data to the screen 
         print("cmatrix stats method: \n")
         print(cMatrix)
+        #Create a list to the column names from the dataframe 
         ClassList = list(cMatrix.columns.values)
+        #Print some data to the screen 
         print("classList class stats method: \n")
         print(ClassList)
+        #Sent a class count to the len of the class list 
         classCount = range(len(ClassList))
         # init an empty matrix with class indexes labeled
         statsMatrix = pd.DataFrame(index=ClassList)
@@ -247,23 +257,26 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         statsMatrix["FP"] = fp
         statsMatrix["FN"] = fn
         statsMatrix["TN"] = tn
-
+        #Create some empty lists 
         precisionList = []
         recallList = []
         fScoreList = []
+        #For each of the values in the class count 
         for i in classCount:
+            #Get the value of the given value 
             singleClassStats = statsMatrix.iloc[i]
 
             tp = singleClassStats["TP"]
             fp = singleClassStats["FP"]
             fn = singleClassStats["FN"]
-
+            #Set the following values 
             prec = self.precision(tp, fp)
             rec = self.recall(tp, fn)
-
+            #Get the value of the f1 score 
             f1 = self.f1Score(prec, rec)
-
+            #Print some data to the screen 
             print("i: ", i, " prec: ", prec, " recall: ", rec, " f1: ", f1)
+            #Append data to the following lists 
             precisionList.append(prec)
             recallList.append(rec)
             fScoreList.append(f1)
@@ -271,13 +284,12 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         statsMatrix["Precision"] = precisionList
         statsMatrix["Recall"] = recallList
         statsMatrix["F1"] = fScoreList
-
+        #Return the Dataframe 
         return statsMatrix
 
-    #Parameters: 
-    #Returns: 
-    #Function: 
-    # generate a matrix that checks classified test data against ground truth
+    #Parameters: DataFrame 
+    #Returns: DataFrame
+    #Function: generate a matrix that checks classified test data against ground truth
     def ConfusionMatrix(self, df: pd.DataFrame) -> pd.DataFrame:
         # identify column index of ground truth and classification
         GroundTruthIndex = len(df.columns)- 2
@@ -285,29 +297,42 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
 
         # generate a list of all unique classes
         UniqueClasses = list() 
+        #Loop through all of the rows in the dataframe 
         for i in range(len(df)): 
+            #If the Ground truth classification not in the unique classes list 
             if str(df.iloc[i][GroundTruthIndex]) not in UniqueClasses:
+                #Append the value to the list 
                 UniqueClasses.append(str(df.iloc[i][GroundTruthIndex]))
+            #If the classifcation is not in the unique classes list 
             if str(df.iloc[i][ClassifierGuessIndex]) not in UniqueClasses:
+                #Add the value to the list 
                 UniqueClasses.append(str(df.iloc[i][ClassifierGuessIndex]))
+            #Go to the next one 
             continue 
+        #Set the class count to the length of unique classes 
         ClassCount = len(UniqueClasses)
 
         # initialize empty confusion matrix
         zeroArray = np.zeros(shape=(ClassCount, ClassCount))
+        #Set a variable to a dataframe that has the columns from the unique classes 
         matrix = pd.DataFrame(zeroArray, columns=UniqueClasses, index=UniqueClasses)
-
+        #Print some data to the screen 
         print("empty Cmatrix, cmatrix method: \n", matrix)
+        #For each of the rows in the dataframe 
         for i in range(len(df)):
             # for each example, increment a counter where row = truth, col = guess
             truth = str(df.iloc[i][GroundTruthIndex])
             guess = str(df.iloc[i][ClassifierGuessIndex])
+            #Increment the count 
             matrix.at[truth, guess] += 1
+            #Go to the next one 
             continue
+        #Return the dataframe 
         return matrix
 
 
-
+#Unit Testing the object created above 
+#Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
     print("Program Start")
 
