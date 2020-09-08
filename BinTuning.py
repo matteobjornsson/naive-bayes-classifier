@@ -27,8 +27,8 @@ binCount = 7000
 trials = 4
 
 for j in range(2):
-    for i in range(5):
-        bins = 2^(4+i)
+    for i in range(6):
+        bins = 2**(3+i*2)
         results = []
         for k in range(trials):
             dp = DataProcessor.DataProcessor(bin_count=bins)
