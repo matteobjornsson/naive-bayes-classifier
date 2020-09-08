@@ -140,7 +140,6 @@ def main():
             TestData +=1 
             if TestData == 10: 
                 TestData = 0
-            break 
     # #Increment the Trial and Testdata Number and do it again 
         AvgStats = {
             "Dataset": datasetName, 
@@ -149,8 +148,6 @@ def main():
             }
         finalDataSummary = finalDataSummary.append(AvgStats, ignore_index=True)
         WriteToAFile(datasetName, AvgStats,Trial)
-        if datasetName == "Cancer":
-            break
     finalDataSummary.to_csv("ExperimentalSummary.csv")
     print("Program Finish")
 
