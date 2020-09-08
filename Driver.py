@@ -40,7 +40,7 @@ def Average(TotalRunCount, Stats ) -> list:
     ZOloss = 0 
     for i in range(len(Stats)): 
         if i % 2 == 0: 
-            ZOloss += Stats[i]
+            ZOloss += Stats[i][1]
         else: 
             f1score += Stats[i]
     f1score = f1score / TotalRunCount
