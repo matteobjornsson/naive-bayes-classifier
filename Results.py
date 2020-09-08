@@ -81,6 +81,42 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         classStats = self.classStats(cMatrix)
         return classStats
 
+    def weightedMacroAverageStats(self, perClassStats) -> dict: 
+        classValues = list(perClassStats.index.values)
+        macroStatsDict = {}
+        classCounts = self.countClassOccurence(perClassStats)
+
+        totalClassCount = 0
+        for key in countClassOccurence.keys():
+            totalClassCount += countClassOccurence[key]
+
+        macroRecallAverage = 0
+        macroPrecisionAverage = 0
+        macroF1Average = 0
+        for i in range(len(classValues)):
+            macroRecallAverage += (perClassStats["Recall"].iloc[i] * classCounts[classValues[i]])
+            macroPrecisionAverage += (perClassStats["Precision"].iloc[i] * classCounts[classValues[i]])
+            macroF1Average += (perClassStats["F1"].iloc[i] * classCounts[classValues[i]])
+        
+        macroStatsDict["macroRecall"] = macroRecallAverage / totalClassCount
+        macroStatsDict["macroPrecision"] = macroPrecisionAverage / totalClassCount
+        macroStatsDict["macroF1"] = macroF1Average / totalClassCount
+
+        return macroStatsDict
+        
+
+    def countClassOccurence(self, perClassStats: pd.DataFrame) -> dict:
+        classValues = list(perClassStats.index.values)
+        classCounts = dict.fromkeys(classValues)
+        for i in range(4):
+            x = perClassStats.iloc[i]
+            count = 0
+            for stat, statValue in x.items():
+                count += statValue
+            classCounts[classValues[i]] = count
+        return classCounts
+        
+
     def microAverageStats(self, truePositives: list, falsePositives: list, falseNegatives: list) -> dict:
         microStatsDict = {}
 
