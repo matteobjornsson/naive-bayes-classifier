@@ -502,52 +502,46 @@ class DataProcessor:
 #Unit Testing the object created above 
 #Code not run on creation of object just testing function calls and logic above 
 if __name__ == '__main__':
-    NumberBins = 12
-    for i in range(7): 
-    
-        #Location of each data file stored off into variables for later retrieval of data 
-        VoteData = 'Vote_Data//Votes.data'
-        IrisData = 'Iris_Data//iris.data'
-        GlassData = 'Glass_Data//glass.data'
-        CancerData = 'Breast_Cancer_Data//cancer.data'
-        SoybeanData = 'Soybean_Data//soybean.data'
-        #DataFrame With Voting data 
-        df = pd.read_csv(VoteData)
-        #DataFrame With Iris data 
-        df1 = pd.read_csv(IrisData)
-        #DataFrame With Glass data 
-        df2 = pd.read_csv(GlassData)
-        #DataFrame With Cancer data 
-        df3 = pd.read_csv(CancerData)
-        #DataFrame With Soybean data 
-        df4 = pd.read_csv(SoybeanData)
-        print("DataFrames have been created")
+    NumberBins = 32
+    #Location of each data file stored off into variables for later retrieval of data 
+    VoteData = 'Vote_Data//Votes.data'
+    IrisData = 'Iris_Data//iris.data'
+    GlassData = 'Glass_Data//glass.data'
+    CancerData = 'Breast_Cancer_Data//cancer.data'
+    SoybeanData = 'Soybean_Data//soybean.data'
+    #DataFrame With Voting data 
+    df = pd.read_csv(VoteData)
+    #DataFrame With Iris data 
+    df1 = pd.read_csv(IrisData)
+    #DataFrame With Glass data 
+    df2 = pd.read_csv(GlassData)
+    #DataFrame With Cancer data 
+    df3 = pd.read_csv(CancerData)
+    #DataFrame With Soybean data 
+    df4 = pd.read_csv(SoybeanData)
+    print("DataFrames have been created")
 
-        Vote = DataProcessor()
-        Vote.bin_count = NumberBins
-        iris = DataProcessor() 
-        iris.bin_count = NumberBins 
-        Glass = DataProcessor() 
-        Glass.bin_count = NumberBins
-        Cancer = DataProcessor()
-        Cancer.bin_count = NumberBins 
-        Soybean = DataProcessor() 
-        Soybean.bin_count = NumberBins 
-
-        print("Pre Processor Objects Built ")
-        df = Vote.StartProcess(df)
-        df1 = iris.StartProcess(df1)
-        df2 = Glass.StartProcess(df2)
-        df3 = Cancer.StartProcess(df3)
-        df4 = Soybean.StartProcess(df4)
-        print("Processing is complete ")
-
-
-        df.to_csv('PreProcessedVoting' + str(NumberBins) + '.csv')
-        df1.to_csv('PreProcessediris' + str(NumberBins) + '.csv')
-        df2.to_csv('PreProcessedGlass' + str(NumberBins) + '.csv')
-        df3.to_csv('PreProcessedCancer' + str(NumberBins) + '.csv')
-        df4.to_csv('PreProcessedSoybean' + str(NumberBins) + '.csv')
-        print("File creation is complete ")
-        NumberBins -= 1
+    Vote = DataProcessor(NumberBins)
+    #Vote.bin_count = NumberBins
+    iris = DataProcessor(NumberBins) 
+    #iris.bin_count = NumberBins 
+    Glass = DataProcessor(NumberBins) 
+    #Glass.bin_count = NumberBins
+    Cancer = DataProcessor(NumberBins)
+    #Cancer.bin_count = NumberBins 
+    Soybean = DataProcessor(NumberBins) 
+    #Soybean.bin_count = NumberBins 
+    print("Pre Processor Objects Built ")
+    df = Vote.StartProcess(df)
+    df1 = iris.StartProcess(df1)
+    df2 = Glass.StartProcess(df2)
+    df3 = Cancer.StartProcess(df3)
+    df4 = Soybean.StartProcess(df4)
+    print("Processing is complete ")
+    df.to_csv('PreProcessedVoting' + str(NumberBins) + '.csv')
+    df1.to_csv('PreProcessediris' + str(NumberBins) + '.csv')
+    df2.to_csv('PreProcessedGlass' + str(NumberBins) + '.csv')
+    df3.to_csv('PreProcessedCancer' + str(NumberBins) + '.csv')
+    df4.to_csv('PreProcessedSoybean' + str(NumberBins) + '.csv')
+    print("File creation is complete ")
 
