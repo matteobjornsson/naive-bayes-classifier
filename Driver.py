@@ -27,7 +27,7 @@ def WriteToAFile(Results,DataFrame,Trial):
     #For each of the results in the list 
     for i in Results: 
         #Write with a new line character
-        f.write(i + "\n")
+        f.write(str(i) + "\n")
     #Append the Dataframe to the file 
     DataFrame.to_csv(FileName, header=None, index=None, sep=' ', mode='a')
     #Close the file 
@@ -105,7 +105,9 @@ def main():
     zeroOne = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
     #Run the stats summary on our results 
     classStats, microStats, macroStats = Analysis.statsSummary(TestingDataFrame)
-
+    Stats.append(classStats)
+    Stats.append(microStats)
+    Stats.append(macroStats)   
     print("Zero one loss: \n")
     print(zeroOne)
     print("F1 Matrix score: \n")
