@@ -1,7 +1,7 @@
 import Results, DataProcessor, TrainingAlgorithm, Classifier
 import pandas as pd
 import pprint, math 
-import multiprocessing
+import multiprocessing, time
 
 dataset_names = ['Glass_Data', 'Iris_Data']
 dataset_stats_list = []
@@ -71,7 +71,7 @@ def calc(datasetIndex, multiplierInt):
 
 manager = multiprocessing.Manager()
 data = manager.list()
-
+start = time.time()
 pool = multiprocessing.Pool()
 for j in range(2):
     for i in range(25):
@@ -82,8 +82,9 @@ pool.join()
 results = pd.DataFrame(columns=['dataset', 'bins', 'f1', 'zero-one'])    
 for df in data:
     results = results.append(df, ignore_index=True)
-
+end = time.time()
 results.to_csv('bintuning_parallel.csv', index=False)
+print("Elapsed time (s): ", end - start)
 # pprint.pprint(dataset_stats_list)
 
 
