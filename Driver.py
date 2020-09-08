@@ -52,7 +52,7 @@ def main():
     
     ####################################################### MACHINE LEARNING PROCESS #####################################################
     dp = DataProcessor.DataProcessor()
-    df = pd.read_csv(IrisData) 
+    df = pd.read_csv(VoteData) 
     #Return a clean dataframe with missing attributes taken care of 
     # df = dp.StartProcess(df)
     ML = TrainingAlgorithm.TrainingAlgorithm()
@@ -104,12 +104,16 @@ def main():
     #Run the 0/1 Loss function on our results
     zeroOne = Analysis.ZeroOneLossFunctionStats(TestingDataFrame)
     #Run the stats summary on our results 
-    classStats, microStats = Analysis.statsSummary(TestingDataFrame)
+    classStats, microStats, macroStats = Analysis.statsSummary(TestingDataFrame)
 
     print("Zero one loss: \n")
     print(zeroOne)
     print("F1 Matrix score: \n")
-    print("per-class stats: \n", classStats, '\n micro-Averaged stats: \n', microStats)
+    print(
+        "per-class stats: \n", classStats, 
+        '\n micro-Averaged stats: \n', microStats, 
+        '\n macro-Averaged stats: \n', macroStats
+        )
 
     # #Send the Data to a csv file for human checking and hyper parameter tuning 
     # WriteToAFile(Stats, TestingDataFrame,Trial)

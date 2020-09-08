@@ -70,13 +70,14 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     #Parameters: Dataframe 
     #Returns: DataFrame, Dictionary 
     #Function: 
-    def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict):
+    def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict, dict):
         classStats = self.perClassStats(df)
         tpList = list(classStats["TP"])
         fpList = list(classStats["FP"])
         fnList = list(classStats["FN"])
         microStats = self.microAverageStats(tpList, fpList, fnList)
-        return classStats, microStats
+        macroStats = self.weightedMacroAverageStats(classStats)
+        return classStats, microStats, macroStats
     #Parameters: DataFrame 
     #Returns: DataFrame
     #Function: 
@@ -91,8 +92,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         classCounts = self.countClassOccurence(perClassStats)
 
         totalClassCount = 0
-        for key in countClassOccurence.keys():
-            totalClassCount += countClassOccurence[key]
+        for key in classCounts.keys():
+            totalClassCount += classCounts[key]
 
         macroRecallAverage = 0
         macroPrecisionAverage = 0
@@ -112,7 +113,8 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     def countClassOccurence(self, perClassStats: pd.DataFrame) -> dict:
         classValues = list(perClassStats.index.values)
         classCounts = dict.fromkeys(classValues)
-        for i in range(4):
+        print("perclass stats from countclass occurence method: \n", perClassStats)
+        for i in range(len(classValues)):
             x = perClassStats.iloc[i]
             count = 0
             for stat, statValue in x.items():
