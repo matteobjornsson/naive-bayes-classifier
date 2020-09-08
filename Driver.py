@@ -70,8 +70,8 @@ def main():
         #Append the training dataframe to one dataframe to send to the ML algorithm 
         TrainingDataFrame = TrainingDataFrame.append(NoNoiseDf[i], ignore_index=True)
     
-    print("Driver training data: \n", TrainingDataFrame)
-    print("Driver testing dataframe: \n", TestingDataFrame)
+    # print("Driver training data: \n", TrainingDataFrame)
+    # print("Driver testing dataframe: \n", TestingDataFrame)
 
 
     #Calculate the N value for the Training set
@@ -80,20 +80,20 @@ def main():
     TrainingQ = ML.calculateQ(TrainingN,len(TrainingDataFrame))
     #Calculate the F Matrix for the Training set
     TrainingF = ML.calculateF(TrainingN,TrainingDataFrame)
-    print("N: \n")
-    pprint.pprint(TrainingN)
-    print("Q: \n")
-    pprint.pprint(TrainingQ)
-    print("F: \n")
-    pprint.pprint(TrainingF)
+    # print("N: \n")
+    # pprint.pprint(TrainingN)
+    # print("Q: \n")
+    # pprint.pprint(TrainingQ)
+    # print("F: \n")
+    # pprint.pprint(TrainingF)
 
     #Create a Classifier Object to classify our test set 
     model = Classifier.Classifier(TrainingN,TrainingQ,TrainingF)
     #Reassign the testing dataframe to the dataframe that has our Machine learning classification guesses implemented 
     TestingDataFrame = model.classify(TestingDataFrame)
     
-    print("Classified test set: \n")
-    print(TestingDataFrame)
+    # print("Classified test set: \n")
+    # print(TestingDataFrame)
 
     #Get some statistics on the Machine learning 
     #Create a Results object
