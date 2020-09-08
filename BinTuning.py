@@ -1,6 +1,6 @@
 import Results, DataProcessor, TrainingAlgorithm, Classifier
 import pandas as pd
-import pprint
+import pprint, math
 
 def train(df: pd.DataFrame):
     trainingAlg = TrainingAlgorithm.TrainingAlgorithm()
@@ -23,12 +23,13 @@ iris_data = pd.read_csv('Iris_Data/iris.data')
 glass_data = pd.read_csv('Glass_Data/glass.data')
 datasets = [glass_data, iris_data]
 
-binCount = 7000
-trials = 4
+trials = 5
+csv = pd.DataFrame(columns=['dataset', 'bins', 'f1', 'zero-one'])
 
 for j in range(2):
-    for i in range(6):
-        bins = 2**(3+i*2)
+    for i in range(25):
+        exp = ((i+1)/2)
+        bins = math.ceil(2**exp)
         results = []
         for k in range(trials):
             dp = DataProcessor.DataProcessor(bin_count=bins)
@@ -41,6 +42,12 @@ for j in range(2):
             stats = Results.Results()
             zeroOne = stats.ZeroOneLoss(classifiedData)
             macroF1Average = stats.statsSummary(classifiedData)
+            csv = csv.append({
+                'dataset': dataset_names[j], 
+                'bins': bins, 
+                'f1': macroF1Average, 
+                'zero-one':zeroOne/100
+                }, ignore_index=True)
             trial = {"zeroOne": zeroOne, "F1": macroF1Average}
             results.append(trial)
             print(trial)
@@ -56,7 +63,7 @@ for j in range(2):
         datapoint = (dataset_names[j],bins,{"zeroOne": z1, "F1": f1})
         print(datapoint)
         dataset_stats_list.append(datapoint)
-
+csv.to_csv('bintuning.csv', index=False)
 pprint.pprint(dataset_stats_list)
 
 
