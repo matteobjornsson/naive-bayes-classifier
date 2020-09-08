@@ -102,7 +102,7 @@ def main():
             #Make One dataframe to hold all of the other Training dataframes 
             TrainingDataFrame = pd.DataFrame()
             #Make One dataframe that is our test Dataframe 
-            TestingDataFrame = tenFoldDataset[j]
+            TestingDataFrame = tenFoldDataset[i]
             for j in range(10):
                 if i == j:
                     continue    
