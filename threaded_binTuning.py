@@ -9,10 +9,10 @@ iris_data = pd.read_csv('Iris_Data/iris.data')
 glass_data = pd.read_csv('Glass_Data/glass.data')
 datasets = [glass_data, iris_data]
 
-trials = 2
-csv = pd.DataFrame(columns=['dataset', 'bins', 'f1', 'zero-one'])
+trials = 5
 
-def train(df: pd.DataFrame):
+
+def train(df):
     trainingAlg = TrainingAlgorithm.TrainingAlgorithm()
     splitDataframesList = trainingAlg.BinTestData(df)
 
@@ -28,6 +28,7 @@ def train(df: pd.DataFrame):
     return N, Q, F, testdata
 
 def calc(datasetIndex, multiplierInt):
+    csv = pd.DataFrame(columns=['dataset', 'bins', 'f1', 'zero-one'])
     exp = ((multiplierInt+1)/2)
     bins = math.ceil(2**exp)
     results = []
@@ -53,7 +54,7 @@ def calc(datasetIndex, multiplierInt):
         # trial = {"zeroOne": zeroOne, "F1": macroF1Average}
         # results.append(trial)
         # print(trial)
-
+    data.append(csv)
     # z1 = 0
     # f1 = 0
     # for n in results: 
@@ -68,13 +69,21 @@ def calc(datasetIndex, multiplierInt):
 
 
 
+manager = multiprocessing.Manager()
+data = manager.list()
 
 pool = multiprocessing.Pool()
 for j in range(2):
-    for i in range(2):
+    for i in range(25):
         pool.apply_async(calc, args=(j,i))
-        
-csv.to_csv('bintuning_parallel.csv', index=False)
+pool.close()
+pool.join()
+
+results = pd.DataFrame(columns=['dataset', 'bins', 'f1', 'zero-one'])    
+for df in data:
+    results = results.append(df, ignore_index=True)
+
+results.to_csv('bintuning_parallel.csv', index=False)
 # pprint.pprint(dataset_stats_list)
 
 
