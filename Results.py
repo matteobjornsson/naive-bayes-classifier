@@ -71,25 +71,25 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
     #Returns: DataFrame, Dictionary 
     #Function: 
     def statsSummary(self, df: pd.DataFrame) -> (pd.DataFrame, dict, dict):
-        classStats = self.perClassStats(df)
+        cMatrix = self.ConfusionMatrix(df)
+        classStats = self.perClassStats(cMatrix)
         tpList = list(classStats["TP"])
         fpList = list(classStats["FP"])
         fnList = list(classStats["FN"])
         microStats = self.microAverageStats(tpList, fpList, fnList)
-        macroStats = self.weightedMacroAverageStats(classStats)
+        macroStats = self.weightedMacroAverageStats(classStats, cMatrix)
         return classStats, microStats, macroStats
     #Parameters: DataFrame 
     #Returns: DataFrame
     #Function: 
-    def perClassStats(self,df:pd.DataFrame): 
-        cMatrix = self.ConfusionMatrix(df)
+    def perClassStats(self, cMatrix): 
         classStats = self.classStats(cMatrix)
         return classStats
 
-    def weightedMacroAverageStats(self, perClassStats) -> dict: 
+    def weightedMacroAverageStats(self, perClassStats, cMatrix) -> dict: 
         classValues = list(perClassStats.index.values)
         macroStatsDict = {}
-        classCounts = self.countClassOccurence(perClassStats)
+        classCounts = self.countClassOccurence(cMatrix)
 
         totalClassCount = 0
         for key in classCounts.keys():
@@ -110,16 +110,16 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         return macroStatsDict
         
 
-    def countClassOccurence(self, perClassStats: pd.DataFrame) -> dict:
+    def countClassOccurence(self, cMatrix: pd.DataFrame) -> dict:
         #Get a list of all the class names 
-        classValues = list(perClassStats.index.values)
+        classValues = list(cMatrix.index.values)
         #Create an empty dictionary with class names as key values 
         classCounts = dict.fromkeys(classValues)
-        # print("perclass stats from countclass occurence method: \n", perClassStats)
+        # print("perclass stats from countclass occurence method: \n", cMatrix)
         #Loop through all class names stored in the list above 
         for i in range(len(classValues)):
             #Store the given class stats from row i 
-            x = perClassStats.iloc[i]
+            x = cMatrix.iloc[i]
             #Set the count to 0 
             count = 0
             #For each stat and value in the row 
