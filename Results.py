@@ -111,15 +111,24 @@ https://towardsdatascience.com/multi-class-metrics-made-simple-part-i-precision-
         
 
     def countClassOccurence(self, perClassStats: pd.DataFrame) -> dict:
+        #Get a list of all the class names 
         classValues = list(perClassStats.index.values)
+        #Create an empty dictionary with class names as key values 
         classCounts = dict.fromkeys(classValues)
         # print("perclass stats from countclass occurence method: \n", perClassStats)
+        #Loop through all class names stored in the list above 
         for i in range(len(classValues)):
+            #Store the given class stats from row i 
             x = perClassStats.iloc[i]
+            #Set the count to 0 
             count = 0
+            #For each stat and value in the row 
             for stat, statValue in x.items():
+                #Adding stat value to the variable we instantiated above 
                 count += statValue
+            #Set the count to the class value 
             classCounts[classValues[i]] = count
+        #Return the dictionary 
         return classCounts
         
 
