@@ -13,6 +13,8 @@ import random
 import copy 
 import math 
 import TrainingAlgorithm 
+import time 
+
 
 class DataProcessor:
     #On the creation of a Dataprocessor object set the following values 
@@ -538,31 +540,41 @@ if __name__ == '__main__':
     #Soybean.bin_count = NumberBins 
     print("Pre Processor Objects Built ")
     #df2 = Glass.StartProcess(df2)
-    """
+    
     df = Vote.StartProcess(df)
     df1 = iris.StartProcess(df1)
     df2 = Glass.StartProcess(df2)
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
-    """
+    print("Printing processed data to Files...")
+    df.to_csv('PreProcessedVoting' + '.csv')
+    df1.to_csv('PreProcessediris' + '.csv')
+    df2.to_csv('PreProcessedGlass' +  '.csv')
+    df3.to_csv('PreProcessedCancer'+ '.csv')
+    df4.to_csv('PreProcessedSoybean'+ '.csv')
 
     Ta = TrainingAlgorithm.TrainingAlgorithm() 
-    print("Starting shuffle")
-    #df = Ta.ShuffleData(df)
-    print("First dataframe shuffled")
-    #df1 = Ta.ShuffleData(df1)
+    print("Starting Noise")
+    df = Ta.ShuffleData(df)
+    print("First dataset Noisey")
+    df1 = Ta.ShuffleData(df1)
+    print("Second Dataset Noisey")
     df2 = Ta.ShuffleData(df2)
-    ##df3 = Ta.ShuffleData(df3)
-    #df4 = Ta.ShuffleData(df4)
+    print("Third Dataset Noisey")
+    df3 = Ta.ShuffleData(df3)
+    print("Fourth dataset Noisey")
+    df4 = Ta.ShuffleData(df4)
+    print("Fifth Dataset Noisey")
+    print("\n")
 
 
-
-    print("Processing is complete ")
-    #df.to_csv('PreProcessedVoting' +'_Noise'+ '.csv')
-    #df1.to_csv('PreProcessediris' + '_Noise'+ '.csv')
+    print("Printing Noisey Data to Files...")
+    df.to_csv('PreProcessedVoting' +'_Noise'+ '.csv')
+    df1.to_csv('PreProcessediris' + '_Noise'+ '.csv')
     df2.to_csv('PreProcessedGlass' + '_Noise' +  '.csv')
-    #df3.to_csv('PreProcessedCancer'  + '_Noise'+ '.csv')
-    #df4.to_csv('PreProcessedSoybean' + '_Noise'+ '.csv')
+    df3.to_csv('PreProcessedCancer'  + '_Noise'+ '.csv')
+    df4.to_csv('PreProcessedSoybean' + '_Noise'+ '.csv')
+    print("Processing is complete ")
     print("File creation is complete ")
 
 

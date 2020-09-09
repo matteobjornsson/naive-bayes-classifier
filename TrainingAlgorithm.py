@@ -11,6 +11,7 @@ import random
 import sys 
 import copy 
 import pprint
+import time 
 
 class TrainingAlgorithm:
 
@@ -197,6 +198,9 @@ class TrainingAlgorithm:
                     fMatrix[ClassValueI][Attribute][AttributeValue] = (
                         (Value/(n[ClassValueI] + (len(df.columns)-1)))
                     )
+                    print("Calculated probability for class")
+                    print(fMatrix[ClassValueI][Attribute][AttributeValue])
+                    time.sleep(3)
         # return the complete "past feature value probability matrix"
         return fMatrix
 

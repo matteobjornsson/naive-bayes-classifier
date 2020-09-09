@@ -1,2 +1,2 @@
 Cancer
-{'Dataset': 'Cancer', 'F1': 0.9785536091706248, 'ZeroOne': 97.84615384615384}
+{'Dataset': 'Cancer', 'F1': 0.9801445495005083, 'ZeroOne': 98.0}
