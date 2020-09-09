@@ -15,7 +15,7 @@ import Classifier
 import DataProcessor 
 import pprint
 import copy
-
+import time 
 
 #Parameters: Dataset name, A list, a Dataframe and an Integer 
 #Return: None
@@ -71,10 +71,15 @@ def train(trainingAlgorithm, trainingData: pd.DataFrame) -> (dict, dict, dict):
     F = trainingAlgorithm.calculateF(N, trainingData)
     print("The following N value's were calculated on this data set ")
     print(N)
+    time.sleep(2)
     print("The following Q Values were calculated on this data set  ")
     print(Q)
+    time.sleep(2)
     print("The following is the calculated F matrix ")
+    print("\n")
     print(F)
+    print("\n")
+    time.sleep(2)
     #Return the dictionary of stats 
     return N, Q, F
 
@@ -122,6 +127,7 @@ def main():
         datasetName = dataset_names[data_sets.index(dataset)]
         #Print the dataset name so the user knows what data set is being experimented 
         print(datasetName)
+        time.sleep(1)
         #Load in the dataframe from the preprocessed data 
         df = pd.read_csv(dataset) 
         #Create a Training algorithm Object 
@@ -164,6 +170,8 @@ def main():
             macroF1Average = Analysis.statsSummary(classifiedDataFrame)
             #Print the zero one loss  and F1 calculation to the screen 
             print("Zero one loss: ", zeroOnePercent, "F1: ", macroF1Average)
+            time.sleep(2)
+            print("\n")
             #append the zero one loss and F1 average to the list to calculate the average score 
             AvgZeroOne.append(zeroOnePercent)
             AvgF1.append(macroF1Average)
