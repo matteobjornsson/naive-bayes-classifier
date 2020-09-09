@@ -11,7 +11,7 @@ import random
 import sys 
 import copy 
 import pprint
-import time 
+
 
 class TrainingAlgorithm:
 
@@ -200,7 +200,7 @@ class TrainingAlgorithm:
                     )
                     print("Calculated probability for class")
                     print(fMatrix[ClassValueI][Attribute][AttributeValue])
-                    time.sleep(.5)
+                    
         # return the complete "past feature value probability matrix"
         return fMatrix
 
