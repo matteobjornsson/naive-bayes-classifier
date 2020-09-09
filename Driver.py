@@ -69,6 +69,12 @@ def train(trainingAlgorithm, trainingData: pd.DataFrame) -> (dict, dict, dict):
     N = trainingAlgorithm.calculateN(trainingData)
     Q = trainingAlgorithm.calculateQ(N, len(trainingData))
     F = trainingAlgorithm.calculateF(N, trainingData)
+    print("The following N value's were calculated on this data set ")
+    print(N)
+    print("The following Q Values were calculated on this data set  ")
+    print(Q)
+    print("The following is the calculated F matrix ")
+    print(F)
     #Return the dictionary of stats 
     return N, Q, F
 
