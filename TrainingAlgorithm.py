@@ -200,7 +200,7 @@ class TrainingAlgorithm:
                     )
                     print("Calculated probability for class")
                     print(fMatrix[ClassValueI][Attribute][AttributeValue])
-                    time.sleep(3)
+                    time.sleep(.5)
         # return the complete "past feature value probability matrix"
         return fMatrix
 

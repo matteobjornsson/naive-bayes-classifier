@@ -509,11 +509,11 @@ class DataProcessor:
 if __name__ == '__main__':
     NumberBins = 32
     #Location of each data file stored off into variables for later retrieval of data 
-    VoteData = 'PreProcessedVoting32.csv'
-    IrisData = 'PreProcessediris32.csv'
-    GlassData = 'PreProcessedGlass.csv'
-    CancerData = 'PreProcessedCancer32.csv'
-    SoybeanData = 'PreProcessedSoybean32.csv'
+    VoteData = 'Vote_Data\\Votes.data'
+    IrisData = 'Iris_Data\\iris.data'
+    GlassData = 'Glass_Data\\glass.data'
+    CancerData = 'Breast_Cancer_Data\\cancer.data'
+    SoybeanData = 'Soybean_Data\\soybean.data'
     #DataFrame With Voting data 
     df = pd.read_csv(VoteData,index_col = False )
     #print(df)
@@ -547,11 +547,11 @@ if __name__ == '__main__':
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
     print("Printing processed data to Files...")
-    df.to_csv('PreProcessedVoting' + '.csv')
-    df1.to_csv('PreProcessediris' + '.csv')
-    df2.to_csv('PreProcessedGlass' +  '.csv')
-    df3.to_csv('PreProcessedCancer'+ '.csv')
-    df4.to_csv('PreProcessedSoybean'+ '.csv')
+    df.to_csv('Demo\PreProcessedVoting' + '.csv')
+    df1.to_csv('Demo\PreProcessediris' + '.csv')
+    df2.to_csv('Demo\PreProcessedGlass' +  '.csv')
+    df3.to_csv('Demo\PreProcessedCancer'+ '.csv')
+    df4.to_csv('Demo\PreProcessedSoybean'+ '.csv')
 
     Ta = TrainingAlgorithm.TrainingAlgorithm() 
     print("Starting Noise")
@@ -569,11 +569,11 @@ if __name__ == '__main__':
 
 
     print("Printing Noisey Data to Files...")
-    df.to_csv('PreProcessedVoting' +'_Noise'+ '.csv')
-    df1.to_csv('PreProcessediris' + '_Noise'+ '.csv')
-    df2.to_csv('PreProcessedGlass' + '_Noise' +  '.csv')
-    df3.to_csv('PreProcessedCancer'  + '_Noise'+ '.csv')
-    df4.to_csv('PreProcessedSoybean' + '_Noise'+ '.csv')
+    df.to_csv('Demo\PreProcessedVoting' +'_Noise'+ '.csv')
+    df1.to_csv('Demo\PreProcessediris' + '_Noise'+ '.csv')
+    df2.to_csv('Demo\PreProcessedGlass' + '_Noise' +  '.csv')
+    df3.to_csv('Demo\PreProcessedCancer'  + '_Noise'+ '.csv')
+    df4.to_csv('Demo\PreProcessedSoybean' + '_Noise'+ '.csv')
     print("Processing is complete ")
     print("File creation is complete ")
 
