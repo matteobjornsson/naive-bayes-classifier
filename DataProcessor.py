@@ -374,6 +374,7 @@ class DataProcessor:
                 Value = df.iloc[row][col]
                 #Loop through each of the bins 
                 for i in range(len(Bins)):
+                    value = df.at[row,df.columns[col]]
                     #If we are at the last bin and have not been assigned a bin 
                     if i == len(Bins)-1: 
                         #Set the value to be the last bin 
@@ -385,7 +386,10 @@ class DataProcessor:
                         #Set the row to be that bin value 
                         df.at[row,df.columns[col]] = i + 1
                         #Break 
+                        if row % 10 == 0:
+                            print("Value " +str( value) + " binned to value " + str(i+1), end="\r", flush=True)
                         break 
+            print("Value ", value, " binned to value ", i+1)
             #Return the new changed dataframe 
             return df
 
@@ -508,11 +512,11 @@ class DataProcessor:
 if __name__ == '__main__':
     NumberBins = 32
     #Location of each data file stored off into variables for later retrieval of data 
-    VoteData = 'Vote_Data\\Votes.data'
-    IrisData = 'Iris_Data\\iris.data'
-    GlassData = 'Glass_Data\\glass.data'
-    CancerData = 'Breast_Cancer_Data\\cancer.data'
-    SoybeanData = 'Soybean_Data\\soybean.data'
+    VoteData = 'Vote_Data/Votes.data'
+    IrisData = 'Iris_Data/iris.data'
+    GlassData = 'Glass_Data/glass.data'
+    CancerData = 'Breast_Cancer_Data/cancer.data'
+    SoybeanData = 'Soybean_Data/soybean.data'
     #DataFrame With Voting data 
     df = pd.read_csv(VoteData,index_col = False )
     #print(df)
@@ -546,11 +550,11 @@ if __name__ == '__main__':
     df3 = Cancer.StartProcess(df3)
     df4 = Soybean.StartProcess(df4)
     print("Printing processed data to Files...")
-    df.to_csv('Demo\PreProcessedVoting' + '.csv')
-    df1.to_csv('Demo\PreProcessediris' + '.csv')
-    df2.to_csv('Demo\PreProcessedGlass' +  '.csv')
-    df3.to_csv('Demo\PreProcessedCancer'+ '.csv')
-    df4.to_csv('Demo\PreProcessedSoybean'+ '.csv')
+    df.to_csv('Demo/PreProcessedVoting' + '.csv')
+    df1.to_csv('Demo/PreProcessediris' + '.csv')
+    df2.to_csv('Demo/PreProcessedGlass' +  '.csv')
+    df3.to_csv('Demo/PreProcessedCancer'+ '.csv')
+    df4.to_csv('Demo/PreProcessedSoybean'+ '.csv')
 
     Ta = TrainingAlgorithm.TrainingAlgorithm() 
     print("Starting Noise")
